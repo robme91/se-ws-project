@@ -1,5 +1,7 @@
 package main;
 
+import gamestates.MainMenuState;
+import gamestates.PlayingSate;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -10,6 +12,12 @@ import org.newdawn.slick.state.StateBasedGame;
  * Created by Robin on 08.12.2016.
  */
 public class GameStarter extends StateBasedGame {
+
+    public GameStarter(String name) {
+        super(name);
+        this.addState(new MainMenuState());
+        this.addState(new PlayingSate());
+    }
 
     public static void main(String[] args){
         AppGameContainer app = null;
@@ -25,11 +33,11 @@ public class GameStarter extends StateBasedGame {
         }
     }
 
-    public GameStarter(String name) {
-        super(name);
-    }
-
     public void initStatesList(GameContainer gameContainer) throws SlickException {
-
+        //init all states
+        this.getState(MainMenuState.MAIN_MENU_STATE_ID).init(gameContainer, this);
+        this.getState(PlayingSate.PLAYING_STATE_ID).init(gameContainer,this);
+        // call startup screen
+        this.enterState(MainMenuState.MAIN_MENU_STATE_ID);
     }
 }
