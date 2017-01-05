@@ -9,6 +9,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 /**
  * Created by Robin on 05.01.2017.
+ *
+ * This is the Screen where the real game is played
  */
 public class PlayingSate extends BasicGameState{
 

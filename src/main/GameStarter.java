@@ -6,6 +6,7 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+import utils.GameUtils;
 
 /**
  * Main Menu of the game and starts it
@@ -23,7 +24,9 @@ public class GameStarter extends StateBasedGame {
         AppGameContainer app = null;
         try {
             app = new AppGameContainer(new GameStarter("No beer is ooch No option"));
-            app.setDisplayMode(600, 600, false);
+            //TODO größe evtl. auslagern in util klasse wo all solche größen und zahlend rin stehen
+            // größe erstmal so gewählt damit ein Spielfeld hinein passt, aber auch ein rand drum herum ist für Zeitleiste etc.
+            app.setDisplayMode(GameUtils.GAME_WIDTH, GameUtils.GAME_HEIGHT, false);
             app.setTargetFrameRate(60);
             app.setVSync(true);
             app.setShowFPS(false);
