@@ -19,20 +19,18 @@ public class GameUtils {
 
     /**
      * True if if mouse is clicked in given shape
-     * @param input
-     * @param shape
-     * @return
+     * @param input The input in the gamecontainer
+     * @param shape The shape where the click shall be checked
+     * @return True if mouse clicked inside the given shape
      */
     public static boolean clickedMouseInShape(final Input input, final Shape shape){
         if(input.isMouseButtonDown(0)){
             final int xPos = Mouse.getX();
             final int yPos = Mouse.getY();
-            /*TODO iwas mit y logic stimmt nicht benimmt sich so als ob es unten wäre
-                wsl muss die game size mit eingerechnet werden
-                oder iwas anderes is falsch 
-            */
+            final float yUpBorder = GAME_HEIGHT - shape.getY();
+            final float yDownBorder = GAME_HEIGHT - shape.getY() - shape.getHeight();
             if((xPos > shape.getX() && xPos < shape.getX() + shape.getWidth())
-                    && (yPos > shape.getY() && yPos < shape.getY() + shape.getHeight())){
+                    && (yPos > yDownBorder && yPos < yUpBorder)){
                 return true;
             }
         }
