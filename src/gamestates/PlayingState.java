@@ -10,7 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
  *
  * This is the Screen where the real game is played
  */
-public class PlayingSate extends BasicGameState{
+public class PlayingState extends BasicGameState{
 
     public static final int PLAYING_STATE_ID = 1;
 

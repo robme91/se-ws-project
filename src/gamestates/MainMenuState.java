@@ -4,7 +4,6 @@ import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.RoundedRectangle;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import utils.GameUtils;
@@ -43,7 +42,7 @@ public class MainMenuState extends BasicGameState{
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         mPos = "xPos: " + Mouse.getX() + " ,yPos: " + Mouse.getY();
         if(GameUtils.clickedMouseInShape(container.getInput(), playBtn)){
-            game.enterState(PlayingSate.PLAYING_STATE_ID);
+            game.enterState(PlayingState.PLAYING_STATE_ID);
         }
     }
 }
