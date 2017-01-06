@@ -17,6 +17,8 @@ public class GameUtils {
     public static final int GAME_HEIGHT = 690;
 
 
+
+
     /**
      * True if if mouse is clicked in given shape
      * @param input The input in the gamecontainer
