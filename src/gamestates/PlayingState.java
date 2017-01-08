@@ -2,6 +2,7 @@ package gamestates;
 
 import level.ILevel;
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.RoundedRectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
@@ -22,7 +23,7 @@ public class PlayingState extends BasicGameState{
     private ILevel currentLevel;
 
     /*Set to true if quit menu shall popup*/
-    private boolean quit;
+    private boolean quit = false;
 
     /*Movement fields for loop movement*/
     private boolean movePlayerUp = false;
@@ -33,6 +34,11 @@ public class PlayingState extends BasicGameState{
     private Shape player;
     private float playerPosX = GameUtils.GAME_FIELD_WIDTH/2;
     private float playerPosY = GameUtils.GAME_FIELD_HEIGHT/2;
+
+    /**This progress bar shows how much time is left*/
+    private Rectangle gameTimeBar;
+    private boolean isTimeRunning = false;
+    private boolean isLevelSucceeded = false;
 
     //just for dev
     private String playerPosDisplay = "";
@@ -48,7 +54,7 @@ public class PlayingState extends BasicGameState{
 
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         player = new RoundedRectangle(playerPosX, playerPosY,20, 20, 3);
-        quit = false;
+        gameTimeBar = new Rectangle(300, GameUtils.GAME_FIELD_HEIGHT + 10, 400, 20);
     }
 
     @Override
@@ -59,6 +65,8 @@ public class PlayingState extends BasicGameState{
         }else{
             player = currentLevel.getPlayer().getAvatar();
         }
+        //TODO später umziehen nachdem der Spielstart iwie bestätigt wurde
+        isTimeRunning = true;
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
@@ -71,7 +79,21 @@ public class PlayingState extends BasicGameState{
         g.drawLine(0, GameUtils.GAME_FIELD_HEIGHT, GameUtils.GAME_FIELD_WIDTH, GameUtils.GAME_FIELD_HEIGHT);
         g.drawLine(GameUtils.GAME_FIELD_WIDTH, GameUtils.GAME_FIELD_HEIGHT, GameUtils.GAME_FIELD_WIDTH, 0);
 
+        //render gameinfos
+        g.setColor(Color.green);
+        g.drawRect(gameTimeBar.getX(), gameTimeBar.getY(), 400, 20);
+        g.fill(gameTimeBar);
+
+        //render level finished
+        if(isLevelSucceeded){
+            g.setColor(Color.white);
+            g.drawString("You Win!", GameUtils.GAME_FIELD_WIDTH/2, GameUtils.GAME_FIELD_HEIGHT/2);
+            stopPlayerMovements();
+        }
+
+        //render quit menu
         if(quit){
+            g.setColor(Color.white);
             g.drawString("Resume (R)", 250, 100);
             g.drawString("Menu (M)", 250, 150);
             g.drawString("Quit (Q)", 250, 200);
@@ -87,6 +109,16 @@ public class PlayingState extends BasicGameState{
 
         //Speed of player is calculated in the delta so you get a nice result
         final float playerSpeed = currentLevel.getPlayer().getSpeed() * delta * .1f;
+        final float gameTimeSpeed = currentLevel.getTime() * delta * .1f;
+        if(isTimeRunning){
+            if(gameTimeBar.getWidth() > 1){
+                gameTimeBar.setWidth(gameTimeBar.getWidth() - gameTimeSpeed);
+            }else{
+                gameTimeBar.setWidth(1);
+                isLevelSucceeded = true;
+            }
+        }
+
         /*movement of the player*/
         //up
         if(input.isKeyDown(Input.KEY_UP)){

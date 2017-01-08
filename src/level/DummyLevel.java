@@ -14,14 +14,14 @@ public class DummyLevel implements ILevel{
     /*The player for this level*/
     private Player player;
     /*The time player have to survive in this level in s*/
-    private int time;
+    private float time;
 
     //TODO field/world, enemies
 
     /*creates this level. here all the input of the text file must be used for crating this level*/
     public DummyLevel(){
         player = new Player(GameUtils.GAME_FIELD_WIDTH/2, GameUtils.GAME_FIELD_HEIGHT/2, 1);
-        time = 30;
+        time = 0.2f;
     }
 
 
@@ -29,7 +29,7 @@ public class DummyLevel implements ILevel{
         return player;
     }
 
-    public int getTime() {
+    public float getTime() {
         return time;
     }
 }

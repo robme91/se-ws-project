@@ -19,5 +19,5 @@ public interface ILevel {
      * The time the player must survive in this level.
      * @return The gametime in seconds
      */
-    int getTime();
+    float getTime();
 }
