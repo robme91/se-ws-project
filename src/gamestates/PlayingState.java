@@ -1,9 +1,12 @@
 package gamestates;
 
+import level.ILevel;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.RoundedRectangle;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import utils.GameUtils;
 
 /**
  * Created by Robin on 05.01.2017.
@@ -12,10 +15,11 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class PlayingState extends BasicGameState{
 
-    public static final int PLAYING_STATE_ID = 1;
+    public static int PLAYING_STATE_ID;
 
-    private final int GAME_FIELD_WIDTH = 800;
-    private final int GAME_FIELD_HEIGHT = 640;
+
+    /**The level that is chosen to play*/
+    private ILevel currentLevel;
 
     /*Set to true if quit menu shall popup*/
     private boolean quit;
@@ -26,13 +30,17 @@ public class PlayingState extends BasicGameState{
     private boolean movePlayerLeft = false;
     private boolean movePlayerRight = false;
 
-    private RoundedRectangle player;
-    private float playerPosX = GAME_FIELD_WIDTH/2;
-    private float playerPosY = GAME_FIELD_HEIGHT/2;
+    private Shape player;
+    private float playerPosX = GameUtils.GAME_FIELD_WIDTH/2;
+    private float playerPosY = GameUtils.GAME_FIELD_HEIGHT/2;
 
     //just for dev
     private String playerPosDisplay = "";
 
+
+    public PlayingState(final int stateId){
+        PLAYING_STATE_ID = stateId;
+    }
 
     public int getID() {
         return PLAYING_STATE_ID;
@@ -43,6 +51,16 @@ public class PlayingState extends BasicGameState{
         quit = false;
     }
 
+    @Override
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+        super.enter(container, game);
+        if(currentLevel == null){
+            game.enterState(MainMenuState.MAIN_MENU_STATE_ID);
+        }else{
+            player = currentLevel.getPlayer().getAvatar();
+        }
+    }
+
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         g.drawString(playerPosDisplay, 20, 650);
         g.setColor(Color.red);
@@ -50,14 +68,14 @@ public class PlayingState extends BasicGameState{
         g.fill(player);
         g.setColor(Color.white);
         //gamefield separator
-        g.drawLine(0, GAME_FIELD_HEIGHT, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
-        g.drawLine(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, GAME_FIELD_WIDTH, 0);
+        g.drawLine(0, GameUtils.GAME_FIELD_HEIGHT, GameUtils.GAME_FIELD_WIDTH, GameUtils.GAME_FIELD_HEIGHT);
+        g.drawLine(GameUtils.GAME_FIELD_WIDTH, GameUtils.GAME_FIELD_HEIGHT, GameUtils.GAME_FIELD_WIDTH, 0);
 
-        if(quit == true){
+        if(quit){
             g.drawString("Resume (R)", 250, 100);
             g.drawString("Menu (M)", 250, 150);
             g.drawString("Quit (Q)", 250, 200);
-            if(quit == false){
+            if(!quit){
                 g.clear();
             }
         }
@@ -67,7 +85,8 @@ public class PlayingState extends BasicGameState{
         playerPosDisplay = "xPos: " + playerPosX + " ,yPos: " + playerPosY;
         final Input input = container.getInput();
 
-        final float playerSpeed = delta * .1f; //TODO hier dann sobald player klasse steht das speed einarbeiten
+        //Speed of player is calculated in the delta so you get a nice result
+        final float playerSpeed = currentLevel.getPlayer().getSpeed() * delta * .1f;
         /*movement of the player*/
         //up
         if(input.isKeyDown(Input.KEY_UP)){
@@ -97,7 +116,7 @@ public class PlayingState extends BasicGameState{
             stopPlayerMovements();
             quit = true;
         }
-        if(quit == true){
+        if(quit){
             if(input.isKeyDown(Input.KEY_R)){
                 quit = false;
             }else if(input.isKeyDown(Input.KEY_M)){
@@ -121,7 +140,8 @@ public class PlayingState extends BasicGameState{
     }
 
     /**
-     * Helper method to move the player and make the update method smaller
+     * Helper method to move the player and make the update method smaller.
+     * Its also the collision detection
      * @param playerSpeed The speed of the player
      */
     private void handlePlayerMovements(final float playerSpeed){
@@ -134,7 +154,7 @@ public class PlayingState extends BasicGameState{
             }
         }
         if(movePlayerDown){
-            if(playerPosY >= GAME_FIELD_HEIGHT - 20){ //wegen Spielerfigurgröße -20
+            if(playerPosY >= GameUtils.GAME_FIELD_HEIGHT - player.getHeight()){ //wegen Spielerfigurgröße -20
                 playerPosY -= playerSpeed;
                 stopPlayerMovements();
             }else{
@@ -150,12 +170,23 @@ public class PlayingState extends BasicGameState{
             }
         }
         if(movePlayerRight){
-            if(playerPosX >= GAME_FIELD_WIDTH - 20){ //-20 wegen der Spielfigurgröße
+            if(playerPosX >= GameUtils.GAME_FIELD_WIDTH - player.getWidth()){ //-20 wegen der Spielfigurgröße
                 playerPosX -= playerSpeed;
                 stopPlayerMovements();
             }else{
                 playerPosX += playerSpeed;
             }
         }
+    }
+
+
+    @SuppressWarnings("unused")
+    public ILevel getCurrentLevel() {
+        return currentLevel;
+    }
+
+    @SuppressWarnings("WeakerAccess")
+    public void setCurrentLevel(ILevel currentLevel) {
+        this.currentLevel = currentLevel;
     }
 }

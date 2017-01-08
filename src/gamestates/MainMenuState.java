@@ -15,7 +15,11 @@ import utils.GameUtils;
  */
 public class MainMenuState extends BasicGameState{
 
-    public static final int MAIN_MENU_STATE_ID = 0;
+    public static int MAIN_MENU_STATE_ID;
+
+    public MainMenuState(final int stateId){
+        MAIN_MENU_STATE_ID = stateId;
+    }
 
     private Rectangle playBtn;
     private Image playBtnFill;
@@ -42,7 +46,7 @@ public class MainMenuState extends BasicGameState{
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         mPos = "xPos: " + Mouse.getX() + " ,yPos: " + Mouse.getY();
         if(GameUtils.clickedMouseInShape(container.getInput(), playBtn)){
-            game.enterState(PlayingState.PLAYING_STATE_ID);
+            game.enterState(LevelMenuState.LEVEL_MENU_STATE_ID);
         }
     }
 }
