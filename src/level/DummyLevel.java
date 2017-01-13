@@ -1,6 +1,6 @@
 package level;
 
-import characters.Player;
+import objects.Player;
 import utils.GameUtils;
 
 /**

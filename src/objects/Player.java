@@ -1,4 +1,4 @@
-package characters;
+package objects;
 
 import org.newdawn.slick.geom.Circle;
 
