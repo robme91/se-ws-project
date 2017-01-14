@@ -1,7 +1,10 @@
 package gamestates;
 
+import level.DummyLevel;
 import level.ILevel;
+import objects.Player;
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.RoundedRectangle;
 import org.newdawn.slick.geom.Shape;
@@ -31,9 +34,10 @@ public class PlayingState extends BasicGameState{
     private boolean movePlayerLeft = false;
     private boolean movePlayerRight = false;
 
-    private Shape player;
-    private float playerPosX = GameUtils.GAME_FIELD_WIDTH/2;
-    private float playerPosY = GameUtils.GAME_FIELD_HEIGHT/2;
+    private Player player;
+//    private Shape player;
+//    private float playerPosX = GameUtils.GAME_FIELD_WIDTH/2;
+//    private float playerPosY = GameUtils.GAME_FIELD_HEIGHT/2;
 
     /**This progress bar shows how much time is left*/
     private Rectangle gameTimeBar;
@@ -53,7 +57,7 @@ public class PlayingState extends BasicGameState{
     }
 
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        player = new RoundedRectangle(playerPosX, playerPosY,20, 20, 3);
+//        player = new RoundedRectangle(playerPosX, playerPosY,20, 20, 3);
         gameTimeBar = new Rectangle(300, GameUtils.GAME_FIELD_HEIGHT + 10, 400, 20);
     }
 
@@ -63,17 +67,21 @@ public class PlayingState extends BasicGameState{
         if(currentLevel == null){
             game.enterState(MainMenuState.MAIN_MENU_STATE_ID);
         }else{
-            player = currentLevel.getPlayer().getAvatar();
+//            player = currentLevel.getPlayer().getAvatar();
+            player = currentLevel.getPlayer();
         }
         //TODO später umziehen nachdem der Spielstart iwie bestätigt wurde
         isTimeRunning = true;
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-        g.drawString(playerPosDisplay, 20, 650);
-        g.setColor(Color.red);
-        player.setLocation(playerPosX, playerPosY);
-        g.fill(player);
+        currentLevel.drawOnGraphicContext(g);
+
+//        g.drawString(playerPosDisplay, 20, 650);
+//        g.setColor(Color.red);
+//        player.setLocation(playerPosX, playerPosY);
+//        g.fill(player);
+
         g.setColor(Color.white);
         //gamefield separator
         g.drawLine(0, GameUtils.GAME_FIELD_HEIGHT, GameUtils.GAME_FIELD_WIDTH, GameUtils.GAME_FIELD_HEIGHT);
@@ -104,7 +112,7 @@ public class PlayingState extends BasicGameState{
     }
 
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-        playerPosDisplay = "xPos: " + playerPosX + " ,yPos: " + playerPosY;
+        playerPosDisplay = "xPos: " + player.getPos_x() + " ,yPos: " + player.getPos_y();
         final Input input = container.getInput();
 
         //Speed of player is calculated in the delta so you get a nice result
@@ -177,6 +185,10 @@ public class PlayingState extends BasicGameState{
      * @param playerSpeed The speed of the player
      */
     private void handlePlayerMovements(final float playerSpeed){
+
+        float playerPosX = player.getPos_x();
+        float playerPosY = player.getPos_y();
+
         if(movePlayerUp){
             if(playerPosY <= 0){
                 playerPosY += playerSpeed;
@@ -186,7 +198,7 @@ public class PlayingState extends BasicGameState{
             }
         }
         if(movePlayerDown){
-            if(playerPosY >= GameUtils.GAME_FIELD_HEIGHT - player.getHeight()){ //wegen Spielerfigurgröße -20
+            if(playerPosY >= GameUtils.GAME_FIELD_HEIGHT - player.getSize()){ //wegen Spielerfigurgröße -20
                 playerPosY -= playerSpeed;
                 stopPlayerMovements();
             }else{
@@ -202,7 +214,7 @@ public class PlayingState extends BasicGameState{
             }
         }
         if(movePlayerRight){
-            if(playerPosX >= GameUtils.GAME_FIELD_WIDTH - player.getWidth()){ //-20 wegen der Spielfigurgröße
+            if(playerPosX >= GameUtils.GAME_FIELD_WIDTH - player.getSize()){ //-20 wegen der Spielfigurgröße
                 playerPosX -= playerSpeed;
                 stopPlayerMovements();
             }else{
