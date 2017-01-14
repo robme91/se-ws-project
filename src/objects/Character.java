@@ -18,6 +18,10 @@ public abstract class Character extends GameObject {
         this.hitbox = new Circle(pos_x, pos_y, size / 2);
     }
 
+    public void gotBlockedBy(GameObject go) {
+
+    }
+
     public float getSpeed() {
         return speed;
     }

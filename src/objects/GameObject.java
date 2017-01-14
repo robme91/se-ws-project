@@ -27,7 +27,7 @@ public abstract class GameObject {
     /**
      * if True, Characters can´t walk through or over it
      */
-    private boolean isBlocking;
+    private final boolean isBlocking;
 
     /**
      * Geometry that represents the hitbox
@@ -85,6 +85,13 @@ public abstract class GameObject {
         this.setPos_y(y);
     }
 
+    /**
+     * Gets called if this object is hit by GameObject
+     * @param go object that hit this object
+     */
+    public void interact(GameObject go) {
+        System.out.println(go.getClass().toString());
+    }
 
     public boolean isBlocking() {
         return isBlocking;
@@ -100,5 +107,11 @@ public abstract class GameObject {
 
     public int getSize() {
         return size;
+    }
+
+    @Override
+    public String toString() {
+        return "GameObject{" + "pos_x=" + pos_x + ", pos_y=" + pos_y + ", size=" + size + ", " +
+                "isBlocking=" + isBlocking + ", hitbox=" + hitbox + ", image=" + image + '}';
     }
 }
