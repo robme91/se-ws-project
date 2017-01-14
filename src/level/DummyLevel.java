@@ -6,7 +6,7 @@ import objects.Player;
 import objects.Street;
 import objects.Character;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Shape;
+import utils.GameUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +21,19 @@ public class DummyLevel implements ILevel {
 
     /*The player for this level*/
     private Player player;
+
     /*The time player have to survive in this level in s*/
     private float time;
 
+    /**
+     *
+     */
     private List<Block> blocks;
 
     /**
-     * only used for performance since blocks do not change over playtime
+     * List of characters (including the player)
      */
-    private List<Shape> blockShapes;
-
+    private List<Character> characters;
 
     /*creates this level. here all the input of the text file must be used for crating this level*/
     public DummyLevel() {
@@ -40,161 +43,165 @@ public class DummyLevel implements ILevel {
          */
 
         this.blocks = new ArrayList<Block>();
+        this.characters = new ArrayList<Character>();
+
         time = 0.001f;
-        this.player = new Player(16, 16, 16, true, 1f);
-//        blocks.add(new Street(16, 16, 32, false));
-//        blocks.add(new Street(48, 16, 32, false));
-//        blocks.add(new Street(80, 16, 32, false));
-//        blocks.add(new Street(112, 16, 32, false));
-//        blocks.add(new Street(144, 16, 32, false));
-//        blocks.add(new Street(176, 16, 32, false));
-//        blocks.add(new Street(208, 16, 32, false));
-//        blocks.add(new Street(240, 16, 32, false));
-//        blocks.add(new Street(272, 16, 32, false));
-//        blocks.add(new Street(304, 16, 32, false));
-//        blocks.add(new Street(336, 16, 32, false));
-//        blocks.add(new Street(368, 16, 32, false));
-//        blocks.add(new Street(400, 16, 32, false));
-//        blocks.add(new Street(432, 16, 32, false));
-//        blocks.add(new Street(464, 16, 32, false));
-//        blocks.add(new Street(496, 16, 32, false));
-//        blocks.add(new Street(528, 16, 32, false));
-//        blocks.add(new Street(560, 16, 32, false));
-//        blocks.add(new Street(592, 16, 32, false));
-//        blocks.add(new Street(624, 16, 32, false));
-//        blocks.add(new Street(656, 16, 32, false));
-//        blocks.add(new Street(688, 16, 32, false));
-//        blocks.add(new Street(720, 16, 32, false));
-//        blocks.add(new Street(752, 16, 32, false));
-//        blocks.add(new Street(784, 16, 32, false));
-//        blocks.add(new Street(16, 48, 32, false));
-//        blocks.add(new Street(48, 48, 32, false));
-//        blocks.add(new Street(80, 48, 32, false));
-//        blocks.add(new Street(112, 48, 32, false));
-//        blocks.add(new Street(144, 48, 32, false));
-//        blocks.add(new Street(176, 48, 32, false));
-//        blocks.add(new Street(208, 48, 32, false));
-//        blocks.add(new Street(240, 48, 32, false));
-//        blocks.add(new Street(272, 48, 32, false));
-//        blocks.add(new Street(304, 48, 32, false));
-//        blocks.add(new Street(336, 48, 32, false));
-//        blocks.add(new Street(368, 48, 32, false));
-//        blocks.add(new Street(400, 48, 32, false));
-//        blocks.add(new Street(432, 48, 32, false));
-//        blocks.add(new Street(464, 48, 32, false));
-//        blocks.add(new Street(496, 48, 32, false));
-//        blocks.add(new Street(528, 48, 32, false));
-//        blocks.add(new Street(560, 48, 32, false));
-//        blocks.add(new Street(592, 48, 32, false));
-//        blocks.add(new Street(624, 48, 32, false));
-//        blocks.add(new Street(656, 48, 32, false));
-//        blocks.add(new Street(688, 48, 32, false));
-//        blocks.add(new Street(720, 48, 32, false));
-//        blocks.add(new Street(752, 48, 32, false));
-//        blocks.add(new Street(784, 48, 32, false));
-//        blocks.add(new Street(16, 80, 32, false));
-//        blocks.add(new Street(48, 80, 32, false));
-//        blocks.add(new Street(80, 80, 32, false));
-//        blocks.add(new Street(112, 80, 32, false));
-//        blocks.add(new Street(144, 80, 32, false));
-//        blocks.add(new Street(176, 80, 32, false));
-//        blocks.add(new Street(208, 80, 32, false));
-//        blocks.add(new Street(240, 80, 32, false));
-//        blocks.add(new Street(272, 80, 32, false));
-//        blocks.add(new Street(304, 80, 32, false));
-//        blocks.add(new Street(336, 80, 32, false));
-//        blocks.add(new Street(368, 80, 32, false));
-//        blocks.add(new Street(400, 80, 32, false));
-//        blocks.add(new Street(432, 80, 32, false));
-//        blocks.add(new Street(464, 80, 32, false));
-//        blocks.add(new Street(496, 80, 32, false));
-//        blocks.add(new Street(528, 80, 32, false));
-//        blocks.add(new Street(560, 80, 32, false));
-//        blocks.add(new Street(592, 80, 32, false));
-//        blocks.add(new Street(624, 80, 32, false));
-//        blocks.add(new Street(656, 80, 32, false));
-//        blocks.add(new Street(688, 80, 32, false));
-//        blocks.add(new Street(720, 80, 32, false));
-//        blocks.add(new Street(752, 80, 32, false));
-//        blocks.add(new Street(784, 80, 32, false));
-//
-//        blocks.add(new Street(16, 112, 32, false));
-//        blocks.add(new Street(48, 112, 32, false));
-//        blocks.add(new Street(80, 112, 32, false));
-//        blocks.add(new Street(112, 112, 32, false));
-//        blocks.add(new Street(144, 112, 32, false));
-//        blocks.add(new Street(176, 112, 32, false));
-//        blocks.add(new Street(208, 112, 32, false));
-//        blocks.add(new Street(240, 112, 32, false));
-//        blocks.add(new Street(272, 112, 32, false));
-//        blocks.add(new Street(304, 112, 32, false));
-//        blocks.add(new Street(336, 112, 32, false));
-//        blocks.add(new Street(368, 112, 32, false));
-//        blocks.add(new Street(400, 112, 32, false));
-//        blocks.add(new Street(432, 112, 32, false));
-//        blocks.add(new Street(464, 112, 32, false));
-//        blocks.add(new Street(496, 112, 32, false));
-//        blocks.add(new Street(528, 112, 32, false));
-//        blocks.add(new Street(560, 112, 32, false));
-//        blocks.add(new Street(592, 112, 32, false));
-//        blocks.add(new Street(624, 112, 32, false));
-//        blocks.add(new Street(656, 112, 32, false));
-//        blocks.add(new Street(688, 112, 32, false));
-//        blocks.add(new Street(720, 112, 32, false));
-//        blocks.add(new Street(752, 112, 32, false));
-//        blocks.add(new Street(784, 112, 32, false));
+        this.player = new Player(16, 16, 20, true, 1f);
+        characters.add(player);
+
+        blocks.add(new Street(16, 16, 32, false));
+        //        blocks.add(new Street(48, 16, 32, false));
+        //        blocks.add(new Street(80, 16, 32, false));
+        //        blocks.add(new Street(112, 16, 32, false));
+        //        blocks.add(new Street(144, 16, 32, false));
+        //        blocks.add(new Street(176, 16, 32, false));
+        //        blocks.add(new Street(208, 16, 32, false));
+        //        blocks.add(new Street(240, 16, 32, false));
+        //        blocks.add(new Street(272, 16, 32, false));
+        //        blocks.add(new Street(304, 16, 32, false));
+        //        blocks.add(new Street(336, 16, 32, false));
+        //        blocks.add(new Street(368, 16, 32, false));
+        //        blocks.add(new Street(400, 16, 32, false));
+        //        blocks.add(new Street(432, 16, 32, false));
+        //        blocks.add(new Street(464, 16, 32, false));
+        //        blocks.add(new Street(496, 16, 32, false));
+        //        blocks.add(new Street(528, 16, 32, false));
+        //        blocks.add(new Street(560, 16, 32, false));
+        //        blocks.add(new Street(592, 16, 32, false));
+        //        blocks.add(new Street(624, 16, 32, false));
+        //        blocks.add(new Street(656, 16, 32, false));
+        //        blocks.add(new Street(688, 16, 32, false));
+        //        blocks.add(new Street(720, 16, 32, false));
+        //        blocks.add(new Street(752, 16, 32, false));
+        blocks.add(new Street(784, 16, 32, false));
+        //        blocks.add(new Street(16, 48, 32, false));
+        //        blocks.add(new Street(48, 48, 32, false));
+        //        blocks.add(new Street(80, 48, 32, false));
+        //        blocks.add(new Street(112, 48, 32, false));
+        //        blocks.add(new Street(144, 48, 32, false));
+        //        blocks.add(new Street(176, 48, 32, false));
+        //        blocks.add(new Street(208, 48, 32, false));
+        //        blocks.add(new Street(240, 48, 32, false));
+        //        blocks.add(new Street(272, 48, 32, false));
+        //        blocks.add(new Street(304, 48, 32, false));
+        //        blocks.add(new Street(336, 48, 32, false));
+        //        blocks.add(new Street(368, 48, 32, false));
+        //        blocks.add(new Street(400, 48, 32, false));
+        //        blocks.add(new Street(432, 48, 32, false));
+        //        blocks.add(new Street(464, 48, 32, false));
+        //        blocks.add(new Street(496, 48, 32, false));
+        //        blocks.add(new Street(528, 48, 32, false));
+        //        blocks.add(new Street(560, 48, 32, false));
+        //        blocks.add(new Street(592, 48, 32, false));
+        //        blocks.add(new Street(624, 48, 32, false));
+        //        blocks.add(new Street(656, 48, 32, false));
+        //        blocks.add(new Street(688, 48, 32, false));
+        //        blocks.add(new Street(720, 48, 32, false));
+        //        blocks.add(new Street(752, 48, 32, false));
+        //        blocks.add(new Street(784, 48, 32, false));
+        //        blocks.add(new Street(16, 80, 32, false));
+        //        blocks.add(new Street(48, 80, 32, false));
+        //        blocks.add(new Street(80, 80, 32, false));
+        //        blocks.add(new Street(112, 80, 32, false));
+        //        blocks.add(new Street(144, 80, 32, false));
+        //        blocks.add(new Street(176, 80, 32, false));
+        //        blocks.add(new Street(208, 80, 32, false));
+        //        blocks.add(new Street(240, 80, 32, false));
+        //        blocks.add(new Street(272, 80, 32, false));
+        //        blocks.add(new Street(304, 80, 32, false));
+        //        blocks.add(new Street(336, 80, 32, false));
+        //        blocks.add(new Street(368, 80, 32, false));
+        //        blocks.add(new Street(400, 80, 32, false));
+        //        blocks.add(new Street(432, 80, 32, false));
+        //        blocks.add(new Street(464, 80, 32, false));
+        //        blocks.add(new Street(496, 80, 32, false));
+        //        blocks.add(new Street(528, 80, 32, false));
+        //        blocks.add(new Street(560, 80, 32, false));
+        //        blocks.add(new Street(592, 80, 32, false));
+        //        blocks.add(new Street(624, 80, 32, false));
+        //        blocks.add(new Street(656, 80, 32, false));
+        //        blocks.add(new Street(688, 80, 32, false));
+        //        blocks.add(new Street(720, 80, 32, false));
+        //        blocks.add(new Street(752, 80, 32, false));
+        //        blocks.add(new Street(784, 80, 32, false));
+        //
+        //        blocks.add(new Street(16, 112, 32, false));
+        //        blocks.add(new Street(48, 112, 32, false));
+        //        blocks.add(new Street(80, 112, 32, false));
+        //        blocks.add(new Street(112, 112, 32, false));
+        //        blocks.add(new Street(144, 112, 32, false));
+        //        blocks.add(new Street(176, 112, 32, false));
+        //        blocks.add(new Street(208, 112, 32, false));
+        //        blocks.add(new Street(240, 112, 32, false));
+        //        blocks.add(new Street(272, 112, 32, false));
+        //        blocks.add(new Street(304, 112, 32, false));
+        //        blocks.add(new Street(336, 112, 32, false));
+        //        blocks.add(new Street(368, 112, 32, false));
+        //        blocks.add(new Street(400, 112, 32, false));
+        //        blocks.add(new Street(432, 112, 32, false));
+        //        blocks.add(new Street(464, 112, 32, false));
+        //        blocks.add(new Street(496, 112, 32, false));
+        //        blocks.add(new Street(528, 112, 32, false));
+        //        blocks.add(new Street(560, 112, 32, false));
+        //        blocks.add(new Street(592, 112, 32, false));
+        //        blocks.add(new Street(624, 112, 32, false));
+        //        blocks.add(new Street(656, 112, 32, false));
+        //        blocks.add(new Street(688, 112, 32, false));
+        //        blocks.add(new Street(720, 112, 32, false));
+        //        blocks.add(new Street(752, 112, 32, false));
+        //        blocks.add(new Street(784, 112, 32, false));
 
         blocks.add(new Street(16, 144, 32, false));
-        blocks.add(new House(48, 144, 32, false));
+        blocks.add(new House(48, 144, 32, true));
         blocks.add(new Street(80, 144, 32, false));
         blocks.add(new Street(112, 144, 32, false));
         blocks.add(new Street(144, 144, 32, false));
-        blocks.add(new House(176, 144, 32, false));
-        blocks.add(new House(208, 144, 32, false));
-        blocks.add(new House(240, 144, 32, false));
+        blocks.add(new House(176, 144, 32, true));
+        blocks.add(new House(208, 144, 32, true));
+        blocks.add(new House(240, 144, 32, true));
         blocks.add(new Street(272, 144, 32, false));
         blocks.add(new Street(304, 144, 32, false));
         blocks.add(new Street(336, 144, 32, false));
-//        blocks.add(new Street(368, 144, 32, false));
-//        blocks.add(new Street(400, 144, 32, false));
-//        blocks.add(new Street(432, 144, 32, false));
-//        blocks.add(new Street(464, 144, 32, false));
-//        blocks.add(new Street(496, 144, 32, false));
-//        blocks.add(new Street(528, 144, 32, false));
-//        blocks.add(new Street(560, 144, 32, false));
-//        blocks.add(new Street(592, 144, 32, false));
-//        blocks.add(new Street(624, 144, 32, false));
-//        blocks.add(new Street(656, 144, 32, false));
-//        blocks.add(new Street(688, 144, 32, false));
-//        blocks.add(new Street(720, 144, 32, false));
-//        blocks.add(new Street(752, 144, 32, false));
-//        blocks.add(new Street(784, 144, 32, false));
-//
-//        blocks.add(new Street(16, 144, 32, false));
-//        blocks.add(new Street(48, 144, 32, false));
-//        blocks.add(new Street(80, 144, 32, false));
-//        blocks.add(new Street(112, 144, 32, false));
-//        blocks.add(new Street(144, 144, 32, false));
-//        blocks.add(new Street(176, 144, 32, false));
-//        blocks.add(new Street(208, 144, 32, false));
-//        blocks.add(new Street(240, 144, 32, false));
-//        blocks.add(new Street(272, 144, 32, false));
-//        blocks.add(new Street(304, 144, 32, false));
-//        blocks.add(new Street(336, 144, 32, false));
-//        blocks.add(new Street(368, 144, 32, false));
-//        blocks.add(new Street(400, 144, 32, false));
-//        blocks.add(new Street(432, 144, 32, false));
-//        blocks.add(new Street(464, 144, 32, false));
-//        blocks.add(new Street(496, 144, 32, false));
-//        blocks.add(new Street(528, 144, 32, false));
-//        blocks.add(new Street(560, 144, 32, false));
-//        blocks.add(new Street(592, 144, 32, false));
-//        blocks.add(new Street(624, 144, 32, false));
-//        blocks.add(new Street(656, 144, 32, false));
-//        blocks.add(new Street(688, 144, 32, false));
-//        blocks.add(new Street(720, 144, 32, false));
-//        blocks.add(new Street(752, 144, 32, false));
-//        blocks.add(new Street(784, 144, 32, false));
+        //        blocks.add(new Street(368, 144, 32, false));
+        //        blocks.add(new Street(400, 144, 32, false));
+        //        blocks.add(new Street(432, 144, 32, false));
+        //        blocks.add(new Street(464, 144, 32, false));
+        //        blocks.add(new Street(496, 144, 32, false));
+        //        blocks.add(new Street(528, 144, 32, false));
+        //        blocks.add(new Street(560, 144, 32, false));
+        //        blocks.add(new Street(592, 144, 32, false));
+        //        blocks.add(new Street(624, 144, 32, false));
+        //        blocks.add(new Street(656, 144, 32, false));
+        //        blocks.add(new Street(688, 144, 32, false));
+        //        blocks.add(new Street(720, 144, 32, false));
+        //        blocks.add(new Street(752, 144, 32, false));
+        //        blocks.add(new Street(784, 144, 32, false));
+        //
+        //        blocks.add(new Street(16, 144, 32, false));
+        //        blocks.add(new Street(48, 144, 32, false));
+        //        blocks.add(new Street(80, 144, 32, false));
+        //        blocks.add(new Street(112, 144, 32, false));
+        //        blocks.add(new Street(144, 144, 32, false));
+        //        blocks.add(new Street(176, 144, 32, false));
+        //        blocks.add(new Street(208, 144, 32, false));
+        //        blocks.add(new Street(240, 144, 32, false));
+        //        blocks.add(new Street(272, 144, 32, false));
+        //        blocks.add(new Street(304, 144, 32, false));
+        //        blocks.add(new Street(336, 144, 32, false));
+        //        blocks.add(new Street(368, 144, 32, false));
+        //        blocks.add(new Street(400, 144, 32, false));
+        //        blocks.add(new Street(432, 144, 32, false));
+        //        blocks.add(new Street(464, 144, 32, false));
+        //        blocks.add(new Street(496, 144, 32, false));
+        //        blocks.add(new Street(528, 144, 32, false));
+        //        blocks.add(new Street(560, 144, 32, false));
+        //        blocks.add(new Street(592, 144, 32, false));
+        //        blocks.add(new Street(624, 144, 32, false));
+        //        blocks.add(new Street(656, 144, 32, false));
+        //        blocks.add(new Street(688, 144, 32, false));
+        //        blocks.add(new Street(720, 144, 32, false));
+        //        blocks.add(new Street(752, 144, 32, false));
+        //        blocks.add(new Street(784, 144, 32, false));
 
 
     }
@@ -208,20 +215,25 @@ public class DummyLevel implements ILevel {
      * Returns true if a Character can walk onto the given x and y coordinates
      *
      * @param c
-     * @param x
-     * @param y
      * @return
      */
-    public boolean canIWalkHere(Character c, int x, int y) {
+    private boolean canIWalkWhereIAm(Character c) {
+        if (c.getPos_x() < c.getSize() / 2 || c.getPos_x() > GameUtils.GAME_FIELD_WIDTH - c
+                .getSize() / 2 || c.getPos_y() < c.getSize() / 2 || c.getPos_y() > GameUtils
+                .GAME_FIELD_HEIGHT - c.getSize() / 2) {
+            return false;
+        }
         for (Block block : blocks) {
-            if ( block.isBlocking()) {  //TODO make list of all blocking blocks for faster checking
-                if(block.checkIfHitBy(c.getHitbox())) {
-                    return true;
+            if (block.isBlocking()) {  //TODO make list of all blocking blocks for faster checking
+                if (block.checkIfHitBy(c.getHitbox())) {
+                    return false;
                 }
             }
         }
         return true;
     }
+
+
 
     public float getTime() {
         return time;
@@ -234,8 +246,45 @@ public class DummyLevel implements ILevel {
      */
     public void drawOnGraphicContext(Graphics g) {
         for (Block block : blocks) {
-            g.drawImage(block.getImage(), block.getPos_x(), block.getPos_y());
+            g.drawImage(block.getImage(), block.getPos_x() - block.getSize() / 2, block.getPos_y
+                    () - block.getSize() / 2);
         }
-        g.drawImage(player.getImage(), player.getPos_x(), player.getPos_y());
+        g.drawImage(player.getImage(), player.getPos_x() - player.getSize() / 2, player.getPos_y
+                () - player.getSize() / 2);
     }
+
+    public void update(int delta) {
+
+        // move Characters
+        for (Character c : characters) {
+            if (c.getDirection() != null) {
+                float oldX = c.getPos_x();
+                float oldY = c.getPos_y();
+                float newX = oldX;
+                float newY = oldY;
+                float factor = delta * .1f * c.getSpeed();
+                switch (c.getDirection()) {
+                    case UP:
+                        newY = oldY - factor;
+                        break;
+                    case DOWN:
+                        newY = oldY + factor;
+                        break;
+                    case LEFT:
+                        newX = oldX - factor;
+                        break;
+                    case RIGHT:
+                        newX = oldX + factor;
+                        break;
+                }
+                c.setLocation(newX, newY);
+                if (!canIWalkWhereIAm(c)) {
+                    c.setLocation(oldX, oldY);
+                    c.setDirection(null);
+                }
+            }
+        }
+    }
+
+
 }

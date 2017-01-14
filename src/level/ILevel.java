@@ -25,5 +25,5 @@ public interface ILevel {
 
     public void drawOnGraphicContext(Graphics g);
 
-    public boolean canIWalkHere(Character c, int x, int y);
+    public void update(int delta);
 }

@@ -1,7 +1,6 @@
 package objects;
 
 import org.newdawn.slick.Image;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 
 /**
@@ -13,27 +12,32 @@ public abstract class GameObject {
     /**
      * center x
      */
-    protected int pos_x;
+    float pos_x;
 
     /**
      * center y
      */
-    protected int pos_y;
+    float pos_y;
 
     /**
      * center width if square or 2*radius
      */
-    protected int size;
+    private int size;
 
     /**
      * if True, Characters can´t walk through or over it
      */
-    protected boolean isBlocking;
+    private boolean isBlocking;
 
     /**
      * Geometry that represents the hitbox
      */
-    protected Shape hitbox;
+    Shape hitbox;
+
+    /**
+     * Image to render
+     */
+    Image image;
 
     /**
      * @param pos_x      center x
@@ -41,10 +45,7 @@ public abstract class GameObject {
      * @param size       width / 2*radius
      * @param isBlocking can Player walk over it?
      */
-
-    protected Image image;
-
-    public GameObject(int pos_x, int pos_y, int size, boolean isBlocking) {
+    public GameObject(float pos_x, float pos_y, int size, boolean isBlocking) {
         this.pos_x = pos_x;
         this.pos_y = pos_y;
         this.size = size;
@@ -61,24 +62,29 @@ public abstract class GameObject {
         return s.intersects(this.hitbox);
     }
 
-    public int getPos_x() { return pos_x; }
-
-    public int getPos_y() { return pos_y; }
-
-    public void setPos_x(int x) {
-        this.pos_x = x;
-        this.hitbox.setCenterX(x);
+    public float getPos_x() {
+        return pos_x;
     }
 
-    public void setPos_y(int y) {
+    public float getPos_y() {
+        return pos_y;
+    }
+
+    public void setPos_x(float x) {
+        this.pos_x = x;
+        this.hitbox.setCenterX(x - size);
+    }
+
+    public void setPos_y(float y) {
         this.pos_y = y;
-        this.hitbox.setCenterY(y);
+        this.hitbox.setCenterY(y - size);
     }
 
     public void setLocation(float x, float y) {
-        this.setPos_x(Math.round(x));
-        this.setPos_y(Math.round(y));
+        this.setPos_x(x);
+        this.setPos_y(y);
     }
+
 
     public boolean isBlocking() {
         return isBlocking;
@@ -88,7 +94,9 @@ public abstract class GameObject {
         return hitbox;
     }
 
-    public Image getImage() { return this.image; }
+    public Image getImage() {
+        return this.image;
+    }
 
     public int getSize() {
         return size;
