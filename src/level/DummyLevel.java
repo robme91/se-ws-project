@@ -4,6 +4,7 @@ import objects.Block;
 import objects.GameBorder;
 import objects.GameObject;
 import objects.House;
+import objects.NPC;
 import objects.Player;
 import objects.Street;
 import objects.Character;
@@ -48,8 +49,8 @@ public class DummyLevel implements ILevel {
         this.characters = new ArrayList<Character>();
 
         time = 0.001f;
-        this.player = new Player(16, 16, 20, true, 1f);
-        characters.add(player);
+        //        this.player = new Player(16, 16, 20, true, 1f);
+        //        characters.add(player);
 
         // add borders
 
@@ -62,166 +63,23 @@ public class DummyLevel implements ILevel {
         addBlock(new GameBorder(GameUtils.GAME_FIELD_WIDTH / 2, GameUtils.GAME_FIELD_HEIGHT +
                 GameUtils.GAME_FIELD_WIDTH / 2, GameUtils.GAME_FIELD_WIDTH, true));
 
+        // random level init for testing
         for (int x = 16; x < 785; x += 32) {
             for (int y = 16; y < 625; y += 32) {
                 if (new Random().nextInt(4) > 2) {
-                    addBlock(new House(x,y,32,true));
+                    addBlock(new House(x, y, 32, true));
                 } else {
-                    addBlock(new Street(x,y,32,false));
+                    addBlock(new Street(x, y, 32, false));
+                    if (this.player == null) {
+                        this.player = new Player(x, y, 20, true, 1f);
+                        characters.add(player);
+                    }
+                    if (new Random().nextInt(20) >= 19) {
+                        this.characters.add(new NPC(x, y, 20, true, 0.5f));
+                    }
                 }
             }
         }
-//
-//        addBlock(new Street(16, 16, 32, false));
-//        addBlock(new Street(48, 16, 32, false));
-//        addBlock(new Street(80, 16, 32, false));
-//        addBlock(new Street(112, 16, 32, false));
-//        addBlock(new Street(144, 16, 32, false));
-//        addBlock(new Street(176, 16, 32, false));
-//        addBlock(new Street(208, 16, 32, false));
-//        addBlock(new Street(240, 16, 32, false));
-//        addBlock(new Street(272, 16, 32, false));
-//        addBlock(new Street(304, 16, 32, false));
-//        addBlock(new Street(336, 16, 32, false));
-//        addBlock(new Street(368, 16, 32, false));
-//        addBlock(new Street(400, 16, 32, false));
-//        addBlock(new Street(432, 16, 32, false));
-//        addBlock(new Street(464, 16, 32, false));
-//        addBlock(new Street(496, 16, 32, false));
-//        addBlock(new Street(528, 16, 32, false));
-//        addBlock(new Street(560, 16, 32, false));
-//        addBlock(new Street(592, 16, 32, false));
-//        addBlock(new Street(624, 16, 32, false));
-//        addBlock(new Street(656, 16, 32, false));
-//        addBlock(new Street(688, 16, 32, false));
-//        addBlock(new Street(720, 16, 32, false));
-//        addBlock(new Street(752, 16, 32, false));
-//        addBlock(new Street(784, 16, 32, false));
-//        addBlock(new Street(16, 48, 32, false));
-//        addBlock(new Street(48, 48, 32, false));
-//        addBlock(new Street(80, 48, 32, false));
-//        addBlock(new Street(112, 48, 32, false));
-//        addBlock(new Street(144, 48, 32, false));
-//        addBlock(new Street(176, 48, 32, false));
-//        addBlock(new Street(208, 48, 32, false));
-//        addBlock(new Street(240, 48, 32, false));
-//        addBlock(new Street(272, 48, 32, false));
-//        addBlock(new Street(304, 48, 32, false));
-//        addBlock(new Street(336, 48, 32, false));
-//        addBlock(new Street(368, 48, 32, false));
-//        addBlock(new Street(400, 48, 32, false));
-//        addBlock(new Street(432, 48, 32, false));
-//        addBlock(new Street(464, 48, 32, false));
-//        addBlock(new Street(496, 48, 32, false));
-//        addBlock(new Street(528, 48, 32, false));
-//        addBlock(new Street(560, 48, 32, false));
-//        addBlock(new Street(592, 48, 32, false));
-//        addBlock(new Street(624, 48, 32, false));
-//        addBlock(new Street(656, 48, 32, false));
-//        addBlock(new Street(688, 48, 32, false));
-//        addBlock(new Street(720, 48, 32, false));
-//        addBlock(new Street(752, 48, 32, false));
-//        addBlock(new Street(784, 48, 32, false));
-//        addBlock(new Street(16, 80, 32, false));
-//        addBlock(new Street(48, 80, 32, false));
-//        addBlock(new Street(80, 80, 32, false));
-//        addBlock(new Street(112, 80, 32, false));
-//        addBlock(new Street(144, 80, 32, false));
-//        addBlock(new Street(176, 80, 32, false));
-//        addBlock(new Street(208, 80, 32, false));
-//        addBlock(new Street(240, 80, 32, false));
-//        addBlock(new Street(272, 80, 32, false));
-//        addBlock(new Street(304, 80, 32, false));
-//        addBlock(new Street(336, 80, 32, false));
-//        addBlock(new Street(368, 80, 32, false));
-//        addBlock(new Street(400, 80, 32, false));
-//        addBlock(new Street(432, 80, 32, false));
-//        addBlock(new Street(464, 80, 32, false));
-//        addBlock(new Street(496, 80, 32, false));
-//        addBlock(new Street(528, 80, 32, false));
-//        addBlock(new Street(560, 80, 32, false));
-//        addBlock(new Street(592, 80, 32, false));
-//        addBlock(new Street(624, 80, 32, false));
-//        addBlock(new Street(656, 80, 32, false));
-//        addBlock(new Street(688, 80, 32, false));
-//        addBlock(new Street(720, 80, 32, false));
-//        addBlock(new Street(752, 80, 32, false));
-//        addBlock(new Street(784, 80, 32, false));
-//        addBlock(new Street(16, 112, 32, false));
-//        addBlock(new Street(48, 112, 32, false));
-//        addBlock(new Street(80, 112, 32, false));
-//        addBlock(new Street(112, 112, 32, false));
-//        addBlock(new Street(144, 112, 32, false));
-//        addBlock(new Street(176, 112, 32, false));
-//        addBlock(new Street(208, 112, 32, false));
-//        addBlock(new Street(240, 112, 32, false));
-//        addBlock(new Street(272, 112, 32, false));
-//        addBlock(new Street(304, 112, 32, false));
-//        addBlock(new Street(336, 112, 32, false));
-//        addBlock(new Street(368, 112, 32, false));
-//        addBlock(new Street(400, 112, 32, false));
-//        addBlock(new Street(432, 112, 32, false));
-//        addBlock(new Street(464, 112, 32, false));
-//        addBlock(new Street(496, 112, 32, false));
-//        addBlock(new Street(528, 112, 32, false));
-//        addBlock(new Street(560, 112, 32, false));
-//        addBlock(new Street(592, 112, 32, false));
-//        addBlock(new Street(624, 112, 32, false));
-//        addBlock(new Street(656, 112, 32, false));
-//        addBlock(new Street(688, 112, 32, false));
-//        addBlock(new Street(720, 112, 32, false));
-//        addBlock(new Street(752, 112, 32, false));
-//        addBlock(new Street(784, 112, 32, false));
-//        addBlock(new Street(16, 144, 32, false));
-//        addBlock(new House(48, 144, 32, true));
-//        addBlock(new Street(80, 144, 32, false));
-//        addBlock(new Street(112, 144, 32, false));
-//        addBlock(new Street(144, 144, 32, false));
-//        addBlock(new House(176, 144, 32, true));
-//        addBlock(new House(208, 144, 32, true));
-//        addBlock(new House(240, 144, 32, true));
-//        addBlock(new Street(272, 144, 32, false));
-//        addBlock(new Street(304, 144, 32, false));
-//        addBlock(new Street(336, 144, 32, false));
-//        addBlock(new Street(368, 144, 32, false));
-//        addBlock(new Street(400, 144, 32, false));
-//        addBlock(new Street(432, 144, 32, false));
-//        addBlock(new Street(464, 144, 32, false));
-//        addBlock(new Street(496, 144, 32, false));
-//        addBlock(new Street(528, 144, 32, false));
-//        addBlock(new Street(560, 144, 32, false));
-//        addBlock(new Street(592, 144, 32, false));
-//        addBlock(new Street(624, 144, 32, false));
-//        addBlock(new Street(656, 144, 32, false));
-//        addBlock(new Street(688, 144, 32, false));
-//        addBlock(new Street(720, 144, 32, false));
-//        addBlock(new Street(752, 144, 32, false));
-//        addBlock(new Street(784, 144, 32, false));
-//        addBlock(new Street(16, 144, 32, false));
-//        addBlock(new Street(48, 144, 32, false));
-//        addBlock(new Street(80, 144, 32, false));
-//        addBlock(new Street(112, 144, 32, false));
-//        addBlock(new Street(144, 144, 32, false));
-//        addBlock(new Street(176, 144, 32, false));
-//        addBlock(new Street(208, 144, 32, false));
-//        addBlock(new Street(240, 144, 32, false));
-//        addBlock(new Street(272, 144, 32, false));
-//        addBlock(new Street(304, 144, 32, false));
-//        addBlock(new Street(336, 144, 32, false));
-//        addBlock(new Street(368, 144, 32, false));
-//        addBlock(new Street(400, 144, 32, false));
-//        addBlock(new Street(432, 144, 32, false));
-//        addBlock(new Street(464, 144, 32, false));
-//        addBlock(new Street(496, 144, 32, false));
-//        addBlock(new Street(528, 144, 32, false));
-//        addBlock(new Street(560, 144, 32, false));
-//        addBlock(new Street(592, 144, 32, false));
-//        addBlock(new Street(624, 144, 32, false));
-//        addBlock(new Street(656, 144, 32, false));
-//        addBlock(new Street(688, 144, 32, false));
-//        addBlock(new Street(720, 144, 32, false));
-//        addBlock(new Street(752, 144, 32, false));
-//        addBlock(new Street(784, 144, 32, false));
     }
 
 
@@ -237,10 +95,17 @@ public class DummyLevel implements ILevel {
      */
     private List<GameObject> whichBlockingBlocksDoIHit(Character c) {
         List<GameObject> hitObjects = new ArrayList<GameObject>();
-        for (Block block : blockingBlocks) {
-            if (block.isBlocking()) {  //TODO make list of all blocking blocks for faster checking
+        for (GameObject block : blockingBlocks) {
+            if (block.isBlocking()) {
                 if (block.checkIfHitBy(c.getHitbox())) {
                     hitObjects.add(block);
+                }
+            }
+        }
+        for (GameObject character: characters) {  // TODO REMOVE REDUNDANCY
+            if (character.isBlocking() && character != c) {
+                if (character.checkIfHitBy(c.getHitbox())) {
+                    hitObjects.add(character);
                 }
             }
         }
@@ -262,14 +127,17 @@ public class DummyLevel implements ILevel {
      * @param g Graphics context
      */
     public void drawOnGraphicContext(Graphics g) {
-        for (Block block : blocks) {
-            if (block.getImage() != null) {
-                g.drawImage(block.getImage(), block.getPos_x() - block.getSize() / 2, block
-                        .getPos_y() - block.getSize() / 2);
+        for (Block b : blocks) {
+            if (b.getImage() != null) {
+                g.drawImage(b.getImage(), b.getPos_x() - b.getSize() / 2, b.getPos_y() - b
+                        .getSize() / 2);
             }
         }
-        g.drawImage(player.getImage(), player.getPos_x() - player.getSize() / 2, player.getPos_y
-                () - player.getSize() / 2);
+
+        for (Character c : characters) {
+            g.drawImage(c.getImage(), c.getPos_x() - c.getSize() / 2, c.getPos_y() - c.getSize()
+                    / 2);
+        }
     }
 
     public void update(int delta) {
@@ -310,6 +178,10 @@ public class DummyLevel implements ILevel {
         }
     }
 
+    /**
+     * Add new block and make shure that blocking blocks get stored in the blockingBlocks list.
+     * @param block block to add
+     */
     private void addBlock(Block block) {
         System.out.println(block);
         this.blocks.add(block);

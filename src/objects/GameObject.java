@@ -89,9 +89,7 @@ public abstract class GameObject {
      * Gets called if this object is hit by GameObject
      * @param go object that hit this object
      */
-    public void interact(GameObject go) {
-        System.out.println(go.getClass().toString());
-    }
+    public void interact(GameObject go) { }
 
     public boolean isBlocking() {
         return isBlocking;
