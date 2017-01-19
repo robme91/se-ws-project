@@ -4,6 +4,7 @@ import objects.Block;
 import objects.NPC;
 import objects.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,14 +12,16 @@ import java.util.List;
  */
 public abstract class AbstractLevel {
 
-    Player player;
-    List<Block> blocks;
-    List<NPC> npcs;
-    String levelName;
-    float initialLevelTime;
-    float remainingTime;
+    private Player player;
+    private final List<Block> blocks;
+    private final List<NPC> npcs;
+    private String levelName;
+    private float initialLevelTime;
+    private float remainingTime;
 
     public AbstractLevel() {
+        this.blocks = new ArrayList<Block>();
+        this.npcs = new ArrayList<NPC>();
     }
 
     public Player getPlayer() {
