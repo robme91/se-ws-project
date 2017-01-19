@@ -1,6 +1,8 @@
 package level;
 
-import characters.Player;
+import objects.Character;
+import objects.Player;
+import org.newdawn.slick.Graphics;
 
 /**
  * Created by Robin on 08.01.2017.
@@ -20,4 +22,8 @@ public interface ILevel {
      * @return The gametime in seconds
      */
     float getTime();
+
+    public void drawOnGraphicContext(Graphics g);
+
+    public void update(int delta);
 }

@@ -43,4 +43,7 @@ public class GameUtils {
 
     /* isMouseInShape() ... und auf die fenstergröße des gesamten spiels zugreifen*/
 
+    public enum Direction {
+        UP, DOWN, LEFT, RIGHT
+    }
 }
