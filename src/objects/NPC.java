@@ -11,6 +11,10 @@ import java.util.Random;
  * Non Player Character
  */
 public class NPC extends Character {
+
+    private int sightDistance = 0;
+    private int intelligence = 0;
+
     public NPC(int pos_x, int pos_y, int size, boolean isBlocking, float speed) {
         super(pos_x, pos_y, size, isBlocking, speed);
         try {
@@ -21,12 +25,23 @@ public class NPC extends Character {
         this.setDirection(GameUtils.Direction.values()[new Random().nextInt(4)]);
     }
 
-    public NPC(int pos_x, int pos_y, int size, boolean isBlocking, float speed, GameUtils.Direction direction) {
+    public NPC(int pos_x, int pos_y, int size, boolean isBlocking, float speed, String name) {
         super(pos_x, pos_y, size, isBlocking, speed);
-        this.setDirection(direction);
+        try {
+            this.image = new Image("/res/img/objects/" + name.toLowerCase() + ".png");
+        } catch (SlickException e) {
+            e.printStackTrace();
+        }
+        this.setDirection(GameUtils.Direction.values()[new Random().nextInt(4)]);
     }
 
-    @Override
+    public NPC(int pos_x, int pos_y, int size, boolean isBlocking, float speed, String name, int sightDistance, int intelligence) {
+        super(pos_x, pos_y, size, isBlocking, speed);
+        this.sightDistance = sightDistance;
+        this.intelligence = intelligence;
+    }
+
+        @Override
     public void interact(GameObject go) {
         if (go.isBlocking()) {
             this.setDirection(GameUtils.Direction.values()[new Random().nextInt(4)]);
@@ -37,4 +52,11 @@ public class NPC extends Character {
         super.interact(go);
     }
 
+    public int getSightDistance() {
+        return sightDistance;
+    }
+
+    public int getIntelligence() {
+        return intelligence;
+    }
 }

@@ -71,7 +71,7 @@ public class DummyLevel implements ILevel {
                 } else {
                     addBlock(new Street(x, y, 32, false));
                     if (this.player == null) {
-                        this.player = new Player(x, y, 20, true, 1f);
+                        this.player = new Player(x, y, 20, true, 1f, 1f);
                         characters.add(player);
                     }
                     if (new Random().nextInt(20) >= 19) {
@@ -102,7 +102,7 @@ public class DummyLevel implements ILevel {
                 }
             }
         }
-        for (GameObject character: characters) {  // TODO REMOVE REDUNDANCY
+        for (GameObject character : characters) {  // TODO REMOVE REDUNDANCY
             if (character.isBlocking() && character != c) {
                 if (character.checkIfHitBy(c.getHitbox())) {
                     hitObjects.add(character);
@@ -164,15 +164,35 @@ public class DummyLevel implements ILevel {
                         break;
                 }
                 // set new location and test if this is legal
-                c.setLocation(newX, newY);
+                c.setLocation(newX, newY);  // TODO set to closest hitpoint
                 List<GameObject> hitObjects = whichBlockingBlocksDoIHit(c);
+//                List<GeomUtil.HitResult> hitResults = new ArrayList<GeomUtil.HitResult>();
                 if (hitObjects != null) {
                     for (GameObject go : hitObjects) {
                         // call interact method on both sides
                         go.interact(c);
                         c.interact(go);
+//                         find where we hit the object
+//                        Line movementVector = new Line(oldX, oldY, newX, newY);
+//                        GeomUtil geomUtil = new GeomUtil();
+//                        GeomUtil.HitResult hitResult = geomUtil.intersect(go.getHitbox(),
+//                                movementVector);
+//                        hitResults.add(hitResult);
                     }
                     c.setLocation(oldX, oldY);
+
+//                    GeomUtil.HitResult minimalHitResult = null;
+//                    Vector2f oldPositionPlayer = new Vector2f(oldX, oldY);
+//                    for (GeomUtil.HitResult hitResult : hitResults) {
+//                        if (minimalHitResult == null || minimalHitResult.pt.distance
+//                                (oldPositionPlayer) > hitResult.pt.distance(oldPositionPlayer))
+//
+//                        {
+//                            minimalHitResult = hitResult;
+//                        }
+//                    }
+//                    c.setLocation(minimalHitResult.pt.getX(), minimalHitResult.pt.getY());
+
                 }
             }
         }
@@ -180,6 +200,7 @@ public class DummyLevel implements ILevel {
 
     /**
      * Add new block and make shure that blocking blocks get stored in the blockingBlocks list.
+     *
      * @param block block to add
      */
     private void addBlock(Block block) {

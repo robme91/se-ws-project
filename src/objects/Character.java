@@ -26,6 +26,10 @@ public abstract class Character extends GameObject {
         return speed;
     }
 
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
     public void setPos_x(float x) {
         this.pos_x = x;
         this.hitbox.setCenterX(x);
