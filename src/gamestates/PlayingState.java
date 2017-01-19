@@ -1,5 +1,7 @@
 package gamestates;
 
+import controllers.LevelController;
+import level.AbstractLevel;
 import level.DummyLevel;
 import level.ILevel;
 import objects.Player;
@@ -21,14 +23,15 @@ public class PlayingState extends BasicGameState{
 
     public static int PLAYING_STATE_ID;
 
+    private LevelController levelController;
 
     /**The level that is chosen to play*/
-    private ILevel currentLevel;
+    private AbstractLevel currentLevel;
 
     /*Set to true if quit menu shall popup*/
     private boolean quit = false;
 
-    private Player player;
+//    private Player player;
 
     /**This progress bar shows how much time is left*/
     private Rectangle gameTimeBar;
@@ -58,18 +61,18 @@ public class PlayingState extends BasicGameState{
         if(currentLevel == null){
             game.enterState(MainMenuState.MAIN_MENU_STATE_ID);
         }else{
-            player = currentLevel.getPlayer();
+            this.levelController = new LevelController(currentLevel);
         }
         //TODO später umziehen nachdem der Spielstart iwie bestätigt wurde
         isTimeRunning = true;
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-        currentLevel.drawOnGraphicContext(g);
+        levelController.drawOnGraphicsContext(g);
 
         g.setColor(Color.white);
 
-        //gamefield separator
+//        //gamefield separator
 //        g.drawLine(0, GameUtils.GAME_FIELD_HEIGHT, GameUtils.GAME_FIELD_WIDTH, GameUtils.GAME_FIELD_HEIGHT);
 //        g.drawLine(GameUtils.GAME_FIELD_WIDTH, GameUtils.GAME_FIELD_HEIGHT, GameUtils.GAME_FIELD_WIDTH, 0);
 
@@ -97,12 +100,13 @@ public class PlayingState extends BasicGameState{
     }
 
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-        playerPosDisplay = "xPos: " + player.getPos_x() + " ,yPos: " + player.getPos_y();
+        playerPosDisplay = "xPos: " + levelController.getPlayer().getPos_x() + " ,yPos: " + levelController.getPlayer().getPos_y();
         final Input input = container.getInput();
 
         //Speed of player is calculated in the delta so you get a nice result
 //        final float playerSpeed = currentLevel.getPlayer().getSpeed() * delta * .1f;
-        final float gameTimeSpeed = currentLevel.getTime() * delta * .1f;
+//        final float gameTimeSpeed = currentLevel.getTime() * delta * .1f;
+        final float gameTimeSpeed = 0.001f * delta * .1f;  // TODO FIX ME, dont be a static value
         if(isTimeRunning){
             if(gameTimeBar.getWidth() > 1){
                 gameTimeBar.setWidth(gameTimeBar.getWidth() - gameTimeSpeed);
@@ -114,13 +118,13 @@ public class PlayingState extends BasicGameState{
 
         /*movement of the player*/
         //up
-        if(input.isKeyDown(Input.KEY_UP)){ player.setDirection(GameUtils.Direction.UP); }
-        if(input.isKeyDown(Input.KEY_DOWN)){ player.setDirection(GameUtils.Direction.DOWN); }
-        if(input.isKeyDown(Input.KEY_LEFT)){ player.setDirection(GameUtils.Direction.LEFT); }
-        if(input.isKeyDown(Input.KEY_RIGHT)){ player.setDirection(GameUtils.Direction.RIGHT); }
+        if(input.isKeyDown(Input.KEY_UP)){ levelController.setPlayerDirection(GameUtils.Direction.UP); }
+        if(input.isKeyDown(Input.KEY_DOWN)){ levelController.setPlayerDirection(GameUtils.Direction.DOWN); }
+        if(input.isKeyDown(Input.KEY_LEFT)){ levelController.setPlayerDirection(GameUtils.Direction.LEFT); }
+        if(input.isKeyDown(Input.KEY_RIGHT)){ levelController.setPlayerDirection(GameUtils.Direction.RIGHT); }
 
         // let level update itself
-        currentLevel.update(delta);
+        levelController.update(delta);
 
         //escape or resume game logic
         if(input.isKeyDown(Input.KEY_ESCAPE)){
@@ -140,13 +144,13 @@ public class PlayingState extends BasicGameState{
         }
     }
 
-      @SuppressWarnings("unused")
-    public ILevel getCurrentLevel() {
-        return currentLevel;
-    }
+//      @SuppressWarnings("unused")
+//    public ILevel getCurrentLevel() {
+//        return currentLevel;
+//    }
 
     @SuppressWarnings("WeakerAccess")
-    public void setCurrentLevel(ILevel currentLevel) {
+    public void setCurrentLevel(AbstractLevel currentLevel) {
         this.currentLevel = currentLevel;
     }
 }
