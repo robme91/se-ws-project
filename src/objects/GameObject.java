@@ -62,22 +62,32 @@ public abstract class GameObject {
         return s.intersects(this.hitbox);
     }
 
+    /**
+     * Get center x position.
+     *
+     * @return center x position
+     */
     public float getPos_x() {
         return pos_x;
     }
 
+    /**
+     * Get center y position.
+     *
+     * @return center y position
+     */
     public float getPos_y() {
         return pos_y;
     }
 
     public void setPos_x(float x) {
         this.pos_x = x;
-        this.hitbox.setCenterX(x - size);  // TODO We dont move blocks, but should this be only x?
+        this.hitbox.setCenterX(x);  // TODO We dont move blocks, but should this be only x?
     }
 
     public void setPos_y(float y) {
         this.pos_y = y;
-        this.hitbox.setCenterY(y - size);  // TODO We dont move blocks, but should this be only x?
+        this.hitbox.setCenterY(y);  // TODO We dont move blocks, but should this be only x?
     }
 
     public void setLocation(float x, float y) {
@@ -87,9 +97,11 @@ public abstract class GameObject {
 
     /**
      * Gets called if this object is hit by GameObject
+     *
      * @param go object that hit this object
      */
-    public void interact(GameObject go) { }
+    public void interact(GameObject go) {
+    }
 
     public boolean isBlocking() {
         return isBlocking;

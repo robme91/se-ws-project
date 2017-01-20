@@ -18,14 +18,17 @@ import java.util.List;
 public class LevelController {
 
     private AbstractLevel level;
-    private List<Character> characters = new ArrayList<Character>(); // all level characters including player
-    private List<Block> blockingBlocks = new ArrayList<Block>(); // all blocking blocks out of the level
+    private List<Character> characters = new ArrayList<Character>(); // all level characters
+    // including player
+    private List<Block> blockingBlocks = new ArrayList<Block>(); // all blocking blocks out of
+    // the level
 
     public LevelController(AbstractLevel level) {
-        if(level == null) {
+        if (level == null) {
             throw new IllegalArgumentException("Level must not be null!");
         }
         this.level = level;
+        this.level.setRemainingTime(this.level.getInitialLevelTime());  // Set remaining time
         characters.addAll(level.getNpcs());
         characters.add(level.getPlayer());
         for (Block b : level.getBlocks()) {
@@ -35,25 +38,45 @@ public class LevelController {
         }
 
         // TODO set initial block positions according to GameSize
+        float blockSize = 32; // TODO block size is needed for Character position and should be
+        // fixed
+        for (Block b : this.level.getBlocks()) {
+            b.setPos_x((b.getPos_x() + 1) * blockSize - (blockSize / 2));
+            b.setPos_y((b.getPos_y() + 1) * blockSize - (blockSize / 2));
+        }
+        for (NPC n : this.level.getNpcs()) {
+            n.setPos_x((n.getPos_x() + 1) * blockSize - (blockSize / 2));
+            n.setPos_y((n.getPos_y() + 1) * blockSize - (blockSize / 2));
+        }
+
+        Player p = this.level.getPlayer();
+        p.setPos_x((p.getPos_x() + 1) * blockSize - (blockSize / 2));
+        p.setPos_y((p.getPos_y() + 1) * blockSize - (blockSize / 2));
+
+
         // TODO find street pictures
         // TODO Set initial random directions for NPC
     }
 
     public void drawOnGraphicsContext(Graphics g) {
         for (Block b : this.level.getBlocks()) {
-            if (b.getImage() != null) {
-                g.drawImage(b.getImage(), b.getPos_x() - b.getSize() / 2, b.getPos_y() - b
-                        .getSize() / 2);
-            }
+            drawImageOnGraphicsContext(g, b);
         }
 
         for (NPC npc : this.level.getNpcs()) {
-            g.drawImage(npc.getImage(), npc.getPos_x() - npc.getSize() / 2, npc.getPos_y() - npc
-                    .getSize() / 2);
+            drawImageOnGraphicsContext(g, npc);
         }
 
-        Player p = this.level.getPlayer();
-        g.drawImage(p.getImage(), p.getPos_x() - p.getSize() / 2, p.getPos_y() - p.getSize() / 2);
+        drawImageOnGraphicsContext(g, this.level.getPlayer());
+    }
+
+    private void drawImageOnGraphicsContext(Graphics g, GameObject go) {
+        if (go.getImage() != null) {
+            g.drawImage(go.getImage(), go.getPos_x() - go.getSize() / 2, go.getPos_y() - go
+                    .getSize() / 2);
+        } else {
+            //TODO draw error image with size of game object
+        }
     }
 
     private void moveCharacters(List<Character> characters, int delta) {
@@ -79,14 +102,14 @@ public class LevelController {
                         break;
                 }
                 // set new location and test if this is legal
-                c.setLocation(newX, newY);  // TODO set to closest hitpoint
+                c.setLocation(newX, newY);
                 List<GameObject> hitObjects = whichBlocksDoesCharacterHit(c);
                 if (hitObjects != null) {
                     for (GameObject go : hitObjects) {
                         go.interact(c);
                         c.interact(go);
                     }
-                    c.setLocation(oldX, oldY);
+                    c.setLocation(oldX, oldY); // TODO set to closest hitpoint
                 }
             }
         }
@@ -143,9 +166,9 @@ public class LevelController {
     }
 
     public void setPlayerDirection(GameUtils.Direction direction) {
-        if (direction != null) {
-            this.level.getPlayer().setDirection(direction);
-        }
+        //        if (direction != null) {
+        this.level.getPlayer().setDirection(direction);
+        //        }
     }
 
     /**
