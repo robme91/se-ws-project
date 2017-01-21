@@ -29,10 +29,10 @@ public class DemoLevel extends AbstractLevel {
                 } else {
                     this.blocks.add(new Street(x, y));
                     if (this.player == null) {
-                        this.player = new Player(x, y, 1f, 1f);
+                        this.player = new Player(x, y, 40f, 100f, 1f);
                     }
                     if (new Random().nextInt(20) >= 19) {
-                        this.npcs.add(new NPC(x, y, 0.5f, "npc", 24, 50, Enums.AttackTarget
+                        this.npcs.add(new NPC(x, y, 20f, "npc", 24, 50, Enums.AttackTarget
                                 .DRINK, 2));
                     }
                 }

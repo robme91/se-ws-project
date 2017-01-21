@@ -86,7 +86,7 @@ public class LevelController {
                 float oldY = c.getPos_y();
                 float newX = oldX;
                 float newY = oldY;
-                float factor = delta * .1f * c.getSpeed();
+                float factor = delta * .002f * c.getSpeed();
                 switch (c.getDirection()) {
                     case UP:
                         newY = oldY - factor;
