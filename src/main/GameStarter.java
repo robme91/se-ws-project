@@ -3,7 +3,6 @@ package main;
 import gamestates.LevelMenuState;
 import gamestates.MainMenuState;
 import gamestates.PlayingState;
-import level.ILevel;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;

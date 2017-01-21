@@ -1,7 +1,6 @@
 package gamestates;
 
 import level.DemoLevel;
-import level.DummyLevel;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -39,7 +38,6 @@ public class LevelMenuState extends BasicGameState{
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         g.setColor(Color.green);
         g.draw(dummyLevel);
-//        g.drawString(DummyLevel.LEVEL_NAME, 105, 105);  // TODO REMOVE ME
         g.drawString("DEMO LEVEL", 105, 105);
     }
 
