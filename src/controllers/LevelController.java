@@ -66,7 +66,6 @@ public class LevelController {
         for (NPC npc : this.level.getNpcs()) {
             drawImageOnGraphicsContext(g, npc);
         }
-
         drawImageOnGraphicsContext(g, this.level.getPlayer());
     }
 
@@ -101,6 +100,21 @@ public class LevelController {
                         newX = oldX + factor;
                         break;
                 }
+
+                // check borders
+                if (newX - c.getSize() / 2 <= 0 || newX + c.getSize() / 2 >= GameUtils
+                        .GAME_FIELD_WIDTH || newY - c.getSize() / 2 <= 0 || newY + c.getSize() /
+                        2 >= GameUtils.GAME_FIELD_HEIGHT) {
+                    /*
+                     * A dummy block is needed since something has to get processed by the
+                     * interact method. The interact method is neccessary because of the different
+                     * behavior of characters when hitting things. A Player just stops, while
+                     * an NPC changes the direction.
+                     */
+                    c.interact(new Block(0, 0, 0, true));
+                    continue;
+                }
+
                 // set new location and test if this is legal
                 c.setLocation(newX, newY);
                 List<GameObject> hitObjects = whichBlocksDoesCharacterHit(c);
