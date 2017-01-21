@@ -1,11 +1,9 @@
 package level;
 
-import objects.GameBorder;
 import objects.House;
 import objects.NPC;
 import objects.Player;
 import objects.Street;
-import utils.GameUtils;
 
 import java.util.Random;
 
@@ -22,18 +20,9 @@ public class DemoLevel extends AbstractLevel {
 
         this.initialLevelTime = 500;
 
-        this.blocks.add(new GameBorder(-GameUtils.GAME_FIELD_HEIGHT / 2, GameUtils.GAME_FIELD_HEIGHT /
-                2, GameUtils.GAME_FIELD_HEIGHT, true));
-        this.blocks.add(new GameBorder(GameUtils.GAME_FIELD_WIDTH + GameUtils.GAME_FIELD_HEIGHT / 2,
-                GameUtils.GAME_FIELD_HEIGHT / 2, GameUtils.GAME_FIELD_HEIGHT, true));
-        this.blocks.add(new GameBorder(GameUtils.GAME_FIELD_WIDTH / 2, -GameUtils.GAME_FIELD_WIDTH /
-                2, GameUtils.GAME_FIELD_WIDTH, true));
-        this.blocks.add(new GameBorder(GameUtils.GAME_FIELD_WIDTH / 2, GameUtils.GAME_FIELD_HEIGHT +
-                GameUtils.GAME_FIELD_WIDTH / 2, GameUtils.GAME_FIELD_WIDTH, true));
-
         // random level init for testing
-        for (int x = 16; x < 785; x += 32) {
-            for (int y = 16; y < 625; y += 32) {
+        for (int x = 0; x < 25; x++) {
+            for (int y = 0; y < 20; y++) {
                 if (new Random().nextInt(4) > 2) {
                     this.blocks.add(new House(x, y, 32, true));
                 } else {

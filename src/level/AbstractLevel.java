@@ -12,12 +12,12 @@ import java.util.Set;
  */
 public abstract class AbstractLevel {
 
-    Player player;
-    final Set<Block> blocks;
-    final Set<NPC> npcs;
-    String levelName;
-    float initialLevelTime;
-    float remainingTime;
+    protected Player player;
+    protected final Set<Block> blocks;
+    protected final Set<NPC> npcs;
+    protected String levelName;
+    protected float initialLevelTime;
+    protected float remainingTime;
 
     public AbstractLevel() {
         this.blocks = new HashSet<Block>();
