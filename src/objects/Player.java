@@ -14,7 +14,7 @@ public class Player extends Character {
     private float drinkSpeed;
 
     public Player(int pos_x, int pos_y, float speed, float drinkSpeed) {
-        super(pos_x, pos_y, 20, true, speed);
+        super(pos_x, pos_y, true, speed);
         this.beerLevel = 1f; // TODO change me
         this.drinkSpeed = 1f; //TODO change me
         try {

@@ -1,7 +1,6 @@
 package objects;
 
 import org.newdawn.slick.geom.Circle;
-import utils.GameUtils;
 
 /**
  * Created by tom on 13.01.17.
@@ -10,22 +9,14 @@ public abstract class Character extends GameObject {
 
     private float speed;
 
-    private GameUtils.Direction direction = null;
+    private Enums.Direction direction = null;
 
     protected String name;
 
-    public Character(int pos_x, int pos_y, int size, boolean isBlocking, float speed) {
-        super(pos_x, pos_y, size, isBlocking);
+    public Character(int pos_x, int pos_y, boolean isBlocking, float speed) {
+        super(pos_x, pos_y, 20, isBlocking);
         this.speed = speed;
-        this.hitbox = new Circle(pos_x, pos_y, size / 2);
-    }
-
-    public Character(int pos_x, int pos_y, float speed) {
-        super(pos_x, pos_y, 20, true);
-    }
-
-    public void gotBlockedBy(GameObject go) {
-
+        this.hitbox = new Circle(pos_x, pos_y, 10);
     }
 
     public float getSpeed() {
@@ -46,11 +37,11 @@ public abstract class Character extends GameObject {
         this.hitbox.setCenterY(y);
     }
 
-    public GameUtils.Direction getDirection() {
+    public Enums.Direction getDirection() {
         return direction;
     }
 
-    public void setDirection(GameUtils.Direction direction) {
+    public void setDirection(Enums.Direction direction) {
         this.direction = direction;
     }
 }

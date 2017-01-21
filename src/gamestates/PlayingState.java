@@ -2,6 +2,7 @@ package gamestates;
 
 import controllers.LevelController;
 import level.AbstractLevel;
+import objects.Enums;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -116,10 +117,18 @@ public class PlayingState extends BasicGameState{
 
         /*movement of the player*/
         //up
-        if(input.isKeyDown(Input.KEY_UP)){ levelController.setPlayerDirection(GameUtils.Direction.UP); }
-        if(input.isKeyDown(Input.KEY_DOWN)){ levelController.setPlayerDirection(GameUtils.Direction.DOWN); }
-        if(input.isKeyDown(Input.KEY_LEFT)){ levelController.setPlayerDirection(GameUtils.Direction.LEFT); }
-        if(input.isKeyDown(Input.KEY_RIGHT)){ levelController.setPlayerDirection(GameUtils.Direction.RIGHT); }
+        if (input.isKeyDown(Input.KEY_UP)) {
+            levelController.setPlayerDirection(Enums.Direction.UP);
+        }
+        if (input.isKeyDown(Input.KEY_DOWN)) {
+            levelController.setPlayerDirection(Enums.Direction.DOWN);
+        }
+        if (input.isKeyDown(Input.KEY_LEFT)) {
+            levelController.setPlayerDirection(Enums.Direction.LEFT);
+        }
+        if (input.isKeyDown(Input.KEY_RIGHT)) {
+            levelController.setPlayerDirection(Enums.Direction.RIGHT);
+        }
 
         // let level update itself
         levelController.update(delta);

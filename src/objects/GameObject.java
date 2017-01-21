@@ -82,12 +82,12 @@ public abstract class GameObject {
 
     public void setPos_x(float x) {
         this.pos_x = x;
-        this.hitbox.setCenterX(x);  // TODO We dont move blocks, but should this be only x?
+        this.hitbox.setCenterX(x);
     }
 
     public void setPos_y(float y) {
         this.pos_y = y;
-        this.hitbox.setCenterY(y);  // TODO We dont move blocks, but should this be only x?
+        this.hitbox.setCenterY(y);
     }
 
     public void setLocation(float x, float y) {

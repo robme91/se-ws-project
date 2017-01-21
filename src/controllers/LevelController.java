@@ -3,6 +3,7 @@ package controllers;
 import level.AbstractLevel;
 import objects.Block;
 import objects.Character;
+import objects.Enums;
 import objects.GameObject;
 import objects.NPC;
 import objects.Player;
@@ -111,7 +112,7 @@ public class LevelController {
                      * behavior of characters when hitting things. A Player just stops, while
                      * an NPC changes the direction.
                      */
-                    c.interact(new Block(0, 0, 0, true));
+                    c.interact(new Block(0, 0, true));
                     continue;
                 }
 
@@ -179,7 +180,7 @@ public class LevelController {
         return level.getPlayer();
     }
 
-    public void setPlayerDirection(GameUtils.Direction direction) {
+    public void setPlayerDirection(Enums.Direction direction) {
         //        if (direction != null) {
         this.level.getPlayer().setDirection(direction);
         //        }
