@@ -10,4 +10,9 @@ public class Block extends GameObject {
         super(pos_x, pos_y, size, isBlocking);
         this.hitbox = new Rectangle(pos_x - size / 2, pos_y - size / 2, size, size);
     }
+
+    public Block(int pos_x, int pos_y, boolean isBlocking) {
+        super(pos_x, pos_y, 32, isBlocking);
+
+    }
 }

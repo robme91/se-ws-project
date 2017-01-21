@@ -24,14 +24,14 @@ public class DemoLevel extends AbstractLevel {
         for (int x = 0; x < 25; x++) {
             for (int y = 0; y < 20; y++) {
                 if (new Random().nextInt(4) > 2) {
-                    this.blocks.add(new House(x, y, 32, true));
+                    this.blocks.add(new House(x, y));
                 } else {
-                    this.blocks.add(new Street(x, y, 32, false));
+                    this.blocks.add(new Street(x, y));
                     if (this.player == null) {
-                        this.player = new Player(x, y, 20, true, 1f, 1f);
+                        this.player = new Player(x, y, 1f, 1f);
                     }
                     if (new Random().nextInt(20) >= 19) {
-                        this.npcs.add(new NPC(x, y, 20, true, 0.5f));
+                        this.npcs.add(new NPC(x, y, 0.5f, "npc"));
                     }
                 }
             }

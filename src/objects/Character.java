@@ -12,10 +12,16 @@ public abstract class Character extends GameObject {
 
     private GameUtils.Direction direction = null;
 
+    protected String name;
+
     public Character(int pos_x, int pos_y, int size, boolean isBlocking, float speed) {
         super(pos_x, pos_y, size, isBlocking);
         this.speed = speed;
         this.hitbox = new Circle(pos_x, pos_y, size / 2);
+    }
+
+    public Character(int pos_x, int pos_y, float speed) {
+        super(pos_x, pos_y, 20, true);
     }
 
     public void gotBlockedBy(GameObject go) {

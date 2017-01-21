@@ -15,18 +15,9 @@ public class NPC extends Character {
     private int sightDistance = 0;
     private int intelligence = 0;
 
-    public NPC(int pos_x, int pos_y, int size, boolean isBlocking, float speed) {
-        super(pos_x, pos_y, size, isBlocking, speed);
-        try {
-            this.image = new Image("/res/img/objects/npc.png");
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
-        this.setDirection(GameUtils.Direction.values()[new Random().nextInt(4)]);
-    }
-
-    public NPC(int pos_x, int pos_y, int size, boolean isBlocking, float speed, String name) {
-        super(pos_x, pos_y, size, isBlocking, speed);
+    public NPC(int pos_x, int pos_y, float speed, String name) {
+        super(pos_x, pos_y, speed);
+        this.name = name;
         try {
             this.image = new Image("/res/img/objects/" + name.toLowerCase() + ".png");
         } catch (SlickException e) {
@@ -35,8 +26,9 @@ public class NPC extends Character {
         this.setDirection(GameUtils.Direction.values()[new Random().nextInt(4)]);
     }
 
-    public NPC(int pos_x, int pos_y, int size, boolean isBlocking, float speed, String name, int sightDistance, int intelligence) {
-        super(pos_x, pos_y, size, isBlocking, speed);
+    public NPC(int pos_x, int pos_y, float speed, String name, int sightDistance, int
+            intelligence) {
+        super(pos_x, pos_y, speed);
         this.sightDistance = sightDistance;
         this.intelligence = intelligence;
     }
