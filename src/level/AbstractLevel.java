@@ -4,32 +4,35 @@ import objects.Block;
 import objects.NPC;
 import objects.Player;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by tom on 19.01.17.
  */
 public abstract class AbstractLevel {
 
-    Player player;
-    List<Block> blocks;
-    List<NPC> npcs;
-    String levelName;
-    float initialLevelTime;
-    float remainingTime;
+    protected Player player;
+    protected final Set<Block> blocks;
+    protected final Set<NPC> npcs;
+    protected String levelName;
+    protected float initialLevelTime;
+    protected float remainingTime;
 
     public AbstractLevel() {
+        this.blocks = new HashSet<Block>();
+        this.npcs = new HashSet<NPC>();
     }
 
     public Player getPlayer() {
         return player;
     }
 
-    public List<Block> getBlocks() {
+    public Set<Block> getBlocks() {
         return blocks;
     }
 
-    public List<NPC> getNpcs() {
+    public Set<NPC> getNpcs() {
         return npcs;
     }
 
