@@ -11,7 +11,7 @@ import java.util.Random;
 
 /**
  * Created by tom on 19.01.17.
- * <p>
+ *
  * This implements a demo level to have some data to play with.
  */
 public class DemoLevel extends AbstractLevel {
