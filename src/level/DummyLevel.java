@@ -1,15 +1,13 @@
 package level;
 
 import objects.Block;
-import objects.GameBorder;
+import objects.Character;
 import objects.GameObject;
 import objects.House;
 import objects.NPC;
 import objects.Player;
 import objects.Street;
-import objects.Character;
 import org.newdawn.slick.Graphics;
-import utils.GameUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,15 +51,6 @@ public class DummyLevel implements ILevel {
         //        characters.add(player);
 
         // add borders
-
-        addBlock(new GameBorder(-GameUtils.GAME_FIELD_HEIGHT / 2, GameUtils.GAME_FIELD_HEIGHT /
-                2, GameUtils.GAME_FIELD_HEIGHT, true));
-        addBlock(new GameBorder(GameUtils.GAME_FIELD_WIDTH + GameUtils.GAME_FIELD_HEIGHT / 2,
-                GameUtils.GAME_FIELD_HEIGHT / 2, GameUtils.GAME_FIELD_HEIGHT, true));
-        addBlock(new GameBorder(GameUtils.GAME_FIELD_WIDTH / 2, -GameUtils.GAME_FIELD_WIDTH / 2,
-                GameUtils.GAME_FIELD_WIDTH, true));
-        addBlock(new GameBorder(GameUtils.GAME_FIELD_WIDTH / 2, GameUtils.GAME_FIELD_HEIGHT +
-                GameUtils.GAME_FIELD_WIDTH / 2, GameUtils.GAME_FIELD_WIDTH, true));
 
         // random level init for testing
         for (int x = 16; x < 785; x += 32) {

@@ -1,11 +1,9 @@
 package level;
 
-import objects.GameBorder;
 import objects.House;
 import objects.NPC;
 import objects.Player;
 import objects.Street;
-import utils.GameUtils;
 
 import java.util.Random;
 
@@ -21,17 +19,6 @@ public class DemoLevel extends AbstractLevel {
         this.levelName = "Demo Level";
 
         this.initialLevelTime = 500;
-
-        //TODO try if it works with index -1, n+1 for borders
-        this.blocks.add(new GameBorder(-GameUtils.GAME_FIELD_HEIGHT / 2, GameUtils
-                .GAME_FIELD_HEIGHT / 2, GameUtils.GAME_FIELD_HEIGHT, true));
-        this.blocks.add(new GameBorder(GameUtils.GAME_FIELD_WIDTH + GameUtils.GAME_FIELD_HEIGHT /
-                2, GameUtils.GAME_FIELD_HEIGHT / 2, GameUtils.GAME_FIELD_HEIGHT, true));
-        this.blocks.add(new GameBorder(GameUtils.GAME_FIELD_WIDTH / 2, -GameUtils
-                .GAME_FIELD_WIDTH / 2, GameUtils.GAME_FIELD_WIDTH, true));
-        this.blocks.add(new GameBorder(GameUtils.GAME_FIELD_WIDTH / 2, GameUtils
-                .GAME_FIELD_HEIGHT + GameUtils.GAME_FIELD_WIDTH / 2, GameUtils.GAME_FIELD_WIDTH,
-                true));
 
         // random level init for testing
         for (int x = 0; x < 25; x++) {
