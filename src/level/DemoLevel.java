@@ -1,5 +1,6 @@
 package level;
 
+import objects.Enums;
 import objects.House;
 import objects.NPC;
 import objects.Player;
@@ -9,7 +10,7 @@ import java.util.Random;
 
 /**
  * Created by tom on 19.01.17.
- *
+ * <p>
  * This implements a demo level to have some data to play with.
  */
 public class DemoLevel extends AbstractLevel {
@@ -31,7 +32,8 @@ public class DemoLevel extends AbstractLevel {
                         this.player = new Player(x, y, 1f, 1f);
                     }
                     if (new Random().nextInt(20) >= 19) {
-                        this.npcs.add(new NPC(x, y, 0.5f, "npc"));
+                        this.npcs.add(new NPC(x, y, 0.5f, "npc", 24, 50, Enums.AttackTarget
+                                .DRINK, 2));
                     }
                 }
             }
