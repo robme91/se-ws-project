@@ -7,10 +7,8 @@ import objects.Enums;
 import objects.GameObject;
 import objects.NPC;
 import objects.Player;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Line;
-import org.newdawn.slick.geom.Shape;
 import utils.GameUtils;
 
 import java.util.ArrayList;
@@ -33,10 +31,6 @@ public class LevelController {
 
     // Needed for doEverySecond()
     private int msSinceLastSecond = 0;
-
-    private List<Shape> DEBUG_SHAPES_GREEN = new ArrayList<Shape>(); // TODO RMD
-    private List<Shape> DEBUG_SHAPES_YELLOW = new ArrayList<Shape>(); // TODO RMD
-    private List<Shape> DEBUG_SHAPES_RED = new ArrayList<Shape>(); // TODO RMD
 
     private boolean IS_PAUSED = false;
 
@@ -86,19 +80,6 @@ public class LevelController {
             drawImageOnGraphicsContext(g, npc);
         }
         drawImageOnGraphicsContext(g, this.level.getPlayer());
-
-        g.setColor(Color.red);
-        for (Shape s : DEBUG_SHAPES_RED) {
-            g.draw(s);
-        }
-        g.setColor(Color.yellow);
-        for (Shape s : DEBUG_SHAPES_YELLOW) {
-            g.draw(s);
-        }
-        g.setColor(Color.green);
-        for (Shape s : DEBUG_SHAPES_GREEN) {
-            g.draw(s);
-        }
     }
 
     /**
@@ -274,9 +255,6 @@ public class LevelController {
      * Gets executed every second
      */
     private void doEverySecond(int msSinceLastSecond) {
-        DEBUG_SHAPES_RED.clear();
-        DEBUG_SHAPES_YELLOW.clear();
-        DEBUG_SHAPES_GREEN.clear();
         updateAI();
         for (GameObject c : characters) {
             c.secondTick(msSinceLastSecond);
@@ -311,9 +289,6 @@ public class LevelController {
                     // is npc smart enough?
                     if (new Random().nextInt(100) < npc.getIntelligence()) {
                         npc.setDirection(direction);
-                        DEBUG_SHAPES_GREEN.add(lineOfSight);  //TODO RMD
-                    } else {
-                        DEBUG_SHAPES_YELLOW.add(lineOfSight); //TODO RMD
                     }
                 }
             }
