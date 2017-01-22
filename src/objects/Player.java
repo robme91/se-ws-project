@@ -18,8 +18,8 @@ public class Player extends Character {
         if (beerLevel < 1 || beerLevel > 100) {
             throw new IllegalArgumentException("beerLevel must be between 1 and 100");
         }
-        if (drinkSpeed < 1 || drinkSpeed > 11) {
-            throw new IllegalArgumentException("drinkSpeed must be between 1 and 10");
+        if (drinkSpeed < 1 || drinkSpeed > 100) {
+            throw new IllegalArgumentException("drinkSpeed must be between 1 and 100");
         }
         this.beerLevel = beerLevel;
         this.drinkSpeed = drinkSpeed;
