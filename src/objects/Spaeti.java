@@ -13,14 +13,19 @@ public class Spaeti extends House {
 
     private Enums.Direction direction;
 
+    private Image image_on;
+    private Image image_off;
 
     public Spaeti(int pos_x, int pos_y, Enums.Direction direction) {
         super(pos_x, pos_y);
         this.direction = direction;
         this.rechargeDuration = 30;
         try {
-            this.image = new Image("/res/img/objects/spaeti.png");
-            this.image.rotate(GameUtils.getImageRotationFromDirection(direction));
+            this.image_on = new Image("/res/img/objects/spaeti_on.png");
+            this.image_off = new Image("/res/img/objects/spaeti_off.png");
+            this.image_on.rotate(GameUtils.getImageRotationFromDirection(direction));
+            this.image_off.rotate(GameUtils.getImageRotationFromDirection(direction));
+            this.image = image_on;
         } catch (SlickException e) {
             e.printStackTrace();
         }
@@ -38,7 +43,7 @@ public class Spaeti extends House {
                     this.interactionTimeout = this.rechargeDuration;
                     Player p = (Player) go;
                     p.setBeerLevel(p.getBeerLevel() + 10);
-                    this.image.setAlpha(0f);
+                    this.image = image_off;
                 }
             }
             super.interact(go);
@@ -52,8 +57,9 @@ public class Spaeti extends House {
 
     @Override
     public void secondTick(int ms) {
-        float a = 1f - ((float) this.interactionTimeout / (float) rechargeDuration);
-        this.image.setAlpha(a);
+        if (this.interactionTimeout == 0) {
+            this.image = image_on;
+        }
         super.secondTick(ms);
     }
 
