@@ -7,7 +7,11 @@ import objects.Enums;
 import objects.GameObject;
 import objects.NPC;
 import objects.Player;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.GeomUtil;
+import org.newdawn.slick.geom.Line;
+import org.newdawn.slick.geom.Shape;
 import utils.GameUtils;
 
 import java.util.ArrayList;
@@ -26,6 +30,13 @@ public class LevelController {
 
     // all blocking blocks out of level
     private List<Block> blockingBlocks = new ArrayList<Block>();
+
+    // Needed for doEverySecond()
+    private int msSinceLastSecond = 0;
+
+    private List<Shape> DEBUG_SHAPES_GREEN = new ArrayList<Shape>(); // TODO RMD
+    private List<Shape> DEBUG_SHAPES_YELLOW = new ArrayList<Shape>(); // TODO RMD
+    private List<Shape> DEBUG_SHAPES_RED = new ArrayList<Shape>(); // TODO RMD
 
     /**
      * @param level
@@ -53,9 +64,11 @@ public class LevelController {
      */
     public void update(int delta) {
         moveCharacters(this.characters, delta);
-
-        // TODO STUB
-        // TODO Call doEverySecond()
+        msSinceLastSecond += delta;
+        if (msSinceLastSecond > 1000) {
+            msSinceLastSecond -= 1000;
+            doEverySecond();
+        }
     }
 
     /**
@@ -70,6 +83,19 @@ public class LevelController {
             drawImageOnGraphicsContext(g, npc);
         }
         drawImageOnGraphicsContext(g, this.level.getPlayer());
+
+        g.setColor(Color.red);
+        for (Shape s : DEBUG_SHAPES_RED) {
+            g.draw(s);
+        }
+        g.setColor(Color.yellow);
+        for (Shape s : DEBUG_SHAPES_YELLOW) {
+            g.draw(s);
+        }
+        g.setColor(Color.green);
+        for (Shape s : DEBUG_SHAPES_GREEN) {
+            g.draw(s);
+        }
     }
 
     /**
@@ -94,7 +120,6 @@ public class LevelController {
     }
 
     /**
-     *
      * @param g
      * @param go
      */
@@ -108,7 +133,6 @@ public class LevelController {
     }
 
     /**
-     *
      * @param characters
      * @param delta
      */
@@ -173,7 +197,6 @@ public class LevelController {
     }
 
     /**
-     *
      * @param c
      * @return
      */
@@ -218,7 +241,6 @@ public class LevelController {
     }
 
     /**
-     *
      * @return
      */
     public Player getPlayer() {
@@ -226,7 +248,6 @@ public class LevelController {
     }
 
     /**
-     *
      * @param direction
      */
     public void setPlayerDirection(Enums.Direction direction) {
@@ -237,6 +258,11 @@ public class LevelController {
      * Gets executed every second
      */
     private void doEverySecond() {
+        System.out.println("DO EVERY SECOND");
+        DEBUG_SHAPES_RED.clear();
+        DEBUG_SHAPES_YELLOW.clear();
+        DEBUG_SHAPES_GREEN.clear();
+        updateKI();
         // TODO UPDATE KI
         // TODO SET REMAINING TIME
         // TODO Reduce Player beer level
@@ -246,5 +272,31 @@ public class LevelController {
         0 = do not listen to that daaaamn controller
         100 = always do what the controller sez
          */
+    }
+
+    private void updateKI() {
+        GeomUtil geomUtil = new GeomUtil();
+        for (NPC npc : this.level.getNpcs()) {
+
+            //create line of sight
+            Line lineOfSight = new Line(npc.getPos_x(), npc.getPos_y(), getPlayer().getPos_x(),
+                    getPlayer().getPos_y());
+
+            // check if player is too far awy
+            if (lineOfSight.length() < npc.getSightDistance() * 32) {
+                boolean obstacle = false;
+
+                // check if there is a block in the way
+                for (Block b : blockingBlocks) {
+                    if (b.getHitbox().intersects(lineOfSight)) {
+                        obstacle = true;
+                        break;
+                    }
+                }
+                if (!obstacle) {
+                    DEBUG_SHAPES_GREEN.add(lineOfSight);
+                }
+            }
+        }
     }
 }
