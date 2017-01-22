@@ -38,6 +38,8 @@ public class LevelController {
     private List<Shape> DEBUG_SHAPES_YELLOW = new ArrayList<Shape>(); // TODO RMD
     private List<Shape> DEBUG_SHAPES_RED = new ArrayList<Shape>(); // TODO RMD
 
+    private boolean IS_PAUSED = false;
+
     /**
      * @param level
      */
@@ -62,11 +64,13 @@ public class LevelController {
      * @param delta
      */
     public void update(int delta) {
-        moveCharacters(this.characters, delta);
-        msSinceLastSecond += delta;
-        if (msSinceLastSecond > 1000) {
-            doEverySecond(msSinceLastSecond);
-            msSinceLastSecond -= 1000;
+        if (!IS_PAUSED) {
+            moveCharacters(this.characters, delta);
+            msSinceLastSecond += delta;
+            if (msSinceLastSecond > 1000) {
+                doEverySecond(msSinceLastSecond);
+                msSinceLastSecond -= 1000;
+            }
         }
     }
 
@@ -95,6 +99,20 @@ public class LevelController {
         for (Shape s : DEBUG_SHAPES_GREEN) {
             g.draw(s);
         }
+    }
+
+    /**
+     * Pauses the game
+     */
+    public void pause() {
+        this.IS_PAUSED = true;
+    }
+
+    /**
+     * Runs the game
+     */
+    public void play() {
+        this.IS_PAUSED = false;
     }
 
     /**
