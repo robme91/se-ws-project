@@ -86,45 +86,54 @@ public class LevelController {
                 float oldY = c.getPos_y();
                 float newX = oldX;
                 float newY = oldY;
+                float xFactor = 0f;
+                float yFactor = 0f;
                 float factor = delta * .002f * c.getSpeed();
                 switch (c.getDirection()) {
                     case UP:
-                        newY = oldY - factor;
+                        yFactor = -1f;
                         break;
                     case DOWN:
-                        newY = oldY + factor;
+                        yFactor = 1f;
                         break;
                     case LEFT:
-                        newX = oldX - factor;
+                        xFactor = -1f;
                         break;
                     case RIGHT:
-                        newX = oldX + factor;
+                        xFactor = 1f;
                         break;
                 }
 
-                // check borders
-                if (newX - c.getSize() / 2 <= 0 || newX + c.getSize() / 2 >= GameUtils
-                        .GAME_FIELD_WIDTH || newY - c.getSize() / 2 <= 0 || newY + c.getSize() /
-                        2 >= GameUtils.GAME_FIELD_HEIGHT) {
+                int steps = (int) factor;
+                float stepFactor = factor / (float) steps;
+                for (int i = 1; i <= steps; i++) {
+                    newX += xFactor * stepFactor;
+                    newY += yFactor * stepFactor;
+                    // check borders
+                    if (newX - c.getSize() / 2 <= 0 || newX + c.getSize() / 2 >= GameUtils
+                            .GAME_FIELD_WIDTH || newY - c.getSize() / 2 <= 0 || newY + c.getSize
+                            () / 2 >= GameUtils.GAME_FIELD_HEIGHT) {
                     /*
                      * A dummy block is needed since something has to get processed by the
                      * interact method. The interact method is neccessary because of the different
                      * behavior of characters when hitting things. A Player just stops, while
                      * an NPC changes the direction.
                      */
-                    c.interact(new Block(0, 0, true));
-                    continue;
-                }
-
-                // set new location and test if this is legal
-                c.setLocation(newX, newY);
-                List<GameObject> hitObjects = whichBlocksDoesCharacterHit(c);
-                if (hitObjects != null) {
-                    for (GameObject go : hitObjects) {
-                        go.interact(c);
-                        c.interact(go);
+                        c.interact(new Block(0, 0, true));
+                        break;
                     }
-                    c.setLocation(oldX, oldY); // TODO set to closest hitpoint
+                    // set new location and test if this is legal
+                    c.setLocation(newX, newY);
+                    List<GameObject> hitObjects = whichBlocksDoesCharacterHit(c);
+                    if (hitObjects != null) {
+                        for (GameObject go : hitObjects) {
+                            go.interact(c);
+                            c.interact(go);
+                        }
+                        c.setPos_x(newX - xFactor * stepFactor);
+                        c.setPos_y(newY - yFactor * stepFactor);
+                        break;
+                    }
                 }
             }
         }
