@@ -1,6 +1,8 @@
 package gamestates;
 
+import level.AbstractLevel;
 import level.DemoLevel;
+import level.TestLevel;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -9,7 +11,14 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.RoundedRectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.omg.CORBA.Object;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 import utils.GameUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Robin on 08.01.2017.
@@ -23,6 +32,8 @@ public class LevelMenuState extends BasicGameState{
 
     private Rectangle dummyLevel;
 
+    private List<String> levelNames = new ArrayList<>();
+
     public LevelMenuState(final int stateId){
         LEVEL_MENU_STATE_ID = stateId;
     }
@@ -33,6 +44,7 @@ public class LevelMenuState extends BasicGameState{
 
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         dummyLevel = new RoundedRectangle(100, 100, 120, 30, 8);
+        readAllLevels();
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
@@ -43,8 +55,13 @@ public class LevelMenuState extends BasicGameState{
 
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         if(GameUtils.clickedMouseInShape(container.getInput(), dummyLevel)){
-            ((PlayingState) game.getState(PlayingState.PLAYING_STATE_ID)).setCurrentLevel(new DemoLevel());
+            ((PlayingState) game.getState(PlayingState.PLAYING_STATE_ID)).setCurrentLevel(new TestLevel());
             game.enterState(PlayingState.PLAYING_STATE_ID);
         }
+    }
+
+    private void readAllLevels(){
+        Reflections reflections = new Reflections("level", new SubTypesScanner(false));
+        Set<Class<? extends AbstractLevel>> allClasses = reflections.getSubTypesOf(AbstractLevel.class);
     }
 }
