@@ -18,18 +18,25 @@ import java.util.List;
  */
 public class LevelController {
 
-    private AbstractLevel level;
-    private List<Character> characters = new ArrayList<Character>(); // all level characters
-    // including player
-    private List<Block> blockingBlocks = new ArrayList<Block>(); // all blocking blocks out of
     // the level
+    private AbstractLevel level;
 
+    // all level characters including player
+    private List<Character> characters = new ArrayList<Character>();
+
+    // all blocking blocks out of level
+    private List<Block> blockingBlocks = new ArrayList<Block>();
+
+    /**
+     * @param level
+     */
     public LevelController(AbstractLevel level) {
         if (level == null) {
             throw new IllegalArgumentException("Level must not be null!");
         }
         this.level = level;
         this.level.setRemainingTime(this.level.getInitialLevelTime());  // Set remaining time
+        initializeLevel(level);
         characters.addAll(level.getNpcs());
         characters.add(level.getPlayer());
         for (Block b : level.getBlocks()) {
@@ -38,27 +45,22 @@ public class LevelController {
             }
         }
 
-        // TODO set initial block positions according to GameSize
-        float blockSize = 32; // TODO block size is needed for Character position and should be
-        // fixed
-        for (Block b : this.level.getBlocks()) {
-            b.setPos_x((b.getPos_x() + 1) * blockSize - (blockSize / 2));
-            b.setPos_y((b.getPos_y() + 1) * blockSize - (blockSize / 2));
-        }
-        for (NPC n : this.level.getNpcs()) {
-            n.setPos_x((n.getPos_x() + 1) * blockSize - (blockSize / 2));
-            n.setPos_y((n.getPos_y() + 1) * blockSize - (blockSize / 2));
-        }
-
-        Player p = this.level.getPlayer();
-        p.setPos_x((p.getPos_x() + 1) * blockSize - (blockSize / 2));
-        p.setPos_y((p.getPos_y() + 1) * blockSize - (blockSize / 2));
-
-
         // TODO find street pictures
-        // TODO Set initial random directions for NPC
     }
 
+    /**
+     * @param delta
+     */
+    public void update(int delta) {
+        moveCharacters(this.characters, delta);
+
+        // TODO STUB
+        // TODO Call doEverySecond()
+    }
+
+    /**
+     * @param g
+     */
     public void drawOnGraphicsContext(Graphics g) {
         for (Block b : this.level.getBlocks()) {
             drawImageOnGraphicsContext(g, b);
@@ -70,6 +72,32 @@ public class LevelController {
         drawImageOnGraphicsContext(g, this.level.getPlayer());
     }
 
+    /**
+     * Transforms the initial block indices into pixel coordinates.
+     *
+     * @param level AbstractLevel Instance
+     */
+    private void initializeLevel(AbstractLevel level) {
+        float blockSize = 32f;
+        // fixed
+        for (Block b : this.level.getBlocks()) {
+            b.setPos_x((b.getPos_x() + 1) * blockSize - (blockSize / 2));
+            b.setPos_y((b.getPos_y() + 1) * blockSize - (blockSize / 2));
+        }
+        for (NPC n : this.level.getNpcs()) {
+            n.setPos_x((n.getPos_x() + 1) * blockSize - (blockSize / 2));
+            n.setPos_y((n.getPos_y() + 1) * blockSize - (blockSize / 2));
+        }
+        Player p = this.level.getPlayer();
+        p.setPos_x((p.getPos_x() + 1) * blockSize - (blockSize / 2));
+        p.setPos_y((p.getPos_y() + 1) * blockSize - (blockSize / 2));
+    }
+
+    /**
+     *
+     * @param g
+     * @param go
+     */
     private void drawImageOnGraphicsContext(Graphics g, GameObject go) {
         if (go.getImage() != null) {
             g.drawImage(go.getImage(), go.getPos_x() - go.getSize() / 2, go.getPos_y() - go
@@ -79,6 +107,11 @@ public class LevelController {
         }
     }
 
+    /**
+     *
+     * @param characters
+     * @param delta
+     */
     private void moveCharacters(List<Character> characters, int delta) {
         for (Character c : characters) {
             if (c.getDirection() != null) {
@@ -104,7 +137,7 @@ public class LevelController {
                         break;
                 }
 
-                int steps = (int) factor;
+                int steps = ((int) factor) + 1; //make sure that there is at least 1 step
                 float stepFactor = factor / (float) steps;
                 for (int i = 1; i <= steps; i++) {
                     newX += xFactor * stepFactor;
@@ -139,6 +172,11 @@ public class LevelController {
         }
     }
 
+    /**
+     *
+     * @param c
+     * @return
+     */
     private List<GameObject> whichBlocksDoesCharacterHit(Character c) {
         List<GameObject> hitObjects = new ArrayList<GameObject>();
         for (GameObject block : blockingBlocks) {
@@ -162,12 +200,6 @@ public class LevelController {
         }
     }
 
-    public void update(int delta) {
-        moveCharacters(this.characters, delta);
-
-        // TODO STUB
-        // TODO Call doEverySecond()
-    }
 
     /**
      * @return Intervall [0,1]
@@ -185,14 +217,20 @@ public class LevelController {
         return 0f;
     }
 
+    /**
+     *
+     * @return
+     */
     public Player getPlayer() {
         return level.getPlayer();
     }
 
+    /**
+     *
+     * @param direction
+     */
     public void setPlayerDirection(Enums.Direction direction) {
-        //        if (direction != null) {
         this.level.getPlayer().setDirection(direction);
-        //        }
     }
 
     /**
