@@ -37,8 +37,8 @@ public class DemoLevel extends AbstractLevel {
                         this.player = new Player(x, y, 40f, 100f, 1f);
                     }
                     if (new Random().nextInt(20) >= 19) {
-                        this.npcs.add(new NPC(x, y, 20f, "npc", 24, 50, Enums.AttackTarget.DRINK,
-                                2));
+                        this.npcs.add(new NPC(x, y, 20f, "npc", 24, 50, Enums.AttackTarget
+                                .PLAYER_SPEED, 50));
                     }
                 }
             }

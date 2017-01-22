@@ -13,9 +13,11 @@ public class Player extends Character {
 
     private float beerLevel;
     private float drinkSpeed;
+    private float speedReduction = 0f;
 
     public Player(int pos_x, int pos_y, float speed, float beerLevel, float drinkSpeed) {
         super(pos_x, pos_y, true, speed);
+        this.rechargeDuration = 5;
         if (beerLevel < 1 || beerLevel > 100) {
             throw new IllegalArgumentException("beerLevel must be between 1 and 100");
         }
@@ -42,6 +44,9 @@ public class Player extends Character {
     @Override
     public void secondTick(int ms) {
         this.beerLevel = this.beerLevel - this.drinkSpeed * ((float) ms / 1000f);
+        if (interactionTimeout == 0) {
+            speedReduction = 0f;
+        }
         super.secondTick(ms);
     }
 
@@ -51,6 +56,17 @@ public class Player extends Character {
 
     public void setBeerLevel(float beerLevel) {
         this.beerLevel = GameUtils.clamp(0f, 100f, beerLevel);
+    }
+
+    public void attackSpeed(int percentage) {
+        this.interactionTimeout = this.rechargeDuration;
+        this.speedReduction = super.getSpeed() * ((float) percentage / 100f);
+    }
+
+    @Override
+    public float getSpeed() {
+        return super.getSpeed() - speedReduction;
+
     }
 
     public float getDrinkSpeed() {

@@ -48,7 +48,7 @@ public class NPC extends Character {
                     this.interactionTimeout = this.rechargeDuration;
                 }
                 if (attackTarget == Enums.AttackTarget.PLAYER_SPEED) {
-                    //TODO IMPLEMENT ME
+                    p.attackSpeed(attackValue);
                 }
             }
         }
