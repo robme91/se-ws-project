@@ -38,6 +38,11 @@ public class Player extends Character {
         super.interact(go);
     }
 
+    @Override
+    public void secondTick(int ms) {
+        this.beerLevel = this.beerLevel - this.drinkSpeed * ((float) ms / 1000f);
+        super.secondTick(ms);
+    }
 
     public float getBeerLevel() {
         return beerLevel;

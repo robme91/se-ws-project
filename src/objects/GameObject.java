@@ -103,6 +103,11 @@ public abstract class GameObject {
     public void interact(GameObject go) {
     }
 
+    public void secondTick(int ms) {
+    }
+
+    ;
+
     public boolean isBlocking() {
         return isBlocking;
     }
