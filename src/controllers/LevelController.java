@@ -16,6 +16,7 @@ import utils.GameUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by tom on 19.01.17.
@@ -160,7 +161,6 @@ public class LevelController {
                         xFactor = 1f;
                         break;
                 }
-
                 int steps = ((int) factor) + 1; //make sure that there is at least 1 step
                 float stepFactor = factor / (float) steps;
                 for (int i = 1; i <= steps; i++) {
@@ -258,11 +258,10 @@ public class LevelController {
      * Gets executed every second
      */
     private void doEverySecond() {
-        System.out.println("DO EVERY SECOND");
         DEBUG_SHAPES_RED.clear();
         DEBUG_SHAPES_YELLOW.clear();
         DEBUG_SHAPES_GREEN.clear();
-        updateKI();
+        updateAI();
         // TODO UPDATE KI
         // TODO SET REMAINING TIME
         // TODO Reduce Player beer level
@@ -274,7 +273,7 @@ public class LevelController {
          */
     }
 
-    private void updateKI() {
+    private void updateAI() {
         GeomUtil geomUtil = new GeomUtil();
         for (NPC npc : this.level.getNpcs()) {
 
@@ -294,7 +293,14 @@ public class LevelController {
                     }
                 }
                 if (!obstacle) {
-                    DEBUG_SHAPES_GREEN.add(lineOfSight);
+                    Enums.Direction direction = GameUtils.getDirectionFromXY(lineOfSight.getDX(),
+                            lineOfSight.getDY());
+                    if (new Random().nextInt(100) < npc.getIntelligence()) {
+                        npc.setDirection(direction);
+                        DEBUG_SHAPES_GREEN.add(lineOfSight);
+                    } else {
+                        DEBUG_SHAPES_YELLOW.add(lineOfSight);
+                    }
                 }
             }
         }
