@@ -2,7 +2,6 @@ package level;
 
 import objects.Enums;
 import objects.House;
-import objects.NPC;
 import objects.Player;
 import objects.Spaeti;
 import objects.Street;
@@ -36,10 +35,11 @@ public class DemoLevel extends AbstractLevel {
                     if (this.player == null) {
                         this.player = new Player(x, y, 40f, 100f, 1f);
                     }
-                    if (new Random().nextInt(20) >= 19) {
-                        this.npcs.add(new NPC(x, y, 20f, "npc", 24, 50, Enums.AttackTarget.DRINK,
-                                2));
-                    }
+                    //                    if (new Random().nextInt(20) >= 19) {
+                    //                        this.npcs.add(new NPC(x, y, 20f, "npc", 24, 50,
+                    // Enums.AttackTarget.DRINK,
+                    //                                2));
+                    //                    }
                 }
             }
         }
