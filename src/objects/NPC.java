@@ -25,7 +25,7 @@ public class NPC extends Character {
         this.attackTarget = attackTarget;
         this.attackValue = attackValue;
         this.name = name;
-        this.rechargeDuration = 5;
+        this.rechargeDuration = 2;
         try {
             this.image = new Image("/res/img/objects/" + name.toLowerCase() + ".png");
         } catch (SlickException e) {
@@ -47,6 +47,9 @@ public class NPC extends Character {
                     p.setBeerLevel(p.getBeerLevel() - attackValue);
                     this.interactionTimeout = this.rechargeDuration;
                 }
+                if (attackTarget == Enums.AttackTarget.PLAYER_SPEED) {
+                    //TODO IMPLEMENT ME
+                }
             }
         }
         super.interact(go);
@@ -54,13 +57,7 @@ public class NPC extends Character {
 
     @Override
     public Image getImage() {
-        if (interactionTimeout == 0) {
-            return super.getImage();
-        } else {
-            float a = 1f - ((float) this.interactionTimeout / (float) rechargeDuration);
-            this.image.setAlpha(a);
-            return super.getImage();
-        }
+        return super.getImage();
     }
 
     private Enums.Direction getRandomDirection() {

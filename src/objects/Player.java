@@ -42,7 +42,6 @@ public class Player extends Character {
     @Override
     public void secondTick(int ms) {
         this.beerLevel = this.beerLevel - this.drinkSpeed * ((float) ms / 1000f);
-        System.out.println(getBeerLevel());
         super.secondTick(ms);
     }
 

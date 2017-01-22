@@ -38,6 +38,7 @@ public class Spaeti extends House {
                     this.interactionTimeout = this.rechargeDuration;
                     Player p = (Player) go;
                     p.setBeerLevel(p.getBeerLevel() + 10);
+                    this.image.setAlpha(0f);
                 }
             }
             super.interact(go);
@@ -46,13 +47,14 @@ public class Spaeti extends House {
 
     @Override
     public Image getImage() {
-        if (interactionTimeout == 0) {
-            return super.getImage();
-        } else {
-            float a = 1f - ((float) this.interactionTimeout / (float) rechargeDuration);
-            this.image.setAlpha(a);
-            return super.getImage();
-        }
+        return super.getImage();
+    }
+
+    @Override
+    public void secondTick(int ms) {
+        float a = 1f - ((float) this.interactionTimeout / (float) rechargeDuration);
+        this.image.setAlpha(a);
+        super.secondTick(ms);
     }
 
     public Enums.Direction getDirection() {
