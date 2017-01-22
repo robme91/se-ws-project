@@ -27,7 +27,7 @@ public class DemoLevel extends AbstractLevel {
             for (int y = 0; y < 20; y++) {
                 if (new Random().nextInt(4) > 2) {
                     if (new Random().nextInt(4) > 2) {
-                        this.blocks.add(new Spaeti(x, y, Enums.Direction.UP));
+                        this.blocks.add(new Spaeti(x, y, Enums.Direction.LEFT));
                     } else {
                         this.blocks.add(new House(x, y));
                     }
