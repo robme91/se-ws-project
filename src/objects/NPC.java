@@ -25,6 +25,7 @@ public class NPC extends Character {
         this.attackTarget = attackTarget;
         this.attackValue = attackValue;
         this.name = name;
+        this.rechargeDuration = 5;
         try {
             this.image = new Image("/res/img/objects/" + name.toLowerCase() + ".png");
         } catch (SlickException e) {
@@ -39,15 +40,33 @@ public class NPC extends Character {
         if (go.isBlocking()) {
             this.setDirection(getRandomDirection());
         }
-        if (go.getClass().equals(Player.class)) {
-            System.out.println("PLAYER GOT HIT BY AN NPC!");
+        if (interactionTimeout == 0) {
+            if (go.getClass().equals(Player.class)) {
+                Player p = (Player) go;
+                if (attackTarget == Enums.AttackTarget.DRINK) {
+                    p.setBeerLevel(p.getBeerLevel() - attackValue);
+                    this.interactionTimeout = this.rechargeDuration;
+                }
+            }
         }
         super.interact(go);
+    }
+
+    @Override
+    public Image getImage() {
+        if (interactionTimeout == 0) {
+            return super.getImage();
+        } else {
+            float a = 1f - ((float) this.interactionTimeout / (float) rechargeDuration);
+            this.image.setAlpha(a);
+            return super.getImage();
+        }
     }
 
     private Enums.Direction getRandomDirection() {
         return Enums.Direction.values()[new Random().nextInt(4)];
     }
+
 
     public int getSightDistance() {
         return sightDistance;

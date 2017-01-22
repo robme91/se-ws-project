@@ -95,5 +95,9 @@ public class GameUtils {
         return rotation;
     }
 
+    public static float clamp(float min, float max, float value) {
+        return Math.min(max, Math.max(min, value));
+    }
+
     /* isMouseInShape() ... und auf die fenstergröße des gesamten spiels zugreifen*/
 }

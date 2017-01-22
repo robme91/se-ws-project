@@ -2,6 +2,7 @@ package objects;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import utils.GameUtils;
 
 /**
  * Created by tom on 13.01.17.
@@ -41,6 +42,7 @@ public class Player extends Character {
     @Override
     public void secondTick(int ms) {
         this.beerLevel = this.beerLevel - this.drinkSpeed * ((float) ms / 1000f);
+        System.out.println(getBeerLevel());
         super.secondTick(ms);
     }
 
@@ -49,7 +51,7 @@ public class Player extends Character {
     }
 
     public void setBeerLevel(float beerLevel) {
-        this.beerLevel = beerLevel;
+        this.beerLevel = GameUtils.clamp(0f, 100f, beerLevel);
     }
 
     public float getDrinkSpeed() {
