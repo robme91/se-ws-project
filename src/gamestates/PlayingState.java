@@ -90,8 +90,9 @@ public class PlayingState extends BasicGameState{
         if(quit){
             g.setColor(Color.white);
             g.drawString("Resume (R)", 250, 100);
-            g.drawString("Menu (M)", 250, 150);
-            g.drawString("Quit (Q)", 250, 200);
+            g.drawString("Level Menu (L)", 250, 150);
+            g.drawString("Main Menu (M)", 250, 200);
+            g.drawString("Quit (Q)", 250, 250);
             if(!quit){
                 g.clear();
             }
@@ -139,16 +140,18 @@ public class PlayingState extends BasicGameState{
             quit = true;
         }
         if(quit){
-            if(input.isKeyDown(Input.KEY_R)){
+            if(input.isKeyDown(Input.KEY_R)) {
                 quit = false;
                 levelController.play();
+            }else if(input.isKeyDown(Input.KEY_L)) {
+                quit = false;
+                game.enterState(LevelMenuState.LEVEL_MENU_STATE_ID);
             }else if(input.isKeyDown(Input.KEY_M)){
                 quit = false;
                 game.enterState(MainMenuState.MAIN_MENU_STATE_ID);
             }else if(input.isKeyDown(Input.KEY_Q)){
                 System.exit(0);
             }
-            //TODO maybe put a restart current level in here
         }
     }
 
