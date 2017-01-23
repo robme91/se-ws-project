@@ -43,11 +43,13 @@ public class LevelController {
             throw new IllegalArgumentException("Level must not be null!");
         }
         this.level = level;
-        this.level.setRemainingTime(this.level.getInitialLevelTime());
         if (!level.isInitialised()) {
             initializeLevel(level);
             level.setInitialised(true);
+        } else {
+            level.getPlayer().resetBeerLevel();
         }
+        this.level.setRemainingTime(this.level.getInitialLevelTime());
         characters.addAll(level.getNpcs());
         characters.add(level.getPlayer());
         for (Block b : level.getBlocks()) {
