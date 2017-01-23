@@ -44,10 +44,10 @@ public class PauseMenuState extends BasicGameState {
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         final Input input = container.getInput();
-        input.pause();
+
         counter += 1;
         // workaround, to do enter on escape driectly to playingState
-        if(counter > 10){
+        if(counter > 20){
             if(input.isKeyDown(Input.KEY_R) || input.isKeyDown(Input.KEY_ESCAPE)) {
                 counter = 0;
                 game.enterState(PlayingState.PLAYING_STATE_ID);

@@ -51,6 +51,8 @@ public class PlayingState extends BasicGameState{
         }else if(!isPaused){
             this.levelController = new LevelController(currentLevel);
             this.statusBarController = new StatusBarController(levelController);
+            levelController.pause();
+            isPaused = true;
         }else{
             container.resume();
         }
@@ -59,6 +61,11 @@ public class PlayingState extends BasicGameState{
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         levelController.drawOnGraphicsContext(g);
         statusBarController.drawOnGraphicsContext(g, 0f, GameUtils.GAME_HEIGHT - 50);
+
+        if(isPaused){
+            g.setColor(Color.cyan);
+            g.drawString("Press any arrow key to start!", 250, 300);
+        }
 
         //render level finished
         if(isLevelSucceeded){
