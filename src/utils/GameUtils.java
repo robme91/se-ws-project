@@ -1,6 +1,7 @@
 package utils;
 
 import objects.Enums;
+import objects.Street;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Shape;
@@ -46,6 +47,7 @@ public class GameUtils {
         }
         return false;
     }
+    /* isMouseInShape() ... und auf die fenstergröße des gesamten spiels zugreifen*/
 
     /**
      * Takes a dX and dY (starting at 0) and tells in which discrete direction
@@ -70,5 +72,133 @@ public class GameUtils {
         }
     }
 
-    /* isMouseInShape() ... und auf die fenstergröße des gesamten spiels zugreifen*/
+    /**
+     * All image resources have their front at the top.
+     * Input direction here and get rotation angle.
+     *
+     * @param direction which direction should we rotate to?
+     * @return Angle in degrees
+     */
+    public static float getImageRotationFromDirection(Enums.Direction direction) {
+        float rotation;
+        switch (direction) {
+            case RIGHT:
+                rotation = 90f;
+                break;
+            case DOWN:
+                rotation = 180f;
+                break;
+            case LEFT:
+                rotation = 270f;
+                break;
+            default:
+                rotation = 0f;
+        }
+        return rotation;
+    }
+
+    public static float clamp(float min, float max, float value) {
+        return Math.min(max, Math.max(min, value));
+    }
+
+    /**
+     * Sets the street type of street objects inplace.
+     * This only works before map initialization, because it relies on index coordinates.
+     *
+     * @param s         Street
+     * @param streetMap Bitmap
+     */
+    public static void setStreetType(Street s, boolean[][] streetMap) {
+        int x = (int) s.getPos_x();
+        int y = (int) s.getPos_y();
+        boolean T;
+        boolean L;
+        boolean R;
+        boolean B;
+        try {
+            T = streetMap[x][y - 1];
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+            T = false;
+        }
+        try {
+            L = streetMap[x - 1][y];
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+            L = false;
+        }
+        try {
+            R = streetMap[x + 1][y];
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+            R = false;
+        }
+        try {
+            B = streetMap[x][y + 1];
+        } catch (ArrayIndexOutOfBoundsException ignored) {
+            B = false;
+        }
+
+        if (T && L && R && B) {/*4CROSS*/
+            s.setDirection(Enums.Direction.UP);
+            s.setStreetType(Enums.StreetType.CROSS4);
+        }
+        if (T && L && R && !B) {/*3 - 0*/
+            s.setDirection(Enums.Direction.UP);
+            s.setStreetType(Enums.StreetType.CROSS3);
+        }
+        if (T && L && !R && B) {/*3 - 270*/
+            s.setDirection(Enums.Direction.LEFT);
+            s.setStreetType(Enums.StreetType.CROSS3);
+        }
+        if (T && L && !R && !B) {/*bend 180*/
+            s.setDirection(Enums.Direction.DOWN);
+            s.setStreetType(Enums.StreetType.BEND);
+        }
+        if (T && !L && R && B) {/*3 - 90*/
+            s.setDirection(Enums.Direction.RIGHT);
+            s.setStreetType(Enums.StreetType.CROSS3);
+        }
+        if (T && !L && R && !B) {/*bend 270*/
+            s.setDirection(Enums.Direction.LEFT);
+            s.setStreetType(Enums.StreetType.BEND);
+        }
+        if (T && !L && !R && B) {/*straight - 0*/
+            s.setDirection(Enums.Direction.UP);
+            s.setStreetType(Enums.StreetType.STRAIGHT);
+        }
+        if (T && !L && !R && !B) {/*1 - 0*/
+            s.setDirection(Enums.Direction.UP);
+            s.setStreetType(Enums.StreetType.END);
+        }
+        if (!T && L && R && B) {/*3 - 180*/
+            s.setDirection(Enums.Direction.DOWN);
+            s.setStreetType(Enums.StreetType.CROSS3);
+        }
+        if (!T && L && R && !B) {/*straight - 90*/
+            s.setDirection(Enums.Direction.RIGHT);
+            s.setStreetType(Enums.StreetType.STRAIGHT);
+        }
+        if (!T && L && !R && B) {/*bend - 90*/
+            s.setDirection(Enums.Direction.RIGHT);
+            s.setStreetType(Enums.StreetType.BEND);
+        }
+        if (!T && L && !R && !B) {/*1 - 270*/
+            s.setDirection(Enums.Direction.LEFT);
+            s.setStreetType(Enums.StreetType.END);
+        }
+        if (!T && !L && R && B) {/*bend - 0*/
+            s.setDirection(Enums.Direction.UP);
+            s.setStreetType(Enums.StreetType.BEND);
+        }
+        if (!T && !L && R && !B) {/*1 - 90*/
+            s.setDirection(Enums.Direction.RIGHT);
+            s.setStreetType(Enums.StreetType.END);
+        }
+        if (!T && !L && !R && B) {/*1 - 180*/
+            s.setDirection(Enums.Direction.DOWN);
+            s.setStreetType(Enums.StreetType.END);
+        }
+        if (!T && !L && !R && !B) {/*0*/
+            s.setDirection(Enums.Direction.UP);
+            s.setStreetType(Enums.StreetType.SOLO);
+        }
+    }
 }

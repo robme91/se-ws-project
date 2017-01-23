@@ -7,11 +7,9 @@ import objects.Enums;
 import objects.GameObject;
 import objects.NPC;
 import objects.Player;
-import org.newdawn.slick.Color;
+import objects.Street;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.GeomUtil;
 import org.newdawn.slick.geom.Line;
-import org.newdawn.slick.geom.Shape;
 import utils.GameUtils;
 
 import java.util.ArrayList;
@@ -35,9 +33,7 @@ public class LevelController {
     // Needed for doEverySecond()
     private int msSinceLastSecond = 0;
 
-    private List<Shape> DEBUG_SHAPES_GREEN = new ArrayList<Shape>(); // TODO RMD
-    private List<Shape> DEBUG_SHAPES_YELLOW = new ArrayList<Shape>(); // TODO RMD
-    private List<Shape> DEBUG_SHAPES_RED = new ArrayList<Shape>(); // TODO RMD
+    private boolean IS_PAUSED = false;
 
     /**
      * @param level
@@ -47,7 +43,6 @@ public class LevelController {
             throw new IllegalArgumentException("Level must not be null!");
         }
         this.level = level;
-        this.level.setRemainingTime(this.level.getInitialLevelTime());  // Set remaining time
         initializeLevel(level);
         characters.addAll(level.getNpcs());
         characters.add(level.getPlayer());
@@ -56,19 +51,19 @@ public class LevelController {
                 this.blockingBlocks.add(b);
             }
         }
-
-        // TODO find street pictures
     }
 
     /**
      * @param delta
      */
     public void update(int delta) {
-        moveCharacters(this.characters, delta);
-        msSinceLastSecond += delta;
-        if (msSinceLastSecond > 1000) {
-            msSinceLastSecond -= 1000;
-            doEverySecond();
+        if (!IS_PAUSED) {
+            moveCharacters(this.characters, delta);
+            msSinceLastSecond += delta;
+            if (msSinceLastSecond > 1000) {
+                doEverySecond(msSinceLastSecond);
+                msSinceLastSecond -= 1000;
+            }
         }
     }
 
@@ -84,19 +79,20 @@ public class LevelController {
             drawImageOnGraphicsContext(g, npc);
         }
         drawImageOnGraphicsContext(g, this.level.getPlayer());
+    }
 
-        g.setColor(Color.red);
-        for (Shape s : DEBUG_SHAPES_RED) {
-            g.draw(s);
-        }
-        g.setColor(Color.yellow);
-        for (Shape s : DEBUG_SHAPES_YELLOW) {
-            g.draw(s);
-        }
-        g.setColor(Color.green);
-        for (Shape s : DEBUG_SHAPES_GREEN) {
-            g.draw(s);
-        }
+    /**
+     * Pauses the game
+     */
+    public void pause() {
+        this.IS_PAUSED = true;
+    }
+
+    /**
+     * Runs the game
+     */
+    public void play() {
+        this.IS_PAUSED = false;
     }
 
     /**
@@ -106,8 +102,24 @@ public class LevelController {
      */
     private void initializeLevel(AbstractLevel level) {
         float blockSize = 32f;
-        // fixed
+        this.level.setRemainingTime(this.level.getInitialLevelTime());
+
+        // before setting coordinates figure out which street type to use.
+        boolean[][] streetMap = new boolean[25][20];
         for (Block b : this.level.getBlocks()) {
+            int x = (int) b.getPos_x();
+            int y = (int) b.getPos_y();
+            streetMap[x][y] = false;
+            if (b.getClass().equals(Street.class)) {
+                streetMap[x][y] = true;
+            }
+        }
+
+
+        for (Block b : this.level.getBlocks()) {
+            if (b.getClass().equals(Street.class)) {
+                GameUtils.setStreetType((Street) b, streetMap);
+            }
             b.setPos_x((b.getPos_x() + 1) * blockSize - (blockSize / 2));
             b.setPos_y((b.getPos_y() + 1) * blockSize - (blockSize / 2));
         }
@@ -225,23 +237,25 @@ public class LevelController {
 
 
     /**
-     * @return Intervall [0,1]
+     * How many time (in percent) is left?
+     *
+     * @return Intervall [0,100]
      */
-    public float getRemainingTime() {
-        //TODO STUB
-        return 0f;
+    public float getRemainingTimePercentage() {
+        return this.level.getRemainingTime() / this.level.getInitialLevelTime();
     }
 
     /**
-     * @return Intervall [0,1]
+     * How many beer (in percent) has the player left?
+     *
+     * @return Intervall [0,100]
      */
-    public float getRemainingBeer() {
-        //TODO STUB
-        return 0f;
+    public float getRemainingBeerPercentage() {
+        return getPlayer().getBeerLevel();
     }
 
     /**
-     * @return
+     * @return player object
      */
     public Player getPlayer() {
         return level.getPlayer();
@@ -257,30 +271,24 @@ public class LevelController {
     /**
      * Gets executed every second
      */
-    private void doEverySecond() {
-        DEBUG_SHAPES_RED.clear();
-        DEBUG_SHAPES_YELLOW.clear();
-        DEBUG_SHAPES_GREEN.clear();
+    private void doEverySecond(int msSinceLastSecond) {
         updateAI();
-        // TODO UPDATE KI
-        // TODO SET REMAINING TIME
-        // TODO Reduce Player beer level
-        /*
-        Try to see player within sightDistance (without blocking blocks in between.
-        If so, then apply direction change with a probability of intelligence where:
-        0 = do not listen to that daaaamn controller
-        100 = always do what the controller sez
-         */
+        for (GameObject c : characters) {
+            c.secondTick(msSinceLastSecond);
+        }
+        for (GameObject go : this.level.getBlocks()) {
+            go.secondTick(msSinceLastSecond);
+        }
+        this.level.setRemainingTime(this.level.getRemainingTime() - (float) msSinceLastSecond /
+                1000f);
     }
 
     private void updateAI() {
-        GeomUtil geomUtil = new GeomUtil();
         for (NPC npc : this.level.getNpcs()) {
 
             //create line of sight
             Line lineOfSight = new Line(npc.getPos_x(), npc.getPos_y(), getPlayer().getPos_x(),
                     getPlayer().getPos_y());
-
             // check if player is too far awy
             if (lineOfSight.length() < npc.getSightDistance() * 32) {
                 boolean obstacle = false;
@@ -295,11 +303,9 @@ public class LevelController {
                 if (!obstacle) {
                     Enums.Direction direction = GameUtils.getDirectionFromXY(lineOfSight.getDX(),
                             lineOfSight.getDY());
+                    // is npc smart enough?
                     if (new Random().nextInt(100) < npc.getIntelligence()) {
                         npc.setDirection(direction);
-                        DEBUG_SHAPES_GREEN.add(lineOfSight);
-                    } else {
-                        DEBUG_SHAPES_YELLOW.add(lineOfSight);
                     }
                 }
             }

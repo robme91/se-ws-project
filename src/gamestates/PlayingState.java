@@ -135,12 +135,13 @@ public class PlayingState extends BasicGameState{
 
         //escape or resume game logic
         if(input.isKeyDown(Input.KEY_ESCAPE)){
-            //TODO PAUSE GAME!
+            levelController.pause();
             quit = true;
         }
         if(quit){
             if(input.isKeyDown(Input.KEY_R)){
                 quit = false;
+                levelController.play();
             }else if(input.isKeyDown(Input.KEY_M)){
                 quit = false;
                 game.enterState(MainMenuState.MAIN_MENU_STATE_ID);

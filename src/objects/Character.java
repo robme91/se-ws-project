@@ -37,6 +37,7 @@ public abstract class Character extends GameObject {
         this.hitbox.setCenterY(y);
     }
 
+
     public Enums.Direction getDirection() {
         return direction;
     }
