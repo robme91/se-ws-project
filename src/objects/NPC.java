@@ -28,9 +28,14 @@ public class NPC extends Character {
         this.rechargeDuration = 2;
         try {
             this.image = new Image("/res/img/objects/" + name.toLowerCase() + ".png");
-        } catch (SlickException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             System.err.println("No image ressource found for NPC name " + name + "!");
+            try {
+                this.image = new Image("/res/img/objects/npc_default.png");
+            } catch (SlickException e1) {
+                e1.printStackTrace();
+            }
+
         }
         this.setDirection(getRandomDirection());
     }
