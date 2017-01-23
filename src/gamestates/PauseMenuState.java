@@ -46,7 +46,7 @@ public class PauseMenuState extends BasicGameState {
         final Input input = container.getInput();
 
         counter += 1;
-        // workaround, to do enter on escape driectly to playingState
+        // workaround, not to enter on escape directly to playingState
         if(counter > 20){
             if(input.isKeyDown(Input.KEY_R) || input.isKeyDown(Input.KEY_ESCAPE)) {
                 counter = 0;

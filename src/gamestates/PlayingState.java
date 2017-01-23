@@ -5,7 +5,6 @@ import controllers.StatusBarController;
 import level.AbstractLevel;
 import objects.Enums;
 import org.newdawn.slick.*;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import utils.GameUtils;
@@ -26,8 +25,6 @@ public class PlayingState extends BasicGameState{
 
     /*Set to true if pause menu shall popup*/
     private boolean isPaused = false;
-    private boolean isLevelSucceeded = false;
-
 
     private StatusBarController statusBarController;
 
@@ -64,19 +61,24 @@ public class PlayingState extends BasicGameState{
 
         if(isPaused){
             g.setColor(Color.cyan);
-            g.drawString("Press any arrow key to start!", 250, 300);
-        }
-
-        //render level finished
-        if(isLevelSucceeded){
-            g.setColor(Color.white);
-            g.drawString("You Win!", GameUtils.GAME_FIELD_WIDTH/2, GameUtils.GAME_FIELD_HEIGHT/2);
+            g.drawString("Press any arrow key to start!", GameUtils.GAME_STARTET_POS_X, GameUtils.GAME_STARTET_POS_Y);
         }
     }
 
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-        final Input input = container.getInput();
+        if(levelController.isPlayerDead()){
+            Image pauseImg = pauseGameMakeImg(container);
+            ((GameFinishState) game.getState(GameFinishState.Game_FINISH_STATE_ID)).setBackgroundImage(pauseImg);
+            ((GameFinishState) game.getState(GameFinishState.Game_FINISH_STATE_ID)).isFinishedSuccessful(false);
+            game.enterState(GameFinishState.Game_FINISH_STATE_ID);
+        }else if(levelController.isTimeUp()){
+            Image pauseImg = pauseGameMakeImg(container);
+            ((GameFinishState) game.getState(GameFinishState.Game_FINISH_STATE_ID)).setBackgroundImage(pauseImg);
+            ((GameFinishState) game.getState(GameFinishState.Game_FINISH_STATE_ID)).isFinishedSuccessful(true);
+            game.enterState(GameFinishState.Game_FINISH_STATE_ID);
+        }
 
+        final Input input = container.getInput();
         /*movement of the player*/
         if (input.isKeyDown(Input.KEY_UP)) {
             levelController.setPlayerDirection(Enums.Direction.UP);
@@ -97,12 +99,8 @@ public class PlayingState extends BasicGameState{
         //pause menu logic
         if(!isPaused){
             if(input.isKeyDown(Input.KEY_ESCAPE)){
-                container.pause();
-                levelController.pause();
-                isPaused = true;
-                Image pauseImage = new Image(GameUtils.GAME_WIDTH, GameUtils.GAME_HEIGHT);
-                container.getGraphics().copyArea(pauseImage, 0, 0);
-                ((PauseMenuState) game.getState(PauseMenuState.PAUSE_MENU_STATE_ID)).setBackgroundImage(pauseImage);
+                Image pauseImg = pauseGameMakeImg(container);
+                ((PauseMenuState) game.getState(PauseMenuState.PAUSE_MENU_STATE_ID)).setBackgroundImage(pauseImg);
                 game.enterState(PauseMenuState.PAUSE_MENU_STATE_ID);
             }
         }else{
@@ -125,5 +123,20 @@ public class PlayingState extends BasicGameState{
      */
     public void isPaused(final boolean paused){
         this.isPaused = paused;
+    }
+
+    /**
+     * pause the game and return an image from the current game field.
+     * @param container The container which must be paused and hold the graphics
+     * @return
+     * @throws SlickException
+     */
+    private Image pauseGameMakeImg(GameContainer container) throws SlickException {
+        container.pause();
+        levelController.pause();
+        isPaused = true;
+        Image pauseImage = new Image(GameUtils.GAME_WIDTH, GameUtils.GAME_HEIGHT);
+        container.getGraphics().copyArea(pauseImage, 0, 0);
+        return pauseImage;
     }
 }
