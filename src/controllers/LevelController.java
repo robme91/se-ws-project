@@ -95,6 +95,15 @@ public class LevelController {
         this.IS_PAUSED = false;
     }
 
+
+    public boolean isPlayerDead() {
+        return false;
+    }
+
+    public boolean isTimeUp() {
+        return false;
+    }
+
     /**
      * Transforms the initial block indices into pixel coordinates.
      *

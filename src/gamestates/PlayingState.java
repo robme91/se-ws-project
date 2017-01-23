@@ -1,6 +1,7 @@
 package gamestates;
 
 import controllers.LevelController;
+import controllers.StatusBarController;
 import level.AbstractLevel;
 import objects.Enums;
 import org.newdawn.slick.Color;
@@ -40,6 +41,7 @@ public class PlayingState extends BasicGameState{
     //just for dev
     private String playerPosDisplay = "";
 
+    private StatusBarController statusBarController;
 
     public PlayingState(final int stateId){
         PLAYING_STATE_ID = stateId;
@@ -61,6 +63,7 @@ public class PlayingState extends BasicGameState{
             game.enterState(MainMenuState.MAIN_MENU_STATE_ID);
         }else{
             this.levelController = new LevelController(currentLevel);
+            this.statusBarController = new StatusBarController(levelController);
         }
         //TODO später umziehen nachdem der Spielstart iwie bestätigt wurde
         isTimeRunning = true;
@@ -68,17 +71,8 @@ public class PlayingState extends BasicGameState{
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         levelController.drawOnGraphicsContext(g);
+        statusBarController.drawOnGraphicsContext(g, 0f, GameUtils.GAME_HEIGHT - 50);
 
-        g.setColor(Color.white);
-
-//        //gamefield separator
-//        g.drawLine(0, GameUtils.GAME_FIELD_HEIGHT, GameUtils.GAME_FIELD_WIDTH, GameUtils.GAME_FIELD_HEIGHT);
-//        g.drawLine(GameUtils.GAME_FIELD_WIDTH, GameUtils.GAME_FIELD_HEIGHT, GameUtils.GAME_FIELD_WIDTH, 0);
-
-        //render gameinfos
-        g.setColor(Color.green);
-        g.drawRect(gameTimeBar.getX(), gameTimeBar.getY(), 400, 20);
-        g.fill(gameTimeBar);
 
         //render level finished
         if(isLevelSucceeded){
