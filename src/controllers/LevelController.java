@@ -95,6 +95,15 @@ public class LevelController {
         this.IS_PAUSED = false;
     }
 
+
+    public boolean isPlayerDead() {
+        return getPlayer().getBeerLevel() <= 0f;
+    }
+
+    public boolean isTimeUp() {
+        return this.level.getRemainingTime() <= 0f;
+    }
+
     /**
      * Transforms the initial block indices into pixel coordinates.
      *
