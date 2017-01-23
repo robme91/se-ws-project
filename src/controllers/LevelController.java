@@ -248,7 +248,7 @@ public class LevelController {
     /**
      * How many time (in percent) is left?
      *
-     * @return Intervall [0,100]
+     * @return Intervall [0,1]
      */
     public float getRemainingTimePercentage() {
         return this.level.getRemainingTime() / this.level.getInitialLevelTime();
@@ -257,10 +257,10 @@ public class LevelController {
     /**
      * How many beer (in percent) has the player left?
      *
-     * @return Intervall [0,100]
+     * @return Intervall [0,1]
      */
     public float getRemainingBeerPercentage() {
-        return getPlayer().getBeerLevel();
+        return getPlayer().getBeerLevel() / 100;
     }
 
     /**
