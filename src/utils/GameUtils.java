@@ -17,7 +17,7 @@ public class GameUtils {
     /**
      * The size of the game. NOT the size of the gamefield
      */
-    public static final int GAME_WIDTH = 850;
+    public static final int GAME_WIDTH = 800;
     public static final int GAME_HEIGHT = 690;
 
     /**
