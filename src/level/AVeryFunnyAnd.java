@@ -1,23 +1,25 @@
 package level;
 
-import objects.Enums;
-import objects.House;
-import objects.Spaeti;
-import objects.NPC;
-import objects.Player;
-import objects.Street;
+import objects.*;
+
 /** Generated Level class by LevelGenerator from .nbno file*/
-public class TestLevel extends AbstractLevel {
-public TestLevel() {
+public class AVeryFunnyAnd extends AbstractLevel {
+public AVeryFunnyAnd() {
 super();
-this.levelName = "TestLevel";
+this.levelName = "AVeryFunnyAndCoolLevel";
 this.initialLevelTime = 60;
-this.player = new Player(11, 19, 50f, 4f, 100f);
+this.player = new Player(11, 19, 70f, 4f, 50f);
 this.npcs.add(new NPC(16, 1, 40f, "Schnorrer", 10, 30, Enums.AttackTarget.DRINK, 30));
+
+this.npcs.add(new NPC(20, 3, 40f, "Schnorrer", 10, 30, Enums.AttackTarget.DRINK, 30));
 
 this.npcs.add(new NPC(2, 6, 40f, "Schnorrer", 10, 30, Enums.AttackTarget.DRINK, 30));
 
 this.npcs.add(new NPC(23, 6, 25f, "Polizist", 24, 40, Enums.AttackTarget.PLAYER_SPEED, 70));
+
+this.npcs.add(new NPC(20, 7, 40f, "Schnorrer", 10, 30, Enums.AttackTarget.DRINK, 30));
+
+this.npcs.add(new NPC(23, 16, 25f, "Polizist", 24, 40, Enums.AttackTarget.PLAYER_SPEED, 70));
 
 this.blocks.add(new House(0, 0));
 
@@ -79,8 +81,6 @@ this.blocks.add(new House(9, 5));
 
 this.blocks.add(new House(14, 5));
 
-this.blocks.add(new House(15, 5));
-
 this.blocks.add(new House(16, 5));
 
 this.blocks.add(new House(9, 6));
@@ -89,9 +89,15 @@ this.blocks.add(new House(9, 7));
 
 this.blocks.add(new House(9, 8));
 
+this.blocks.add(new House(12, 8));
+
 this.blocks.add(new House(9, 9));
 
+this.blocks.add(new House(12, 9));
+
 this.blocks.add(new House(9, 10));
+
+this.blocks.add(new House(12, 10));
 
 this.blocks.add(new House(13, 10));
 
@@ -109,13 +115,23 @@ this.blocks.add(new House(20, 12));
 
 this.blocks.add(new House(9, 13));
 
+this.blocks.add(new House(15, 13));
+
 this.blocks.add(new House(20, 13));
 
 this.blocks.add(new House(9, 14));
 
+this.blocks.add(new House(15, 14));
+
+this.blocks.add(new House(18, 14));
+
 this.blocks.add(new House(20, 14));
 
 this.blocks.add(new House(9, 15));
+
+this.blocks.add(new House(15, 15));
+
+this.blocks.add(new House(18, 15));
 
 this.blocks.add(new House(20, 15));
 
@@ -475,8 +491,6 @@ this.blocks.add(new Street(10, 8));
 
 this.blocks.add(new Street(11, 8));
 
-this.blocks.add(new Street(12, 8));
-
 this.blocks.add(new Street(13, 8));
 
 this.blocks.add(new Street(14, 8));
@@ -523,8 +537,6 @@ this.blocks.add(new Street(10, 9));
 
 this.blocks.add(new Street(11, 9));
 
-this.blocks.add(new Street(12, 9));
-
 this.blocks.add(new Street(13, 9));
 
 this.blocks.add(new Street(14, 9));
@@ -570,8 +582,6 @@ this.blocks.add(new Street(8, 10));
 this.blocks.add(new Street(10, 10));
 
 this.blocks.add(new Street(11, 10));
-
-this.blocks.add(new Street(12, 10));
 
 this.blocks.add(new Street(15, 10));
 
@@ -709,8 +719,6 @@ this.blocks.add(new Street(13, 13));
 
 this.blocks.add(new Street(14, 13));
 
-this.blocks.add(new Street(15, 13));
-
 this.blocks.add(new Street(16, 13));
 
 this.blocks.add(new Street(17, 13));
@@ -755,13 +763,9 @@ this.blocks.add(new Street(13, 14));
 
 this.blocks.add(new Street(14, 14));
 
-this.blocks.add(new Street(15, 14));
-
 this.blocks.add(new Street(16, 14));
 
 this.blocks.add(new Street(17, 14));
-
-this.blocks.add(new Street(18, 14));
 
 this.blocks.add(new Street(19, 14));
 
@@ -801,13 +805,9 @@ this.blocks.add(new Street(13, 15));
 
 this.blocks.add(new Street(14, 15));
 
-this.blocks.add(new Street(15, 15));
-
 this.blocks.add(new Street(16, 15));
 
 this.blocks.add(new Street(17, 15));
-
-this.blocks.add(new Street(18, 15));
 
 this.blocks.add(new Street(19, 15));
 
@@ -846,8 +846,6 @@ this.blocks.add(new Street(12, 16));
 this.blocks.add(new Street(13, 16));
 
 this.blocks.add(new Street(14, 16));
-
-this.blocks.add(new Street(15, 16));
 
 this.blocks.add(new Street(16, 16));
 
@@ -1017,7 +1015,11 @@ this.blocks.add(new Street(24, 19));
 
 this.blocks.add(new Spaeti(2, 3, Enums.Direction.UP));
 
+this.blocks.add(new Spaeti(15, 5, Enums.Direction.DOWN));
+
 this.blocks.add(new Spaeti(9, 12, Enums.Direction.LEFT));
+
+this.blocks.add(new Spaeti(15, 16, Enums.Direction.RIGHT));
 
 }
 }
