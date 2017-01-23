@@ -2,9 +2,13 @@ package gamestates;
 
 import controllers.LevelController;
 import controllers.StatusBarController;
-import level.AbstractLevel;
 import objects.Enums;
-import org.newdawn.slick.*;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import utils.GameUtils;
@@ -21,7 +25,7 @@ public class PlayingState extends BasicGameState{
     private LevelController levelController;
 
     /**The level that is chosen to play*/
-    private AbstractLevel currentLevel;
+    private Class currentLevel;
 
     /*Set to true if pause menu shall popup*/
     private boolean isPaused = false;
@@ -125,11 +129,10 @@ public class PlayingState extends BasicGameState{
     }
 
     /**
-     * Sets the current level that will be played then.
-     * @param currentLevel The level that shall be played
+     * Sets the current level that will be played then
+     * @param currentLevel
      */
-    @SuppressWarnings("WeakerAccess")
-    public void setCurrentLevel(AbstractLevel currentLevel) {
+    public void setCurrentLevel(Class currentLevel) {
         this.currentLevel = currentLevel;
     }
 
