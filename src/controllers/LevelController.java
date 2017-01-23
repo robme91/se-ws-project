@@ -43,7 +43,11 @@ public class LevelController {
             throw new IllegalArgumentException("Level must not be null!");
         }
         this.level = level;
-        initializeLevel(level);
+        this.level.setRemainingTime(this.level.getInitialLevelTime());
+        if (!level.isInitialised()) {
+            initializeLevel(level);
+            level.setInitialised(true);
+        }
         characters.addAll(level.getNpcs());
         characters.add(level.getPlayer());
         for (Block b : level.getBlocks()) {
@@ -111,7 +115,6 @@ public class LevelController {
      */
     private void initializeLevel(AbstractLevel level) {
         float blockSize = 32f;
-        this.level.setRemainingTime(this.level.getInitialLevelTime());
 
         // before setting coordinates figure out which street type to use.
         boolean[][] streetMap = new boolean[25][20];
