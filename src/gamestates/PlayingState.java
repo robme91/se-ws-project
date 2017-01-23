@@ -26,6 +26,12 @@ public class PlayingState extends BasicGameState{
     /*Set to true if pause menu shall popup*/
     private boolean isPaused = false;
 
+
+    private GameContainer container;
+    private StateBasedGame game;
+    /**The image that is passed to other states, as a background image*/
+    private Image pauseImage;
+
     private StatusBarController statusBarController;
 
     public PlayingState(final int stateId){
@@ -37,7 +43,9 @@ public class PlayingState extends BasicGameState{
     }
 
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-
+        this.container = container;
+        this.game = game;
+        this.pauseImage = new Image(GameUtils.GAME_WIDTH, GameUtils.GAME_HEIGHT);
     }
 
     @Override
@@ -67,13 +75,13 @@ public class PlayingState extends BasicGameState{
 
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         if(levelController.isPlayerDead()){
-            Image pauseImg = pauseGameMakeImg(container);
-            ((GameFinishState) game.getState(GameFinishState.Game_FINISH_STATE_ID)).setBackgroundImage(pauseImg);
+            container.getGraphics().copyArea(this.pauseImage, 0, 0);
+            ((GameFinishState) game.getState(GameFinishState.Game_FINISH_STATE_ID)).setBackgroundImage(this.pauseImage);
             ((GameFinishState) game.getState(GameFinishState.Game_FINISH_STATE_ID)).isFinishedSuccessful(false);
             game.enterState(GameFinishState.Game_FINISH_STATE_ID);
         }else if(levelController.isTimeUp()){
-            Image pauseImg = pauseGameMakeImg(container);
-            ((GameFinishState) game.getState(GameFinishState.Game_FINISH_STATE_ID)).setBackgroundImage(pauseImg);
+            container.getGraphics().copyArea(this.pauseImage, 0, 0);
+            ((GameFinishState) game.getState(GameFinishState.Game_FINISH_STATE_ID)).setBackgroundImage(this.pauseImage);
             ((GameFinishState) game.getState(GameFinishState.Game_FINISH_STATE_ID)).isFinishedSuccessful(true);
             game.enterState(GameFinishState.Game_FINISH_STATE_ID);
         }
@@ -95,23 +103,31 @@ public class PlayingState extends BasicGameState{
 
         // let level update itself
         levelController.update(delta);
+    }
 
-        //pause menu logic
-        if(!isPaused){
-            if(input.isKeyDown(Input.KEY_ESCAPE)){
-                Image pauseImg = pauseGameMakeImg(container);
-                ((PauseMenuState) game.getState(PauseMenuState.PAUSE_MENU_STATE_ID)).setBackgroundImage(pauseImg);
-                game.enterState(PauseMenuState.PAUSE_MENU_STATE_ID);
-            }
-        }else{
-            if (input.isKeyDown(Input.KEY_UP) || input.isKeyDown(Input.KEY_DOWN)
-                    || input.isKeyDown(Input.KEY_LEFT) || input.isKeyDown(Input.KEY_RIGHT)) {
+    @Override
+    public void keyPressed(int key, char c) {
+        // pause menu logic
+        if (key == Input.KEY_ESCAPE) {
+            levelController.pause();
+            isPaused = true;
+            this.container.getGraphics().copyArea(this.pauseImage, 0, 0);
+            ((PauseMenuState) game.getState(PauseMenuState.PAUSE_MENU_STATE_ID)).setBackgroundImage(this.pauseImage);
+            game.enterState(PauseMenuState.PAUSE_MENU_STATE_ID);
+        }
+        if (isPaused) {
+            if (key == Input.KEY_UP || key == Input.KEY_DOWN
+                    || key == Input.KEY_LEFT || key == Input.KEY_RIGHT) {
                 isPaused = false;
                 levelController.play();
             }
         }
     }
 
+    /**
+     * Sets the current level that will be played then.
+     * @param currentLevel The level that shall be played
+     */
     @SuppressWarnings("WeakerAccess")
     public void setCurrentLevel(AbstractLevel currentLevel) {
         this.currentLevel = currentLevel;
@@ -123,20 +139,5 @@ public class PlayingState extends BasicGameState{
      */
     public void isPaused(final boolean paused){
         this.isPaused = paused;
-    }
-
-    /**
-     * pause the game and return an image from the current game field.
-     * @param container The container which must be paused and hold the graphics
-     * @return
-     * @throws SlickException
-     */
-    private Image pauseGameMakeImg(GameContainer container) throws SlickException {
-        container.pause();
-        levelController.pause();
-        isPaused = true;
-        Image pauseImage = new Image(GameUtils.GAME_WIDTH, GameUtils.GAME_HEIGHT);
-        container.getGraphics().copyArea(pauseImage, 0, 0);
-        return pauseImage;
     }
 }

@@ -14,8 +14,7 @@ public class PauseMenuState extends BasicGameState {
 
     private Image backgroundImage;
 
-    /*To avoid that press escape returns to game to fast*/
-    private int counter = 0;
+    private StateBasedGame game;
 
     public PauseMenuState(final int stateId){
         PAUSE_MENU_STATE_ID = stateId;
@@ -28,7 +27,7 @@ public class PauseMenuState extends BasicGameState {
 
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-
+        this.game = game;
     }
 
     @Override
@@ -43,24 +42,7 @@ public class PauseMenuState extends BasicGameState {
 
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-        final Input input = container.getInput();
 
-        counter += 1;
-        // workaround, not to enter on escape directly to playingState
-        if(counter > 20){
-            if(input.isKeyDown(Input.KEY_R) || input.isKeyDown(Input.KEY_ESCAPE)) {
-                counter = 0;
-                game.enterState(PlayingState.PLAYING_STATE_ID);
-            }else if(input.isKeyDown(Input.KEY_L)) {
-                ((PlayingState) game.getState(PlayingState.PLAYING_STATE_ID)).isPaused(false);
-                game.enterState(LevelMenuState.LEVEL_MENU_STATE_ID);
-            }else if(input.isKeyDown(Input.KEY_M)){
-                game.enterState(MainMenuState.MAIN_MENU_STATE_ID);
-                ((PlayingState) game.getState(PlayingState.PLAYING_STATE_ID)).isPaused(false);
-            }else if(input.isKeyDown(Input.KEY_Q)){
-                System.exit(0);
-            }
-        }
     }
 
     /**
@@ -70,5 +52,27 @@ public class PauseMenuState extends BasicGameState {
     public void setBackgroundImage(final Image img){
         img.setAlpha(0.6f);
         this.backgroundImage = img;
+    }
+
+    @Override
+    public void keyPressed(int key, char c) {
+        //resume the game
+        if(key == Input.KEY_R || key == Input.KEY_ESCAPE){
+            this.game.enterState(PlayingState.PLAYING_STATE_ID);
+        }
+        // go to level menu
+        if(key == Input.KEY_L) {
+            ((PlayingState) this.game.getState(PlayingState.PLAYING_STATE_ID)).isPaused(false);
+            this.game.enterState(LevelMenuState.LEVEL_MENU_STATE_ID);
+        }
+        // go to main menu
+        if(key == Input.KEY_M){
+            this.game.enterState(MainMenuState.MAIN_MENU_STATE_ID);
+            ((PlayingState) this.game.getState(PlayingState.PLAYING_STATE_ID)).isPaused(false);
+        }
+        // exit game
+        if(key == Input.KEY_Q){
+            System.exit(0);
+        }
     }
 }

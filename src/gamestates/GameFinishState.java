@@ -15,6 +15,8 @@ public class GameFinishState extends BasicGameState {
     private Image backgroundImage;
     private boolean finishedSuccessful;
 
+    private StateBasedGame game;
+
     public GameFinishState(final int stateId){
         this.Game_FINISH_STATE_ID = stateId;
     }
@@ -26,7 +28,7 @@ public class GameFinishState extends BasicGameState {
 
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-
+        this.game = game;
     }
 
     @Override
@@ -48,17 +50,20 @@ public class GameFinishState extends BasicGameState {
 
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-        final Input input = container.getInput();
-        if(input.isKeyDown(Input.KEY_R)) {
+    }
+
+    @Override
+    public void keyPressed(int key, char c) {
+        if(key == Input.KEY_R) {
             ((PlayingState) game.getState(PlayingState.PLAYING_STATE_ID)).isPaused(false);
             game.enterState(PlayingState.PLAYING_STATE_ID);
-        }else if(input.isKeyDown(Input.KEY_L)) {
+        }else if(key == Input.KEY_L) {
             ((PlayingState) game.getState(PlayingState.PLAYING_STATE_ID)).isPaused(false);
             game.enterState(LevelMenuState.LEVEL_MENU_STATE_ID);
-        }else if(input.isKeyDown(Input.KEY_M)){
+        }else if(key == Input.KEY_M){
             game.enterState(MainMenuState.MAIN_MENU_STATE_ID);
             ((PlayingState) game.getState(PlayingState.PLAYING_STATE_ID)).isPaused(false);
-        }else if(input.isKeyDown(Input.KEY_Q)){
+        }else if(key == Input.KEY_Q){
             System.exit(0);
         }
     }
@@ -72,7 +77,11 @@ public class GameFinishState extends BasicGameState {
         this.backgroundImage = img;
     }
 
-    public void isFinishedSuccessful (final boolean successfull){
-        this.finishedSuccessful = successfull;
+    /**
+     * Set true if the level was finished successful otherwise its finished unsucceessful
+     * @param successful True if player won the level
+     */
+    public void isFinishedSuccessful (final boolean successful){
+        this.finishedSuccessful = successful;
     }
 }
