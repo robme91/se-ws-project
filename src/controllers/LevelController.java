@@ -97,11 +97,11 @@ public class LevelController {
 
 
     public boolean isPlayerDead() {
-        return false;
+        return getPlayer().getBeerLevel() <= 0f;
     }
 
     public boolean isTimeUp() {
-        return false;
+        return this.level.getRemainingTime() <= 0f;
     }
 
     /**
