@@ -19,13 +19,6 @@ public abstract class AbstractLevel {
     protected float initialLevelTime;
     protected float remainingTime;
 
-    /**
-     * The class generator creates levels with block-indices since it does not know how many pixels
-     * the gamefield has. It initialised is false, all blocks still have indices as coordinates.
-     * If true, they have been transformed to pixel coordinates.
-     */
-    private boolean initialised = false;
-
     public AbstractLevel() {
         this.blocks = new HashSet<Block>();
         this.npcs = new HashSet<NPC>();
@@ -57,13 +50,5 @@ public abstract class AbstractLevel {
 
     public void setRemainingTime(float remainingTime) {
         this.remainingTime = remainingTime;
-    }
-
-    public boolean isInitialised() {
-        return initialised;
-    }
-
-    public void setInitialised(boolean initialised) {
-        this.initialised = initialised;
     }
 }

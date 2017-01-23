@@ -36,19 +36,21 @@ public class LevelController {
     private boolean IS_PAUSED = false;
 
     /**
-     * @param level
+     * @param levelClass
      */
-    public LevelController(AbstractLevel level) {
-        if (level == null) {
-            throw new IllegalArgumentException("Level must not be null!");
+    public LevelController(Class levelClass) {
+        AbstractLevel level = null;
+        try {
+            level = (AbstractLevel) levelClass.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            System.err.println("Level instantiation failed for class " + levelClass.getName());
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            System.err.println("Could not access class " + levelClass.getName());
         }
         this.level = level;
-        if (!level.isInitialised()) {
-            initializeLevel(level);
-            level.setInitialised(true);
-        } else {
-            level.getPlayer().resetBeerLevel();
-        }
+        initializeLevel(level);
         this.level.setRemainingTime(this.level.getInitialLevelTime());
         characters.addAll(level.getNpcs());
         characters.add(level.getPlayer());
