@@ -12,4 +12,8 @@ public class Enums {
     public enum Direction {
         UP, DOWN, LEFT, RIGHT
     }
+
+    public enum StreetType {
+        SOLO, STRAIGHT, END, BEND, CROSS3, CROSS4
+    }
 }

@@ -1,6 +1,6 @@
 package gamestates;
 
-import level.DemoLevel;
+import level.TestLevel;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -43,7 +43,9 @@ public class LevelMenuState extends BasicGameState{
 
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         if(GameUtils.clickedMouseInShape(container.getInput(), dummyLevel)){
-            ((PlayingState) game.getState(PlayingState.PLAYING_STATE_ID)).setCurrentLevel(new DemoLevel());
+            //            ((PlayingState) game.getState(PlayingState.PLAYING_STATE_ID))
+            // .setCurrentLevel(new DemoLevel());
+            ((PlayingState) game.getState(PlayingState.PLAYING_STATE_ID)).setCurrentLevel(new TestLevel());
             game.enterState(PlayingState.PLAYING_STATE_ID);
         }
     }

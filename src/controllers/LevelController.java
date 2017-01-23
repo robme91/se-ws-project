@@ -7,6 +7,7 @@ import objects.Enums;
 import objects.GameObject;
 import objects.NPC;
 import objects.Player;
+import objects.Street;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Line;
 import utils.GameUtils;
@@ -50,8 +51,6 @@ public class LevelController {
                 this.blockingBlocks.add(b);
             }
         }
-
-        // TODO find street pictures
     }
 
     /**
@@ -104,7 +103,23 @@ public class LevelController {
     private void initializeLevel(AbstractLevel level) {
         float blockSize = 32f;
         this.level.setRemainingTime(this.level.getInitialLevelTime());
+
+        // before setting coordinates figure out which street type to use.
+        boolean[][] streetMap = new boolean[25][20];
         for (Block b : this.level.getBlocks()) {
+            int x = (int) b.getPos_x();
+            int y = (int) b.getPos_y();
+            streetMap[x][y] = false;
+            if (b.getClass().equals(Street.class)) {
+                streetMap[x][y] = true;
+            }
+        }
+
+
+        for (Block b : this.level.getBlocks()) {
+            if (b.getClass().equals(Street.class)) {
+                GameUtils.setStreetType((Street) b, streetMap);
+            }
             b.setPos_x((b.getPos_x() + 1) * blockSize - (blockSize / 2));
             b.setPos_y((b.getPos_y() + 1) * blockSize - (blockSize / 2));
         }
@@ -223,6 +238,7 @@ public class LevelController {
 
     /**
      * How many time (in percent) is left?
+     *
      * @return Intervall [0,100]
      */
     public float getRemainingTimePercentage() {
@@ -231,6 +247,7 @@ public class LevelController {
 
     /**
      * How many beer (in percent) has the player left?
+     *
      * @return Intervall [0,100]
      */
     public float getRemainingBeerPercentage() {
