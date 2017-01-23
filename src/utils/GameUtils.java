@@ -70,5 +70,34 @@ public class GameUtils {
         }
     }
 
+    /**
+     * All image resources have their front at the top.
+     * Input direction here and get rotation angle.
+     *
+     * @param direction which direction should we rotate to?
+     * @return Angle in degrees
+     */
+    public static float getImageRotationFromDirection(Enums.Direction direction) {
+        float rotation;
+        switch (direction) {
+            case RIGHT:
+                rotation = 90f;
+                break;
+            case DOWN:
+                rotation = 180f;
+                break;
+            case LEFT:
+                rotation = 270f;
+                break;
+            default:
+                rotation = 0f;
+        }
+        return rotation;
+    }
+
+    public static float clamp(float min, float max, float value) {
+        return Math.min(max, Math.max(min, value));
+    }
+
     /* isMouseInShape() ... und auf die fenstergröße des gesamten spiels zugreifen*/
 }

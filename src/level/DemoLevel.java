@@ -4,6 +4,7 @@ import objects.Enums;
 import objects.House;
 import objects.NPC;
 import objects.Player;
+import objects.Spaeti;
 import objects.Street;
 
 import java.util.Random;
@@ -25,7 +26,11 @@ public class DemoLevel extends AbstractLevel {
         for (int x = 0; x < 25; x++) {
             for (int y = 0; y < 20; y++) {
                 if (new Random().nextInt(4) > 2) {
-                    this.blocks.add(new House(x, y));
+                    if (new Random().nextInt(4) > 2) {
+                        this.blocks.add(new Spaeti(x, y, Enums.Direction.LEFT));
+                    } else {
+                        this.blocks.add(new House(x, y));
+                    }
                 } else {
                     this.blocks.add(new Street(x, y));
                     if (this.player == null) {
@@ -33,7 +38,7 @@ public class DemoLevel extends AbstractLevel {
                     }
                     if (new Random().nextInt(20) >= 19) {
                         this.npcs.add(new NPC(x, y, 20f, "npc", 24, 50, Enums.AttackTarget
-                                .DRINK, 2));
+                                .PLAYER_SPEED, 50));
                     }
                 }
             }

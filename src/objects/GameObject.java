@@ -39,6 +39,12 @@ public abstract class GameObject {
      */
     Image image;
 
+    // how long does it take for the spaeti to reopen?
+    protected int rechargeDuration = 0;
+
+    // Seconds until next interaction possible
+    protected int interactionTimeout = 0;
+
     /**
      * @param pos_x      center x
      * @param pos_y      center y
@@ -104,9 +110,10 @@ public abstract class GameObject {
     }
 
     public void secondTick(int ms) {
+        if (this.interactionTimeout > 0) {
+            this.interactionTimeout--;
+        }
     }
-
-    ;
 
     public boolean isBlocking() {
         return isBlocking;
