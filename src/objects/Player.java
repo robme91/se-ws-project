@@ -12,6 +12,7 @@ import utils.GameUtils;
 public class Player extends Character {
 
     private float beerLevel;
+    private float initialBeerLevel;
     private float drinkSpeed;
     private float speedReduction = 0f;
 
@@ -24,6 +25,7 @@ public class Player extends Character {
         if (drinkSpeed < 1 || drinkSpeed > 100) {
             throw new IllegalArgumentException("drinkSpeed must be between 1 and 100");
         }
+        this.initialBeerLevel = beerLevel;
         this.beerLevel = beerLevel;
         this.drinkSpeed = drinkSpeed;
         try {
@@ -75,5 +77,12 @@ public class Player extends Character {
 
     public void setDrinkSpeed(float drinkSpeed) {
         this.drinkSpeed = drinkSpeed;
+    }
+
+    /**
+     * Resets beerLevel to initial level
+     */
+    public void resetBeerLevel() {
+        this.beerLevel = this.initialBeerLevel;
     }
 }
