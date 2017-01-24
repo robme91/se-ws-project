@@ -29,8 +29,8 @@ public class Spaeti extends House {
     /**
      * Creates a new Spaeti
      *
-     * @param pos_x     center X
-     * @param pos_y     center Y
+     * @param pos_x     X index starting at 0 (will get transformed to coordinate after level-init)
+     * @param pos_y     Y index starting at 0 (will get transformed to coordinate after level-init)
      * @param direction direction of door
      */
     public Spaeti(int pos_x, int pos_y, Enums.Direction direction) {
@@ -57,8 +57,10 @@ public class Spaeti extends House {
     public void interact(GameObject go) {
         if (interactionTimeout == 0) {
             if (go.getClass().equals(Player.class)) {
-                Line target = new Line(this.getPos_x(), this.getPos_y(), go.getPos_x(), go.getPos_y());
-                Enums.Direction touchDirection = GameUtils.getDirectionFromXY(target.getDX(), target.getDY());
+                Line target = new Line(this.getPos_x(), this.getPos_y(), go.getPos_x(), go
+                        .getPos_y());
+                Enums.Direction touchDirection = GameUtils.getDirectionFromXY(target.getDX(),
+                        target.getDY());
                 if (touchDirection == this.direction) {
                     this.interactionTimeout = this.rechargeDuration;
                     Player p = (Player) go;

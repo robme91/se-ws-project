@@ -22,8 +22,8 @@ public class Street extends Block {
     /**
      * Creates new Street
      *
-     * @param pos_x center X
-     * @param pos_y center Y
+     * @param pos_x X index starting at 0 (will get transformed to coordinate after level-init)
+     * @param pos_y Y index starting at 0 (will get transformed to coordinate after level-init)
      */
     public Street(int pos_x, int pos_y) {
         super(pos_x, pos_y, false);

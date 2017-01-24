@@ -9,8 +9,8 @@ public class Block extends GameObject {
     /**
      * Creates a new block Instance without any image.
      *
-     * @param pos_x      center X
-     * @param pos_y      center Y
+     * @param pos_x      X index starting at 0 (will get transformed to coordinate after level-init)
+     * @param pos_y      Y index starting at 0 (will get transformed to coordinate after level-init)
      * @param isBlocking can characters walk over it?
      */
     public Block(int pos_x, int pos_y, boolean isBlocking) {

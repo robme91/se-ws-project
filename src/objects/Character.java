@@ -32,6 +32,12 @@ public abstract class Character extends GameObject {
      */
     private Map<Enums.Direction, Image> directedImages = null;
 
+    /**
+     * @param pos_x      X index starting at 0 (will get transformed to coordinate after level-init)
+     * @param pos_y      Y index starting at 0 (will get transformed to coordinate after level-init)
+     * @param isBlocking does it block other characters?
+     * @param speed      speed of motion
+     */
     public Character(int pos_x, int pos_y, boolean isBlocking, float speed) {
         super(pos_x, pos_y, 20, isBlocking);
         this.speed = speed;

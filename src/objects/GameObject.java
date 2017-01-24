@@ -45,8 +45,8 @@ public abstract class GameObject {
     int interactionTimeout = 0;
 
     /**
-     * @param pos_x      center X
-     * @param pos_y      center Y
+     * @param pos_x      X index starting at 0 (will get transformed to coordinate after level-init)
+     * @param pos_y      Y index starting at 0 (will get transformed to coordinate after level-init)
      * @param size       width or diameter
      * @param isBlocking can characters walk over it?
      */

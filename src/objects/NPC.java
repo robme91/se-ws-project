@@ -37,8 +37,10 @@ public class NPC extends Character {
      * If there is no image within /res/img/objects/ that matches "name.lowercase()".png a
      * default image is used.
      *
-     * @param pos_x         Center positon X
-     * @param pos_y         Center position Y
+     * @param pos_x         index starting at 0 (will get transformed to coordinate after
+     *                      level-init)
+     * @param pos_y         index starting at 0 (will get transformed to coordinate after
+     *                      level-init)
      * @param speed         Speed (0-100)
      * @param name          Name (also used to find image ressource)
      * @param sightDistance How far can it look? (blocks)
@@ -47,7 +49,8 @@ public class NPC extends Character {
      * @param attackValue   How much damage to cast?
      */
     public NPC(
-            int pos_x, int pos_y, float speed, String name, int sightDistance, int intelligence, Enums.AttackTarget attackTarget, int attackValue) {
+            int pos_x, int pos_y, float speed, String name, int sightDistance, int intelligence,
+            Enums.AttackTarget attackTarget, int attackValue) {
         super(pos_x, pos_y, true, speed);
         this.sightDistance = sightDistance;
         this.intelligence = GameUtils.clamp(0, 100, intelligence);

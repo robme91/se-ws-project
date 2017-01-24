@@ -5,8 +5,6 @@ import org.newdawn.slick.SlickException;
 import utils.GameUtils;
 
 /**
- * Created by tom on 13.01.17.
- * <p>
  * This class represents the Player of the game.
  */
 public class Player extends Character {
@@ -16,6 +14,13 @@ public class Player extends Character {
     private float drinkSpeed;
     private float speedReduction = 0f;
 
+    /**
+     * @param pos_x      X index starting at 0 (will get transformed to coordinate after level-init)
+     * @param pos_y      Y index starting at 0 (will get transformed to coordinate after level-init)
+     * @param speed
+     * @param beerLevel
+     * @param drinkSpeed
+     */
     public Player(int pos_x, int pos_y, float speed, float beerLevel, float drinkSpeed) {
         super(pos_x, pos_y, true, speed);
         this.rechargeDuration = 5;

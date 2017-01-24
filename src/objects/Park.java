@@ -10,8 +10,8 @@ public class Park extends Block {
     /**
      * Creates a new park
      *
-     * @param pos_x Center X
-     * @param pos_y Center Y
+     * @param pos_x X index starting at 0 (will get transformed to coordinate after level-init)
+     * @param pos_y Y index starting at 0 (will get transformed to coordinate after level-init)
      */
     public Park(int pos_x, int pos_y) {
         super(pos_x, pos_y, false);
