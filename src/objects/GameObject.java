@@ -117,7 +117,7 @@ public abstract class GameObject {
     }
 
     /**
-     * Gets called if this object is hit by GameObject
+     * Gets called if this object is hit by a GameObject
      *
      * @param go object that hit this object
      */
