@@ -7,8 +7,7 @@ import utils.GameUtils;
 import java.util.Random;
 
 /**
- * Created by tom on 13.01.17.
- * Non Player Character
+ * Non Player Character (NPC)
  */
 public class NPC extends Character {
 
