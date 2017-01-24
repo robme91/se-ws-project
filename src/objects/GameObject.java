@@ -50,7 +50,7 @@ public abstract class GameObject {
      * @param size       width or diameter
      * @param isBlocking can characters walk over it?
      */
-    public GameObject(float pos_x, float pos_y, int size, boolean isBlocking) {
+    GameObject(float pos_x, float pos_y, int size, boolean isBlocking) {
         this.pos_x = pos_x;
         this.pos_y = pos_y;
         this.size = size;
