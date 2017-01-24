@@ -5,15 +5,26 @@ import org.newdawn.slick.SlickException;
 import utils.GameUtils;
 
 /**
- * Created by tom on 14.01.17.
+ * Class that represents a street
  */
 public class Street extends Block {
 
-    // used for rotating street image
+    /**
+     * used for rotating street image
+     */
     private Enums.Direction direction;
 
+    /**
+     * Street type
+     */
     private Enums.StreetType streetType;
 
+    /**
+     * Creates new Street
+     *
+     * @param pos_x center X
+     * @param pos_y center Y
+     */
     public Street(int pos_x, int pos_y) {
         super(pos_x, pos_y, false);
         try {
@@ -34,31 +45,33 @@ public class Street extends Block {
     }
 
     public void setStreetType(Enums.StreetType streetType) {
-        this.streetType = streetType;
-        try {
-            switch (streetType) {
-                case SOLO:
-                    this.image = new Image("/res/img/objects/street_0.png");
-                    break;
-                case STRAIGHT:
-                    this.image = new Image("/res/img/objects/street_straight.png");
-                    break;
-                case END:
-                    this.image = new Image("/res/img/objects/street_1.png");
-                    break;
-                case BEND:
-                    this.image = new Image("/res/img/objects/street_2.png");
-                    break;
-                case CROSS3:
-                    this.image = new Image("/res/img/objects/street_3.png");
-                    break;
-                case CROSS4:
-                    this.image = new Image("/res/img/objects/street_4.png");
-                    break;
+        if (this.direction != null) {
+            this.streetType = streetType;
+            try {
+                switch (streetType) {
+                    case SOLO:
+                        this.image = new Image("/res/img/objects/street_0.png");
+                        break;
+                    case STRAIGHT:
+                        this.image = new Image("/res/img/objects/street_straight.png");
+                        break;
+                    case END:
+                        this.image = new Image("/res/img/objects/street_1.png");
+                        break;
+                    case BEND:
+                        this.image = new Image("/res/img/objects/street_2.png");
+                        break;
+                    case CROSS3:
+                        this.image = new Image("/res/img/objects/street_3.png");
+                        break;
+                    case CROSS4:
+                        this.image = new Image("/res/img/objects/street_4.png");
+                        break;
+                }
+            } catch (SlickException e) {
+                e.printStackTrace();
             }
-        } catch (SlickException e) {
-            e.printStackTrace();
+            this.image.rotate(GameUtils.getImageRotationFromDirection(direction));
         }
-        this.image.rotate(GameUtils.getImageRotationFromDirection(direction));
     }
 }
