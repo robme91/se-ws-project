@@ -11,17 +11,20 @@ import objects.Street;
 /**
  * Generated Level class by LevelGenerator from .nbno file
  */
-public class WinningLevel extends AbstractLevel {
-    public WinningLevel() {
+public class TightAndWightLevel extends AbstractLevel {
+    public TightAndWightLevel() {
         super();
-        this.levelName = "WinningLevel";
+        this.levelName = "TightAndWightLevel";
         this.initialLevelTime = 60;
-        this.player = new Player(11, 19, 50f, 100f, 3f);
-        this.npcs.add(new NPC(12, 1, 25f, "Polizist", 21, 40, Enums.AttackTarget.PLAYER_SPEED, 60));
-        this.npcs.add(new NPC(16, 1, 40f, "Schnorrer", 10, 30, Enums.AttackTarget.DRINK, 30));
-        this.npcs.add(new NPC(2, 6, 40f, "Schnorrer", 10, 30, Enums.AttackTarget.DRINK, 30));
-        this.npcs.add(new NPC(23, 6, 25f, "Polizist", 21, 40, Enums.AttackTarget.PLAYER_SPEED, 60));
-        this.npcs.add(new NPC(3, 16, 40f, "Schnorrer", 10, 30, Enums.AttackTarget.DRINK, 30));
+        this.player = new Player(0, 10, 50f, 80f, 2f);
+        this.npcs.add(new NPC(12, 1, 30f, "Polizist", 21, 40, Enums.AttackTarget.PLAYER_SPEED, 60));
+        this.npcs.add(new NPC(16, 1, 40f, "Schnorrer", 10, 50, Enums.AttackTarget.DRINK, 30));
+        this.npcs.add(new NPC(9, 5, 30f, "Polizist", 21, 40, Enums.AttackTarget.PLAYER_SPEED, 60));
+        this.npcs.add(new NPC(2, 6, 40f, "Schnorrer", 10, 50, Enums.AttackTarget.DRINK, 30));
+        this.npcs.add(new NPC(9, 6, 40f, "Schnorrer", 10, 50, Enums.AttackTarget.DRINK, 30));
+        this.npcs.add(new NPC(23, 6, 30f, "Polizist", 21, 40, Enums.AttackTarget.PLAYER_SPEED, 60));
+        this.npcs.add(new NPC(3, 16, 40f, "Schnorrer", 10, 50, Enums.AttackTarget.DRINK, 30));
+        this.npcs.add(new NPC(18, 19, 40f, "Schnorrer", 10, 50, Enums.AttackTarget.DRINK, 30));
         this.blocks.add(new House(0, 0));
         this.blocks.add(new House(1, 0));
         this.blocks.add(new House(2, 0));
@@ -36,33 +39,30 @@ public class WinningLevel extends AbstractLevel {
         this.blocks.add(new House(9, 2));
         this.blocks.add(new House(11, 2));
         this.blocks.add(new House(14, 2));
-        this.blocks.add(new House(15, 2));
         this.blocks.add(new House(16, 2));
         this.blocks.add(new House(24, 2));
-        this.blocks.add(new House(0, 3));
         this.blocks.add(new House(1, 3));
         this.blocks.add(new House(3, 3));
         this.blocks.add(new House(4, 3));
         this.blocks.add(new House(5, 3));
-        this.blocks.add(new House(9, 3));
         this.blocks.add(new House(11, 3));
         this.blocks.add(new House(14, 3));
         this.blocks.add(new House(15, 3));
         this.blocks.add(new House(16, 3));
         this.blocks.add(new House(24, 3));
-        this.blocks.add(new House(9, 4));
         this.blocks.add(new House(11, 4));
         this.blocks.add(new House(14, 4));
         this.blocks.add(new House(15, 4));
         this.blocks.add(new House(16, 4));
         this.blocks.add(new House(24, 4));
-        this.blocks.add(new House(9, 5));
         this.blocks.add(new House(14, 5));
         this.blocks.add(new House(15, 5));
         this.blocks.add(new House(16, 5));
         this.blocks.add(new House(24, 5));
-        this.blocks.add(new House(9, 6));
         this.blocks.add(new House(9, 7));
+        this.blocks.add(new House(0, 8));
+        this.blocks.add(new House(1, 8));
+        this.blocks.add(new House(2, 8));
         this.blocks.add(new House(9, 8));
         this.blocks.add(new House(9, 9));
         this.blocks.add(new House(9, 10));
@@ -70,11 +70,18 @@ public class WinningLevel extends AbstractLevel {
         this.blocks.add(new House(14, 10));
         this.blocks.add(new House(19, 10));
         this.blocks.add(new House(20, 10));
+        this.blocks.add(new House(0, 11));
+        this.blocks.add(new House(1, 11));
+        this.blocks.add(new House(2, 11));
         this.blocks.add(new House(9, 11));
+        this.blocks.add(new House(1, 12));
+        this.blocks.add(new House(2, 12));
         this.blocks.add(new House(20, 12));
         this.blocks.add(new House(9, 13));
+        this.blocks.add(new House(10, 13));
         this.blocks.add(new House(20, 13));
         this.blocks.add(new House(9, 14));
+        this.blocks.add(new House(10, 14));
         this.blocks.add(new House(15, 14));
         this.blocks.add(new House(20, 14));
         this.blocks.add(new House(9, 15));
@@ -82,6 +89,8 @@ public class WinningLevel extends AbstractLevel {
         this.blocks.add(new House(20, 15));
         this.blocks.add(new House(9, 16));
         this.blocks.add(new House(9, 17));
+        this.blocks.add(new House(18, 18));
+        this.blocks.add(new House(19, 18));
         this.blocks.add(new Street(10, 0));
         this.blocks.add(new Street(11, 0));
         this.blocks.add(new Street(12, 0));
@@ -172,6 +181,7 @@ public class WinningLevel extends AbstractLevel {
         this.blocks.add(new Street(6, 5));
         this.blocks.add(new Street(7, 5));
         this.blocks.add(new Street(8, 5));
+        this.blocks.add(new Street(9, 5));
         this.blocks.add(new Street(10, 5));
         this.blocks.add(new Street(12, 5));
         this.blocks.add(new Street(13, 5));
@@ -188,6 +198,7 @@ public class WinningLevel extends AbstractLevel {
         this.blocks.add(new Street(6, 6));
         this.blocks.add(new Street(7, 6));
         this.blocks.add(new Street(8, 6));
+        this.blocks.add(new Street(9, 6));
         this.blocks.add(new Street(10, 6));
         this.blocks.add(new Street(11, 6));
         this.blocks.add(new Street(12, 6));
@@ -222,9 +233,6 @@ public class WinningLevel extends AbstractLevel {
         this.blocks.add(new Street(19, 7));
         this.blocks.add(new Street(20, 7));
         this.blocks.add(new Street(24, 7));
-        this.blocks.add(new Street(0, 8));
-        this.blocks.add(new Street(1, 8));
-        this.blocks.add(new Street(2, 8));
         this.blocks.add(new Street(3, 8));
         this.blocks.add(new Street(4, 8));
         this.blocks.add(new Street(5, 8));
@@ -275,7 +283,6 @@ public class WinningLevel extends AbstractLevel {
         this.blocks.add(new Street(5, 10));
         this.blocks.add(new Street(6, 10));
         this.blocks.add(new Street(7, 10));
-        this.blocks.add(new Street(8, 10));
         this.blocks.add(new Street(10, 10));
         this.blocks.add(new Street(11, 10));
         this.blocks.add(new Street(12, 10));
@@ -287,13 +294,11 @@ public class WinningLevel extends AbstractLevel {
         this.blocks.add(new Street(22, 10));
         this.blocks.add(new Street(23, 10));
         this.blocks.add(new Street(24, 10));
-        this.blocks.add(new Street(2, 11));
         this.blocks.add(new Street(3, 11));
         this.blocks.add(new Street(4, 11));
         this.blocks.add(new Street(5, 11));
         this.blocks.add(new Street(6, 11));
         this.blocks.add(new Street(7, 11));
-        this.blocks.add(new Street(8, 11));
         this.blocks.add(new Street(10, 11));
         this.blocks.add(new Street(11, 11));
         this.blocks.add(new Street(12, 11));
@@ -308,14 +313,11 @@ public class WinningLevel extends AbstractLevel {
         this.blocks.add(new Street(22, 11));
         this.blocks.add(new Street(23, 11));
         this.blocks.add(new Street(24, 11));
-        this.blocks.add(new Street(2, 12));
         this.blocks.add(new Street(3, 12));
         this.blocks.add(new Street(4, 12));
         this.blocks.add(new Street(5, 12));
         this.blocks.add(new Street(6, 12));
         this.blocks.add(new Street(7, 12));
-        this.blocks.add(new Street(8, 12));
-        this.blocks.add(new Street(10, 12));
         this.blocks.add(new Street(11, 12));
         this.blocks.add(new Street(12, 12));
         this.blocks.add(new Street(13, 12));
@@ -332,8 +334,6 @@ public class WinningLevel extends AbstractLevel {
         this.blocks.add(new Street(5, 13));
         this.blocks.add(new Street(6, 13));
         this.blocks.add(new Street(7, 13));
-        this.blocks.add(new Street(8, 13));
-        this.blocks.add(new Street(10, 13));
         this.blocks.add(new Street(11, 13));
         this.blocks.add(new Street(12, 13));
         this.blocks.add(new Street(13, 13));
@@ -353,7 +353,6 @@ public class WinningLevel extends AbstractLevel {
         this.blocks.add(new Street(6, 14));
         this.blocks.add(new Street(7, 14));
         this.blocks.add(new Street(8, 14));
-        this.blocks.add(new Street(10, 14));
         this.blocks.add(new Street(11, 14));
         this.blocks.add(new Street(12, 14));
         this.blocks.add(new Street(13, 14));
@@ -375,7 +374,6 @@ public class WinningLevel extends AbstractLevel {
         this.blocks.add(new Street(6, 15));
         this.blocks.add(new Street(7, 15));
         this.blocks.add(new Street(8, 15));
-        this.blocks.add(new Street(10, 15));
         this.blocks.add(new Street(11, 15));
         this.blocks.add(new Street(12, 15));
         this.blocks.add(new Street(13, 15));
@@ -453,8 +451,6 @@ public class WinningLevel extends AbstractLevel {
         this.blocks.add(new Street(15, 18));
         this.blocks.add(new Street(16, 18));
         this.blocks.add(new Street(17, 18));
-        this.blocks.add(new Street(18, 18));
-        this.blocks.add(new Street(19, 18));
         this.blocks.add(new Street(20, 18));
         this.blocks.add(new Street(21, 18));
         this.blocks.add(new Street(22, 18));
@@ -488,9 +484,12 @@ public class WinningLevel extends AbstractLevel {
         this.blocks.add(new Park(21, 2));
         this.blocks.add(new Park(22, 2));
         this.blocks.add(new Park(23, 2));
+        this.blocks.add(new Park(0, 3));
+        this.blocks.add(new Park(9, 3));
         this.blocks.add(new Park(21, 3));
         this.blocks.add(new Park(22, 3));
         this.blocks.add(new Park(23, 3));
+        this.blocks.add(new Park(9, 4));
         this.blocks.add(new Park(22, 4));
         this.blocks.add(new Park(23, 4));
         this.blocks.add(new Park(21, 5));
@@ -504,23 +503,27 @@ public class WinningLevel extends AbstractLevel {
         this.blocks.add(new Park(21, 8));
         this.blocks.add(new Park(22, 8));
         this.blocks.add(new Park(23, 8));
-        this.blocks.add(new Park(0, 11));
-        this.blocks.add(new Park(1, 11));
-        this.blocks.add(new Park(0, 12));
-        this.blocks.add(new Park(1, 12));
+        this.blocks.add(new Park(8, 10));
+        this.blocks.add(new Park(8, 11));
+        this.blocks.add(new Park(8, 12));
+        this.blocks.add(new Park(9, 12));
+        this.blocks.add(new Park(10, 12));
         this.blocks.add(new Park(14, 12));
         this.blocks.add(new Park(15, 12));
         this.blocks.add(new Park(16, 12));
         this.blocks.add(new Park(0, 13));
         this.blocks.add(new Park(1, 13));
+        this.blocks.add(new Park(8, 13));
         this.blocks.add(new Park(14, 13));
         this.blocks.add(new Park(15, 13));
         this.blocks.add(new Park(16, 13));
+        this.blocks.add(new Spaeti(15, 2, Enums.Direction.UP));
         this.blocks.add(new Spaeti(2, 3, Enums.Direction.UP));
         this.blocks.add(new Spaeti(21, 4, Enums.Direction.LEFT));
         this.blocks.add(new Spaeti(11, 5, Enums.Direction.DOWN));
         this.blocks.add(new Spaeti(20, 11, Enums.Direction.LEFT));
-        this.blocks.add(new Spaeti(9, 12, Enums.Direction.LEFT));
+        this.blocks.add(new Spaeti(0, 12, Enums.Direction.DOWN));
+        this.blocks.add(new Spaeti(10, 15, Enums.Direction.RIGHT));
         this.blocks.add(new Spaeti(15, 16, Enums.Direction.RIGHT));
-}
+    }
 }
