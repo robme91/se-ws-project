@@ -10,23 +10,45 @@ import utils.GameUtils;
 
 
 /**
- * Created by tom on 23.01.17.
+ * Controlls the StatusBar on the bottom of the game window
  */
 public class StatusBarController {
 
+    /**
+     * LevelController that delivers the StatusBar data
+     */
     private LevelController levelController;
+    /**
+     * Background Image
+     */
     private Image statusBar;
-    private final float startBeerBar = 48f;
-    private final float endBeerBar = 393f;
-    private final float startTimeBar = 448f;
-    private final float endTimeBar = 793f;
-    private final float barMinY = 12f;
-    private final float barMaxY = 37f;
+
+    /**
+     * Green Color for beer bar
+     */
     private final Color beerBarColorGREEN = new Color(125, 205, 11);
+
+    /**
+     * Yellow Color for beer bar
+     */
     private final Color beerBarColorYELLOW = new Color(212, 200, 13);
+
+    /**
+     * Red Color for beer bar
+     */
     private final Color beerBarColorRED = new Color(212, 69, 12);
+
+    /**
+     * Blue Color for time bar
+     */
     private final Color timeBarColorBLUE = new Color(4, 100, 181);
 
+
+    /**
+     * Creates a new StatusBarController
+     *
+     * @param levelController levelController to get the data from
+     */
     public StatusBarController(LevelController levelController) {
         this.levelController = levelController;
         try {
@@ -36,11 +58,28 @@ public class StatusBarController {
         }
     }
 
+    /**
+     * Draws the status bar onto a given Graphic context at a specific position
+     *
+     * @param g Graphic context
+     * @param x X coordinate
+     * @param y Y coordinate
+     */
     public void drawOnGraphicsContext(Graphics g, float x, float y) {
         Color oldColor = g.getColor();
         g.drawImage(statusBar, x, y);
-        float beerLevel = GameUtils.clamp(0f, 1f, levelController.getRemainingBeerPercentage());
-        float timeLevel = GameUtils.clamp(0f, 1f, levelController.getRemainingTimePercentage());
+
+        final float startBeerBar = x + 48f;
+        final float endBeerBar = x + 393f;
+        final float startTimeBar = x + 448f;
+        final float endTimeBar = x + 793f;
+        final float barMinY = y + 12f;
+        final float barMaxY = y + 37f;
+
+        final float beerLevel = GameUtils.clamp(0f, 1f, levelController
+                .getRemainingBeerPercentage());
+        final float timeLevel = GameUtils.clamp(0f, 1f, levelController
+                .getRemainingTimePercentage());
 
         Color beerBarColor = beerBarColorGREEN;
         Color timeBarColor = timeBarColorBLUE;
@@ -58,10 +97,10 @@ public class StatusBarController {
             timeBarColor = Color.transparent;
         }
 
-        Shape beerBar = new Rectangle(x + startBeerBar, y + barMinY, (endBeerBar - startBeerBar)
-                * beerLevel, barMaxY - barMinY);
-        Shape timeBar = new Rectangle(x + startTimeBar, y + barMinY, (endTimeBar - startTimeBar)
-                * timeLevel, barMaxY - barMinY);
+        final Shape beerBar = new Rectangle(startBeerBar, barMinY, (endBeerBar - startBeerBar) *
+                beerLevel, barMaxY - barMinY);
+        final Shape timeBar = new Rectangle(startTimeBar, barMinY, (endTimeBar - startTimeBar) *
+                timeLevel, barMaxY - barMinY);
 
         g.setColor(beerBarColor);
         g.fill(beerBar);
