@@ -8,16 +8,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by tom on 13.01.17.
+ * Abstract class for a character like a npc or the player
  */
 public abstract class Character extends GameObject {
 
+    /**
+     * Speed of motion, from 0 to 100
+     */
     private float speed;
 
+    /**
+     * Current direction
+     */
     private Enums.Direction direction = null;
 
+    /**
+     *
+     */
     protected String name;
 
+    /**
+     * Images for all possible directions
+     */
     private Map<Enums.Direction, Image> directedImages = null;
 
     public Character(int pos_x, int pos_y, boolean isBlocking, float speed) {
@@ -26,37 +38,41 @@ public abstract class Character extends GameObject {
         this.hitbox = new Rectangle(pos_x, pos_y, 20, 20);
     }
 
+    /**
+     * Get the motion speed (0-100)
+     *
+     * @return speed (0-100)
+     */
     public float getSpeed() {
         return speed;
     }
 
+    /**
+     * Set the motion speed (0-100)
+     *
+     * @param speed
+     */
     public void setSpeed(float speed) {
+        speed = GameUtils.clamp(0, 100, speed);
         this.speed = speed;
     }
 
-    public void setPos_x(float x) {
-        this.pos_x = x;
-        this.hitbox.setCenterX(x);
-    }
-
-    public void setPos_y(float y) {
-        this.pos_y = y;
-        this.hitbox.setCenterY(y);
-    }
-
-    @Override
-    public Image getImage() {
-
-        return super.getImage();
-    }
-
+    /**
+     * Get current direction of character
+     *
+     * @return current Direction
+     */
     public Enums.Direction getDirection() {
         return direction;
     }
 
+    /**
+     * Set current direction of character
+     *
+     * @param direction new direction
+     */
     public void setDirection(Enums.Direction direction) {
         this.direction = direction;
-
         // if first call, generate directed images
         if (this.directedImages == null) {
             fillDirectedImages();
@@ -69,6 +85,7 @@ public abstract class Character extends GameObject {
 
     /**
      * Since Images get set within concrete class, we have to fill the Map at first query.
+     * This method does this.
      */
     private void fillDirectedImages() {
         // create directed images
