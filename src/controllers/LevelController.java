@@ -12,31 +12,42 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Line;
 import utils.GameUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
- * Created by tom on 19.01.17.
+ * Creates an instance of AbstractLevel and offers controls
  */
 public class LevelController {
 
-    // the level
+    /**
+     * Instance created out of level class
+     */
     private AbstractLevel level;
 
-    // all level characters including player
-    private List<Character> characters = new ArrayList<Character>();
+    /**
+     * Contains all level characters including the player.
+     */
+    private Set<Character> characters = new HashSet<>();
 
-    // all blocking blocks out of level
-    private List<Block> blockingBlocks = new ArrayList<Block>();
+    /**
+     * Contains all blocking blocks from the level
+     */
+    private Set<Block> blockingBlocks = new HashSet<>();
+
+    /**
+     * If true, the level won´t receive any updates
+     */
+    private boolean IS_PAUSED = false;
 
     // Needed for doEverySecond()
     private int msSinceLastSecond = 0;
 
-    private boolean IS_PAUSED = false;
-
     /**
-     * @param levelClass
+     * Initializes a new LevelController
+     *
+     * @param levelClass Class from which a LevelInstance should get created
      */
     public LevelController(Class levelClass) {
         AbstractLevel level = null;
@@ -50,7 +61,7 @@ public class LevelController {
             System.err.println("Could not access class " + levelClass.getName());
         }
         this.level = level;
-        initializeLevel(level);
+        initializeLevel();
         this.level.setRemainingTime(this.level.getInitialLevelTime());
         characters.addAll(level.getNpcs());
         characters.add(level.getPlayer());
@@ -62,7 +73,9 @@ public class LevelController {
     }
 
     /**
-     * @param delta
+     * Handles updates from the PlayingState
+     *
+     * @param delta Time in ms since last update call
      */
     public void update(int delta) {
         if (!IS_PAUSED) {
@@ -76,13 +89,14 @@ public class LevelController {
     }
 
     /**
-     * @param g
+     * Draws level on a given Graphic context
+     *
+     * @param g Graphic context
      */
     public void drawOnGraphicsContext(Graphics g) {
         for (Block b : this.level.getBlocks()) {
             drawImageOnGraphicsContext(g, b);
         }
-
         for (NPC npc : this.level.getNpcs()) {
             drawImageOnGraphicsContext(g, npc);
         }
@@ -103,23 +117,66 @@ public class LevelController {
         this.IS_PAUSED = false;
     }
 
-
+    /**
+     * Checks if player is still alive (has beer left)
+     *
+     * @return true if alive, false if not
+     */
     public boolean isPlayerDead() {
         return getPlayer().getBeerLevel() <= 0f;
     }
 
+    /**
+     * Checks if level time is up
+     *
+     * @return true if time is up, false if not
+     */
     public boolean isTimeUp() {
         return this.level.getRemainingTime() <= 0f;
     }
 
     /**
-     * Transforms the initial block indices into pixel coordinates.
+     * How many time (in percent) is left?
      *
-     * @param level AbstractLevel Instance
+     * @return Intervall [0,1]
      */
-    private void initializeLevel(AbstractLevel level) {
-        float blockSize = 32f;
+    public float getRemainingTimePercentage() {
+        return this.level.getRemainingTime() / this.level.getInitialLevelTime();
+    }
 
+    /**
+     * How many beer (in percent) has the player left?
+     *
+     * @return Intervall [0,1]
+     */
+    public float getRemainingBeerPercentage() {
+        return getPlayer().getBeerLevel() / 100;
+    }
+
+    /**
+     * Get Player reference out of level instance
+     *
+     * @return Player object
+     */
+    public Player getPlayer() {
+        return level.getPlayer();
+    }
+
+    /**
+     * Sets the Players direction
+     *
+     * @param direction new direction
+     */
+    public void setPlayerDirection(Enums.Direction direction) {
+        this.level.getPlayer().setDirection(direction);
+    }
+
+    /**
+     * Transforms the initial block indices within the level into pixel coordinates and sets the
+     * streetMap for finding the correct street assets accoording to their neighbours.
+     */
+    private void initializeLevel() {
+        float blockSize = 32f;
         // before setting coordinates figure out which street type to use.
         boolean[][] streetMap = new boolean[25][20];
         for (Block b : this.level.getBlocks()) {
@@ -130,8 +187,6 @@ public class LevelController {
                 streetMap[x][y] = true;
             }
         }
-
-
         for (Block b : this.level.getBlocks()) {
             if (b.getClass().equals(Street.class)) {
                 GameUtils.setStreetType((Street) b, streetMap);
@@ -149,23 +204,25 @@ public class LevelController {
     }
 
     /**
-     * @param g
-     * @param go
+     * Draws the image of a GameObject onto one given Graphic context
+     *
+     * @param g  Graphic context to draw on
+     * @param go GameOjct to draw
      */
     private void drawImageOnGraphicsContext(Graphics g, GameObject go) {
         if (go.getImage() != null) {
             g.drawImage(go.getImage(), go.getPos_x() - go.getSize() / 2, go.getPos_y() - go
                     .getSize() / 2);
-        } else {
-            //TODO draw error image with size of game object
         }
     }
 
     /**
-     * @param characters
-     * @param delta
+     * Performs character movement
+     *
+     * @param characters Set of characters that should move
+     * @param delta      time in ms since last call
      */
-    private void moveCharacters(List<Character> characters, int delta) {
+    private void moveCharacters(Set<Character> characters, int delta) {
         for (Character c : characters) {
             if (c.getDirection() != null) {
                 float oldX = c.getPos_x();
@@ -209,7 +266,7 @@ public class LevelController {
                     }
                     // set new location and test if this is legal
                     c.setLocation(newX, newY);
-                    List<GameObject> hitObjects = whichBlocksDoesCharacterHit(c);
+                    Set<GameObject> hitObjects = whichBlocksDoesCharacterHit(c);
                     if (hitObjects != null) {
                         for (GameObject go : hitObjects) {
                             go.interact(c);
@@ -225,11 +282,13 @@ public class LevelController {
     }
 
     /**
-     * @param c
-     * @return
+     * Checks if a character does hit a blocking block or another character
+     *
+     * @param c Character to check
+     * @return a set of GameObjects that the character intersects with
      */
-    private List<GameObject> whichBlocksDoesCharacterHit(Character c) {
-        List<GameObject> hitObjects = new ArrayList<GameObject>();
+    private Set<GameObject> whichBlocksDoesCharacterHit(Character c) {
+        Set<GameObject> hitObjects = new HashSet<>();
         for (GameObject block : blockingBlocks) {
             if (block.isBlocking()) {
                 if (block.checkIfHitBy(c.getHitbox())) {
@@ -253,38 +312,6 @@ public class LevelController {
 
 
     /**
-     * How many time (in percent) is left?
-     *
-     * @return Intervall [0,1]
-     */
-    public float getRemainingTimePercentage() {
-        return this.level.getRemainingTime() / this.level.getInitialLevelTime();
-    }
-
-    /**
-     * How many beer (in percent) has the player left?
-     *
-     * @return Intervall [0,1]
-     */
-    public float getRemainingBeerPercentage() {
-        return getPlayer().getBeerLevel() / 100;
-    }
-
-    /**
-     * @return player object
-     */
-    public Player getPlayer() {
-        return level.getPlayer();
-    }
-
-    /**
-     * @param direction
-     */
-    public void setPlayerDirection(Enums.Direction direction) {
-        this.level.getPlayer().setDirection(direction);
-    }
-
-    /**
      * Gets executed every second
      */
     private void doEverySecond(int msSinceLastSecond) {
@@ -299,16 +326,16 @@ public class LevelController {
                 1000f);
     }
 
+    /**
+     * Performs AI calculation for all NPC´s
+     */
     private void updateAI() {
         for (NPC npc : this.level.getNpcs()) {
-
             //create line of sight
-            Line lineOfSight = new Line(npc.getPos_x(), npc.getPos_y(), getPlayer().getPos_x(),
-                    getPlayer().getPos_y());
+            Line lineOfSight = new Line(npc.getPos_x(), npc.getPos_y(), getPlayer().getPos_x(), getPlayer().getPos_y());
             // check if player is too far awy
             if (lineOfSight.length() < npc.getSightDistance() * 32) {
                 boolean obstacle = false;
-
                 // check if there is a block in the way
                 for (Block b : blockingBlocks) {
                     if (b.getHitbox().intersects(lineOfSight)) {
@@ -317,8 +344,7 @@ public class LevelController {
                     }
                 }
                 if (!obstacle) {
-                    Enums.Direction direction = GameUtils.getDirectionFromXY(lineOfSight.getDX(),
-                            lineOfSight.getDY());
+                    Enums.Direction direction = GameUtils.getDirectionFromXY(lineOfSight.getDX(), lineOfSight.getDY());
                     // is npc smart enough?
                     if (new Random().nextInt(100) < npc.getIntelligence()) {
                         npc.setDirection(direction);
