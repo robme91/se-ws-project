@@ -3,6 +3,7 @@ package level;
 import objects.Enums;
 import objects.House;
 import objects.NPC;
+import objects.Park;
 import objects.Player;
 import objects.Spaeti;
 import objects.Street;
@@ -32,6 +33,9 @@ public class DemoLevel extends AbstractLevel {
                         this.blocks.add(new House(x, y));
                     }
                 } else {
+                    if (new Random().nextInt(4) > 2) {
+                        this.blocks.add(new Park(x, y));
+                    }
                     this.blocks.add(new Street(x, y));
                     if (this.player == null) {
                         this.player = new Player(x, y, 40f, 100f, 1f);
