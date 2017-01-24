@@ -19,7 +19,7 @@ public class Spaeti extends House {
     public Spaeti(int pos_x, int pos_y, Enums.Direction direction) {
         super(pos_x, pos_y);
         this.direction = direction;
-        this.rechargeDuration = 30;
+        this.rechargeDuration = 20;
         try {
             this.image_on = new Image("/res/img/objects/spaeti_on.png");
             this.image_off = new Image("/res/img/objects/spaeti_off.png");
