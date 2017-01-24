@@ -8,7 +8,7 @@ import org.newdawn.slick.SlickException;
  */
 public class Park extends Block {
     /**
-     * Creates a new Park
+     * Creates a new park
      *
      * @param pos_x Center X
      * @param pos_y Center Y

@@ -4,9 +4,15 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 /**
- * Created by tom on 13.01.17.
+ *  Class for a (blocking) house
  */
 public class House extends Block {
+    /**
+     * Creates a new house
+     *
+     * @param pos_x Center X
+     * @param pos_y Center Y
+     */
     public House(int pos_x, int pos_y) {
         super(pos_x, pos_y, true);
         try {
