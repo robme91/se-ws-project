@@ -1,8 +1,6 @@
 package main;
 
-import gamestates.LevelMenuState;
-import gamestates.MainMenuState;
-import gamestates.PlayingState;
+import gamestates.*;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -20,6 +18,8 @@ public class GameStarter extends StateBasedGame {
         this.addState(new MainMenuState(0));
         this.addState(new PlayingState(1));
         this.addState(new LevelMenuState(2));
+        this.addState(new PauseMenuState(3));
+        this.addState(new GameFinishState(4));
     }
 
     public static void main(String[] args){
@@ -43,6 +43,8 @@ public class GameStarter extends StateBasedGame {
         this.getState(MainMenuState.MAIN_MENU_STATE_ID).init(gameContainer, this);
         this.getState(PlayingState.PLAYING_STATE_ID).init(gameContainer,this);
         this.getState(LevelMenuState.LEVEL_MENU_STATE_ID).init(gameContainer, this);
+        this.getState(PauseMenuState.PAUSE_MENU_STATE_ID).init(gameContainer, this);
+        this.getState(GameFinishState.Game_FINISH_STATE_ID).init(gameContainer, this);
         // call startup screen
         this.enterState(MainMenuState.MAIN_MENU_STATE_ID);
     }

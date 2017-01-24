@@ -2,14 +2,13 @@ package gamestates;
 
 import controllers.LevelController;
 import controllers.StatusBarController;
-import level.AbstractLevel;
 import objects.Enums;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import utils.GameUtils;
@@ -26,20 +25,16 @@ public class PlayingState extends BasicGameState{
     private LevelController levelController;
 
     /**The level that is chosen to play*/
-    private AbstractLevel currentLevel;
+    private Class currentLevel;
 
-    /*Set to true if quit menu shall popup*/
-    private boolean quit = false;
+    /*Set to true if pause menu shall popup*/
+    private boolean isPaused = false;
 
-//    private Player player;
 
-    /**This progress bar shows how much time is left*/
-    private Rectangle gameTimeBar;
-    private boolean isTimeRunning = false;
-    private boolean isLevelSucceeded = false;
-
-    //just for dev
-    private String playerPosDisplay = "";
+    private GameContainer container;
+    private StateBasedGame game;
+    /**The image that is passed to other states, as a background image*/
+    private Image pauseImage;
 
     private StatusBarController statusBarController;
 
@@ -52,8 +47,9 @@ public class PlayingState extends BasicGameState{
     }
 
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-//        player = new RoundedRectangle(playerPosX, playerPosY,20, 20, 3);
-        gameTimeBar = new Rectangle(300, GameUtils.GAME_FIELD_HEIGHT + 10, 400, 20);
+        this.container = container;
+        this.game = game;
+        this.pauseImage = new Image(GameUtils.GAME_WIDTH, GameUtils.GAME_HEIGHT);
     }
 
     @Override
@@ -61,57 +57,41 @@ public class PlayingState extends BasicGameState{
         super.enter(container, game);
         if(currentLevel == null){
             game.enterState(MainMenuState.MAIN_MENU_STATE_ID);
-        }else{
+        }else if(!isPaused){
             this.levelController = new LevelController(currentLevel);
             this.statusBarController = new StatusBarController(levelController);
+            levelController.pause();
+            isPaused = true;
+        }else{
+            container.resume();
         }
-        //TODO später umziehen nachdem der Spielstart iwie bestätigt wurde
-        isTimeRunning = true;
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         levelController.drawOnGraphicsContext(g);
         statusBarController.drawOnGraphicsContext(g, 0f, GameUtils.GAME_HEIGHT - 50);
 
-
-        //render level finished
-        if(isLevelSucceeded){
-            g.setColor(Color.white);
-            g.drawString("You Win!", GameUtils.GAME_FIELD_WIDTH/2, GameUtils.GAME_FIELD_HEIGHT/2);
-        }
-
-        //render quit menu
-        if(quit){
-            g.setColor(Color.white);
-            g.drawString("Resume (R)", 250, 100);
-            g.drawString("Level Menu (L)", 250, 150);
-            g.drawString("Main Menu (M)", 250, 200);
-            g.drawString("Quit (Q)", 250, 250);
-            if(!quit){
-                g.clear();
-            }
+        if(isPaused){
+            g.setColor(Color.cyan);
+            g.drawString("Press any arrow key to start!", GameUtils.GAME_STARTET_POS_X, GameUtils.GAME_STARTET_POS_Y);
         }
     }
 
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-        playerPosDisplay = "xPos: " + levelController.getPlayer().getPos_x() + " ,yPos: " + levelController.getPlayer().getPos_y();
-        final Input input = container.getInput();
-
-        //Speed of player is calculated in the delta so you get a nice result
-//        final float playerSpeed = currentLevel.getPlayer().getSpeed() * delta * .1f;
-//        final float gameTimeSpeed = currentLevel.getTime() * delta * .1f;
-        final float gameTimeSpeed = 0.001f * delta * .1f;  // TODO FIX ME, dont be a static value
-        if(isTimeRunning){
-            if(gameTimeBar.getWidth() > 1){
-                gameTimeBar.setWidth(gameTimeBar.getWidth() - gameTimeSpeed);
-            }else{
-                gameTimeBar.setWidth(1);
-                isLevelSucceeded = true;
-            }
+        if(levelController.isPlayerDead()){
+            container.getGraphics().copyArea(this.pauseImage, 0, 0);
+            ((GameFinishState) game.getState(GameFinishState.Game_FINISH_STATE_ID)).setBackgroundImage(this.pauseImage);
+            ((GameFinishState) game.getState(GameFinishState.Game_FINISH_STATE_ID)).isFinishedSuccessful(false);
+            game.enterState(GameFinishState.Game_FINISH_STATE_ID);
+        }else if(levelController.isTimeUp()){
+            container.getGraphics().copyArea(this.pauseImage, 0, 0);
+            ((GameFinishState) game.getState(GameFinishState.Game_FINISH_STATE_ID)).setBackgroundImage(this.pauseImage);
+            ((GameFinishState) game.getState(GameFinishState.Game_FINISH_STATE_ID)).isFinishedSuccessful(true);
+            game.enterState(GameFinishState.Game_FINISH_STATE_ID);
         }
 
+        final Input input = container.getInput();
         /*movement of the player*/
-        //up
         if (input.isKeyDown(Input.KEY_UP)) {
             levelController.setPlayerDirection(Enums.Direction.UP);
         }
@@ -127,30 +107,40 @@ public class PlayingState extends BasicGameState{
 
         // let level update itself
         levelController.update(delta);
+    }
 
-        //escape or resume game logic
-        if(input.isKeyDown(Input.KEY_ESCAPE)){
+    @Override
+    public void keyPressed(int key, char c) {
+        // pause menu logic
+        if (key == Input.KEY_ESCAPE) {
             levelController.pause();
-            quit = true;
+            isPaused = true;
+            this.container.getGraphics().copyArea(this.pauseImage, 0, 0);
+            ((PauseMenuState) game.getState(PauseMenuState.PAUSE_MENU_STATE_ID)).setBackgroundImage(this.pauseImage);
+            game.enterState(PauseMenuState.PAUSE_MENU_STATE_ID);
         }
-        if(quit){
-            if(input.isKeyDown(Input.KEY_R)) {
-                quit = false;
+        if (isPaused) {
+            if (key == Input.KEY_UP || key == Input.KEY_DOWN
+                    || key == Input.KEY_LEFT || key == Input.KEY_RIGHT) {
+                isPaused = false;
                 levelController.play();
-            }else if(input.isKeyDown(Input.KEY_L)) {
-                quit = false;
-                game.enterState(LevelMenuState.LEVEL_MENU_STATE_ID);
-            }else if(input.isKeyDown(Input.KEY_M)){
-                quit = false;
-                game.enterState(MainMenuState.MAIN_MENU_STATE_ID);
-            }else if(input.isKeyDown(Input.KEY_Q)){
-                System.exit(0);
             }
         }
     }
 
-    @SuppressWarnings("WeakerAccess")
-    public void setCurrentLevel(AbstractLevel currentLevel) {
+    /**
+     * Sets the current level that will be played then
+     * @param currentLevel
+     */
+    public void setCurrentLevel(Class currentLevel) {
         this.currentLevel = currentLevel;
+    }
+
+    /**
+     * Set false if game shall not be paused anymore
+     * @param paused
+     */
+    public void isPaused(final boolean paused){
+        this.isPaused = paused;
     }
 }

@@ -27,6 +27,9 @@ public class GameUtils {
     public static final int GAME_FIELD_HEIGHT = 640;
 
 
+    public static final int GAME_STARTET_POS_X = 250;
+    public static final int GAME_STARTET_POS_Y = 300;
+
     /**
      * True if if mouse is clicked in given shape
      *

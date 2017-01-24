@@ -36,14 +36,22 @@ public class LevelController {
     private boolean IS_PAUSED = false;
 
     /**
-     * @param level
+     * @param levelClass
      */
-    public LevelController(AbstractLevel level) {
-        if (level == null) {
-            throw new IllegalArgumentException("Level must not be null!");
+    public LevelController(Class levelClass) {
+        AbstractLevel level = null;
+        try {
+            level = (AbstractLevel) levelClass.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            System.err.println("Level instantiation failed for class " + levelClass.getName());
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            System.err.println("Could not access class " + levelClass.getName());
         }
         this.level = level;
         initializeLevel(level);
+        this.level.setRemainingTime(this.level.getInitialLevelTime());
         characters.addAll(level.getNpcs());
         characters.add(level.getPlayer());
         for (Block b : level.getBlocks()) {
@@ -111,7 +119,6 @@ public class LevelController {
      */
     private void initializeLevel(AbstractLevel level) {
         float blockSize = 32f;
-        this.level.setRemainingTime(this.level.getInitialLevelTime());
 
         // before setting coordinates figure out which street type to use.
         boolean[][] streetMap = new boolean[25][20];
