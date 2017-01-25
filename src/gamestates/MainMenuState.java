@@ -1,9 +1,10 @@
 package gamestates;
 
-import org.lwjgl.input.Mouse;
-import org.newdawn.slick.*;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.RoundedRectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import utils.GameUtils;
@@ -13,40 +14,40 @@ import utils.GameUtils;
  *
  * The Main Menu Screen
  */
-public class MainMenuState extends BasicGameState{
+public class MainMenuState extends BasicGameState {
 
     public static int MAIN_MENU_STATE_ID;
 
-    public MainMenuState(final int stateId){
+    public MainMenuState(final int stateId) {
         MAIN_MENU_STATE_ID = stateId;
     }
 
     private Rectangle playBtn;
-    private Image playBtnFill;
-    private String welcomeText;
+    private Rectangle quitBtn;
+    private Image splashScreen;
 
     public int getID() {
         return MAIN_MENU_STATE_ID;
     }
 
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        playBtn = new RoundedRectangle(300, 210, 90, 30, 8);
-        playBtnFill = new Image("res/img/play_button.png");
-        welcomeText = "Welcome to No Beer is oooch no Option (NBNO). Ready to get drunk?";
+        splashScreen = new Image("/res/img/splashscreen.png");
+        playBtn = new Rectangle(275, 375, 250, 50);
+        quitBtn = new Rectangle(275, 450, 250, 50);
     }
 
-    String mPos = "";
-    public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-        g.texture(playBtn, playBtnFill, true);
-        g.setColor(Color.white);
-        g.drawString(mPos, 20, 10);
-        g.drawString(welcomeText, 100, 50);
+    public void render(GameContainer container, StateBasedGame game, Graphics g) throws
+            SlickException {
+        g.drawImage(splashScreen, 0, 0);
     }
 
-    public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-        mPos = "xPos: " + Mouse.getX() + " ,yPos: " + Mouse.getY();
-        if(GameUtils.clickedMouseInShape(container.getInput(), playBtn)){
+    public void update(GameContainer container, StateBasedGame game, int delta) throws
+            SlickException {
+        if (GameUtils.clickedMouseInShape(container.getInput(), playBtn)) {
             game.enterState(LevelMenuState.LEVEL_MENU_STATE_ID);
+        }
+        if (GameUtils.clickedMouseInShape(container.getInput(), quitBtn)) {
+            System.exit(0);
         }
     }
 }
