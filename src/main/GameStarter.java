@@ -32,6 +32,7 @@ public class GameStarter extends StateBasedGame {
             app.setTargetFrameRate(60);
             app.setVSync(true);
             app.setShowFPS(false);
+            app.setIcon("res/img/objects/spaeti_on.png");
             app.start();
         } catch (SlickException e) {
             e.printStackTrace();

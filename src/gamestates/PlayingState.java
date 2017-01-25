@@ -3,12 +3,7 @@ package gamestates;
 import controllers.LevelController;
 import controllers.StatusBarController;
 import objects.Enums;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import utils.GameUtils;
@@ -64,6 +59,9 @@ public class PlayingState extends BasicGameState{
             isPaused = true;
         }else{
             container.resume();
+        }
+        if(container instanceof AppGameContainer){
+            ((AppGameContainer) container).setTitle(currentLevel.getSimpleName());
         }
     }
 
