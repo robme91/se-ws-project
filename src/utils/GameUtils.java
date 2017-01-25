@@ -100,7 +100,27 @@ public class GameUtils {
         return rotation;
     }
 
+    /**
+     * Clamp method
+     *
+     * @param min   min value
+     * @param max   max value
+     * @param value value
+     * @return value, or min or max
+     */
     public static float clamp(float min, float max, float value) {
+        return Math.min(max, Math.max(min, value));
+    }
+
+    /**
+     * Clamp method
+     *
+     * @param min   min value
+     * @param max   max value
+     * @param value value
+     * @return value, or min or max
+     */
+    public static int clamp(int min, int max, int value) {
         return Math.min(max, Math.max(min, value));
     }
 

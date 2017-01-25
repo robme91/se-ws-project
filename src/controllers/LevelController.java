@@ -296,7 +296,7 @@ public class LevelController {
                 }
             }
         }
-        for (GameObject character : characters) {  // TODO REMOVE REDUNDANCY
+        for (GameObject character : characters) {
             if (character.isBlocking() && character != c) {
                 if (character.checkIfHitBy(c.getHitbox())) {
                     hitObjects.add(character);
