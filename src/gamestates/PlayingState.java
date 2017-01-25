@@ -137,6 +137,14 @@ public class PlayingState extends BasicGameState{
     }
 
     /**
+     * Gets the current level in the playing state
+     * @return The class object of the current level.
+     */
+    public Class getCurrentLevel(){
+        return this.currentLevel;
+    }
+
+    /**
      * Set false if game shall not be paused anymore
      * @param paused
      */

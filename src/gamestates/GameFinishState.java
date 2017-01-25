@@ -1,8 +1,10 @@
 package gamestates;
 
+import level.AbstractLevel;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import utils.GameUtils;
 
 /**
  * Created by Robin on 23.01.2017.
@@ -16,6 +18,7 @@ public class GameFinishState extends BasicGameState {
     private boolean finishedSuccessful;
 
     private StateBasedGame game;
+    private Class<? extends AbstractLevel> nextLevel = null;
 
     public GameFinishState(final int stateId){
         this.Game_FINISH_STATE_ID = stateId;
@@ -37,15 +40,21 @@ public class GameFinishState extends BasicGameState {
         if(finishedSuccessful){
             g.setColor(Color.magenta);
             g.drawString("Saufen kannste! Glückwunsch. Hast jewonnen!",250, 100);
+            g.setColor(Color.white);
+            if(nextLevel == null){
+                g.drawString("You won all levels. Play from scratch (ENTER)", 250, 150);
+            }else{
+                g.drawString("Play next level (ENTER)", 250, 150);
+            }
         }else{
             g.setColor(Color.red);
-            g.drawString("Wat war denn dat? Haste verkackt wa?! Und nu?",250, 100);
+            g.drawString("Wat war denn dat? Haste verkackt wa?! Und nu?",250, 150);
         }
         g.setColor(Color.white);
-        g.drawString("Restart Level (R)", 250, 150);
-        g.drawString("Level Menu (L)", 250, 200);
-        g.drawString("Main Menu (M)", 250, 250);
-        g.drawString("Quit (Q)", 250, 300);
+        g.drawString("Restart Level (R)", 250, 200);
+        g.drawString("Level Menu (L)", 250, 250);
+        g.drawString("Main Menu (M)", 250, 300);
+        g.drawString("Quit (Q)", 250, 350);
     }
 
     @Override
@@ -53,8 +62,27 @@ public class GameFinishState extends BasicGameState {
     }
 
     @Override
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+        if(finishedSuccessful){
+            GameUtils.setLevelWon(((PlayingState) game.getState(PlayingState.PLAYING_STATE_ID)).getCurrentLevel());
+            nextLevel = GameUtils.getNextLevel();
+        }
+    }
+
+    @Override
     public void keyPressed(int key, char c) {
-        if(key == Input.KEY_R) {
+        if(key == Input.KEY_ENTER) {
+            PlayingState playing = (PlayingState) game.getState(PlayingState.PLAYING_STATE_ID);
+            if(nextLevel == null){
+                GameUtils.resetLevelWonStates();
+                playing.setCurrentLevel(GameUtils.getNextLevel());
+                playing.isPaused(false);
+            }else{
+                playing.setCurrentLevel(nextLevel);
+                playing.isPaused(false);
+            }
+            game.enterState(PlayingState.PLAYING_STATE_ID);
+        }else if(key == Input.KEY_R) {
             ((PlayingState) game.getState(PlayingState.PLAYING_STATE_ID)).isPaused(false);
             game.enterState(PlayingState.PLAYING_STATE_ID);
         }else if(key == Input.KEY_L) {
