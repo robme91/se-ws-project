@@ -4,6 +4,7 @@ import level.AbstractLevel;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.RoundedRectangle;
@@ -38,12 +39,16 @@ public class LevelMenuState extends BasicGameState {
         return LEVEL_MENU_STATE_ID;
     }
 
+    private Image backgroundImage;
+
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         createLevelShapes();
+        backgroundImage = new Image("/res/img/levelmenu.png");
     }
 
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws
             SlickException {
+        g.drawImage(backgroundImage, 0, 0);
         renderLevelsWithDescription(g);
     }
 
