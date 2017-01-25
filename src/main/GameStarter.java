@@ -8,11 +8,16 @@ import org.newdawn.slick.state.StateBasedGame;
 import utils.GameUtils;
 
 /**
- * Main Menu of the game and starts it
- * Created by Robin on 08.12.2016.
+ * Starts the game and sets the surrounding conditions.
+ * Initialises all game states.
  */
 public class GameStarter extends StateBasedGame {
 
+    /**
+     * Creates an instance of this with given name.
+     * Adds all available states/screens to the game
+     * @param name The name of the game.
+     */
     public GameStarter(String name) {
         super(name);
         this.addState(new MainMenuState(0));
@@ -22,6 +27,10 @@ public class GameStarter extends StateBasedGame {
         this.addState(new GameFinishState(4));
     }
 
+    /**
+     * Starts the game and set frame conditions like framerate and title icon.
+     * @param args no arguments for this application start.
+     */
     public static void main(String[] args){
         AppGameContainer app = null;
         try {
@@ -39,6 +48,11 @@ public class GameStarter extends StateBasedGame {
         }
     }
 
+    /**
+     * Initialises all available states and enter the menu state as start screen.
+     * @param gameContainer The container where the game is running.
+     * @throws SlickException thrown if an error occurs.
+     */
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         //init all states
         this.getState(MainMenuState.MAIN_MENU_STATE_ID).init(gameContainer, this);

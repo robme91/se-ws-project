@@ -9,38 +9,41 @@ import org.newdawn.slick.state.StateBasedGame;
 import utils.GameUtils;
 
 /**
- * Created by Robin on 05.01.2017.
  *
  * This is the Screen where the real game is played
  */
 public class PlayingState extends BasicGameState{
-
+    /**The id of this state*/
     public static int PLAYING_STATE_ID;
-
+    /**The playing and level controlling object*/
     private LevelController levelController;
-
+    /**Controls the beer and time bar*/
+    private StatusBarController statusBarController;
     /**The level that is chosen to play*/
     private Class currentLevel;
-
-    /*Set to true if pause menu shall popup*/
+    /**Set to true if pause menu shall popup*/
     private boolean isPaused = false;
-
-
+    /**the game container which is used in this game*/
     private GameContainer container;
+    /**Represents the whole game*/
     private StateBasedGame game;
     /**The image that is passed to other states, as a background image*/
     private Image pauseImage;
 
-    private StatusBarController statusBarController;
-
+    /**
+     * Creates an instance of this.
+     * @param stateId
+     */
     public PlayingState(final int stateId){
         PLAYING_STATE_ID = stateId;
     }
 
+    @Override
     public int getID() {
         return PLAYING_STATE_ID;
     }
 
+    @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         this.container = container;
         this.game = game;
@@ -52,7 +55,7 @@ public class PlayingState extends BasicGameState{
         super.enter(container, game);
         if(currentLevel == null){
             game.enterState(MainMenuState.MAIN_MENU_STATE_ID);
-        }else if(!isPaused){
+        }else if(!isPaused){ // if game is not paused but this state is entered, create new instances to get a restart
             this.levelController = new LevelController(currentLevel);
             this.statusBarController = new StatusBarController(levelController);
             levelController.pause();
@@ -65,6 +68,7 @@ public class PlayingState extends BasicGameState{
         }
     }
 
+    @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         levelController.drawOnGraphicsContext(g);
         statusBarController.drawOnGraphicsContext(g, 0f, GameUtils.GAME_HEIGHT - 50);
@@ -75,6 +79,7 @@ public class PlayingState extends BasicGameState{
         }
     }
 
+    @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         if(levelController.isPlayerDead()){
             container.getGraphics().copyArea(this.pauseImage, 0, 0);

@@ -20,43 +20,54 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by Robin on 08.01.2017.
- * <p>
  * This is a Menu screen for choosing the level you wanna play.
- * TODO preview images inside the rectangels and above the rectangles the level name then.
+ * Grey levels are won and green levels are not won.
+ * Reset this colors if all games are won.
  */
 public class LevelMenuState extends BasicGameState {
 
+    /**The id of this state*/
     public static int LEVEL_MENU_STATE_ID;
-
+    /**The level class objects and their displaying shapes*/
     private Map<Class<? extends AbstractLevel>, Shape> levelDisplays = new HashMap<>();
+    /**The background image of this screen*/
+    private Image backgroundImage;
 
+    /**
+     * Creates a new instance of this with given id.
+     * @param stateId The id for this state.
+     */
     public LevelMenuState(final int stateId) {
         LEVEL_MENU_STATE_ID = stateId;
     }
 
+    @Override
     public int getID() {
         return LEVEL_MENU_STATE_ID;
     }
 
-    private Image backgroundImage;
-
+    @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         createLevelShapes();
         backgroundImage = new Image("/res/img/levelmenu.png");
     }
 
+    @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws
             SlickException {
         g.drawImage(backgroundImage, 0, 0);
         renderLevelsWithDescription(g);
     }
 
+    @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws
             SlickException {
         instantiateClickedLevel(game, container.getInput());
     }
 
+    /**
+     * Set all levels to not won if all are won.
+     */
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         if(!GameUtils.WON_LEVELS.isEmpty() && GameUtils.getNextLevel() == null){

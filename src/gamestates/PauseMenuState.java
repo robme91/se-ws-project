@@ -5,17 +5,23 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 /**
- * Created by Robin on 23.01.2017.
  * This represents a pause menu screen. can resume to the level or get to the other menus or leave the game.
  */
 public class PauseMenuState extends BasicGameState {
 
+    /**The id of this state*/
     public static int PAUSE_MENU_STATE_ID;
 
+    /**The background image of this screen*/
     private Image backgroundImage;
 
+    /**The whole game object representation*/
     private StateBasedGame game;
 
+    /**
+     * Creates a new instance of this with given id.
+     * @param stateId The id of this state.
+     */
     public PauseMenuState(final int stateId){
         PAUSE_MENU_STATE_ID = stateId;
     }
