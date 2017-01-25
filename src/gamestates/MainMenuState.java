@@ -39,7 +39,6 @@ public class MainMenuState extends BasicGameState {
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws
             SlickException {
         g.drawImage(splashScreen, 0, 0);
-        g.draw(playBtn);
     }
 
     public void update(GameContainer container, StateBasedGame game, int delta) throws
