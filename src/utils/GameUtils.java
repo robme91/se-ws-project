@@ -246,8 +246,8 @@ public class GameUtils {
      * Reset all level states to isWon==false, to start from scratch.
      */
     public static void resetLevelWonStates(){
-        WON_LEVELS.forEach((level, isWon) ->{
-            isWon = false;
-        });
+        for(Map.Entry<Class<? extends AbstractLevel>, Boolean> tupel: WON_LEVELS.entrySet()){
+            tupel.setValue(false);
+        }
     }
 }
