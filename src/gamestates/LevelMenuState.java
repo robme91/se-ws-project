@@ -52,6 +52,13 @@ public class LevelMenuState extends BasicGameState {
         instantiateClickedLevel(game, container.getInput());
     }
 
+    @Override
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+        if(!GameUtils.WON_LEVELS.isEmpty() && GameUtils.getNextLevel() == null){
+            GameUtils.resetLevelWonStates();
+        }
+    }
+
     /**
      * Get all levels from level package but the AbstractLevel. Put each level with a appropriate
      * shape together in a map. The shapes get absolute positions and sizes.
@@ -77,6 +84,7 @@ public class LevelMenuState extends BasicGameState {
                         "implement another level menu page to present more levels");
             }
             levelDisplays.put(level, new RoundedRectangle(counterX, counterY, width, height, 8));
+            GameUtils.WON_LEVELS.put(level, false); // add initial all levels but no one is won at this time
             counterX += xIncrease;
         }
     }
@@ -90,7 +98,11 @@ public class LevelMenuState extends BasicGameState {
         final int paddingX = 5;
         final int paddingY = 5;
         levelDisplays.forEach((level, shape) -> {
-            g.setColor(Color.green);
+            if(GameUtils.isLevelWon(level)){
+                g.setColor(Color.gray);
+            }else{
+                g.setColor(Color.green);
+            }
             g.draw(shape);
             g.setColor(Color.white);
             g.drawString(level.getSimpleName(), shape.getX() + paddingX, shape.getY() + paddingY);

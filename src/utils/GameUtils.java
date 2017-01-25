@@ -1,10 +1,14 @@
 package utils;
 
+import level.AbstractLevel;
 import objects.Enums;
 import objects.Street;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Shape;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Robin on 05.01.2017.
@@ -29,6 +33,12 @@ public class GameUtils {
 
     public static final int GAME_STARTET_POS_X = 250;
     public static final int GAME_STARTET_POS_Y = 300;
+
+    /**
+     * All levels those are possible to play. With a value if they are already won once.
+     * So if you play next level, you get a non-won level to play.
+     */
+    public static Map<Class<? extends AbstractLevel>, Boolean> WON_LEVELS = new HashMap<>();
 
     /**
      * True if if mouse is clicked in given shape
@@ -222,6 +232,42 @@ public class GameUtils {
         if (!T && !L && !R && !B) {/*0*/
             s.setDirection(Enums.Direction.UP);
             s.setStreetType(Enums.StreetType.SOLO);
+        }
+    }
+
+    /**
+     * Sets the status of the given level to won, so it wouldn't be taken if the player chose next level.
+     * @param level The level that was won.
+     */
+    public static void setLevelWon(Class level){
+        WON_LEVELS.replace(level, true);
+    }
+
+    public static boolean isLevelWon(Class level){
+        return WON_LEVELS.get(level);
+    }
+
+    /**
+     * Get the next not-won level.
+     * @return The class object of the next level in the map, that is not won.
+     *      May return null if all levels are won.
+     */
+    public static Class getNextLevel(){
+        Class nextLevel = null;
+        for(Map.Entry<Class<? extends AbstractLevel>, Boolean> tupel: WON_LEVELS.entrySet()){
+            if(!tupel.getValue()){
+                nextLevel = tupel.getKey();
+            }
+        }
+        return nextLevel;
+    }
+
+    /**
+     * Reset all level states to isWon==false, to start from scratch.
+     */
+    public static void resetLevelWonStates(){
+        for(Map.Entry<Class<? extends AbstractLevel>, Boolean> tupel: WON_LEVELS.entrySet()){
+            tupel.setValue(false);
         }
     }
 }
