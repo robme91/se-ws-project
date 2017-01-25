@@ -7,19 +7,28 @@ import org.newdawn.slick.state.StateBasedGame;
 import utils.GameUtils;
 
 /**
- * Created by Robin on 23.01.2017.
- * This represents the screen if player lost the game.
+ * This represents the screen if player loses or wins the game.
+ * Offers an option menu to decide what to do next.
  */
 public class GameFinishState extends BasicGameState {
 
+    /**The id of this state*/
     public static int Game_FINISH_STATE_ID;
 
+    /**The background image of this screen*/
     private Image backgroundImage;
+    /**True if player won the game. Must be set by playing state.*/
     private boolean finishedSuccessful;
 
+    /**The representing whole game object*/
     private StateBasedGame game;
+    /**If the player won the game, this must be set, to load the playing state with this level*/
     private Class<? extends AbstractLevel> nextLevel = null;
 
+    /**
+     * Create an Insatnce of this with given id.
+     * @param stateId The state id.
+     */
     public GameFinishState(final int stateId){
         this.Game_FINISH_STATE_ID = stateId;
     }
@@ -61,6 +70,9 @@ public class GameFinishState extends BasicGameState {
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
     }
 
+    /**
+     * Sets the next level on entering this screen, if the player won the game.
+     */
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         if(finishedSuccessful){
@@ -69,6 +81,9 @@ public class GameFinishState extends BasicGameState {
         }
     }
 
+    /**
+     * Listens on key events. Do key depending calls then.
+     */
     @Override
     public void keyPressed(int key, char c) {
         if(key == Input.KEY_ENTER) {

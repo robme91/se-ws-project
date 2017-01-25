@@ -11,10 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Robin on 05.01.2017.
- * <p>
  * This util class includes information about the game like size etc.
- * It also contains helper methods for click handling and so on
+ * It also contains helper methods for click handling game handling.
  */
 public class GameUtils {
 
@@ -30,7 +28,9 @@ public class GameUtils {
     public static final int GAME_FIELD_WIDTH = 800;
     public static final int GAME_FIELD_HEIGHT = 640;
 
-
+    /**
+     * The positions of the ready-to-start hint of a level.
+     */
     public static final int GAME_STARTET_POS_X = 250;
     public static final int GAME_STARTET_POS_Y = 300;
 
@@ -60,7 +60,6 @@ public class GameUtils {
         }
         return false;
     }
-    /* isMouseInShape() ... und auf die fenstergröße des gesamten spiels zugreifen*/
 
     /**
      * Takes a dX and dY (starting at 0) and tells in which discrete direction
